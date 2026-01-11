@@ -39,7 +39,7 @@ export default function Footer() {
         <div className={styles.mainGrid}>
           <div className={styles.brandSide}>
             <h2 className={styles.logo}>
-              SUPA<span className={styles.outline}>SUB</span>
+              Sub<span className={styles.outline}>Starter</span>
             </h2>
             <div className={styles.profitTag}>90/10_REVENUE_PROTOCOL</div>
           </div>

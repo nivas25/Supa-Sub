@@ -61,7 +61,7 @@ export default function LandingNavbar() {
     <nav className={styles.navWrapper}>
       <div className={styles.navMain}>
         <Link href="/" className={styles.logo}>
-          SUPASUB<span>.</span>
+          SubStarter<span>.</span>
         </Link>
 
         {/* Desktop Links - Hidden on Mobile */}
