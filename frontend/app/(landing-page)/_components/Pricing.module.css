@@ -1,0 +1,149 @@
+.wrapper {
+  padding: 80px 20px;
+  background: var(--background);
+  color: var(--foreground);
+}
+
+.container {
+  max-width: 900px; /* Smaller, tighter container */
+  margin: 0 auto;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.mainTitle {
+  font-size: clamp(2.5rem, 8vw, 4.5rem);
+  font-weight: 1000;
+  letter-spacing: -3px;
+  text-transform: uppercase;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.card {
+  background: var(--background);
+  border: 2px solid var(--foreground); /* Thinner, cleaner borders */
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease;
+}
+
+/* PRO HIGHLIGHT: Using Blue instead of Lime */
+.pro {
+  border-color: #2563eb; /* Royal Blue */
+  box-shadow: 10px 10px 0 #2563eb;
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 25px;
+}
+
+.idTag {
+  font-family: var(--font-space), monospace;
+  font-weight: 900;
+  font-size: 0.7rem;
+  background: var(--foreground);
+  color: var(--background);
+  padding: 2px 8px;
+}
+
+.pro .idTag {
+  background: #2563eb;
+  color: #fff;
+}
+
+.icon {
+  font-size: 2rem;
+  color: var(--foreground);
+}
+.pro .icon {
+  color: #2563eb;
+}
+
+.tierName {
+  font-size: 1.5rem;
+  font-weight: 1000;
+  margin-bottom: 5px;
+}
+
+.priceBlock {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  margin-bottom: 30px;
+}
+
+.amount {
+  font-size: 3rem;
+  font-weight: 1000;
+}
+.per {
+  font-weight: 800;
+  opacity: 0.5;
+  font-size: 0.9rem;
+}
+
+.featureList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 40px;
+}
+
+.featureItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.inactive {
+  opacity: 0.3;
+}
+
+.checkIcon {
+  color: #2563eb;
+}
+
+.cta {
+  margin-top: auto;
+  padding: 15px;
+  font-weight: 1000;
+  font-size: 0.9rem;
+  border: 2px solid var(--foreground);
+  background: var(--foreground);
+  color: var(--background);
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.pro .cta {
+  background: #2563eb;
+  color: #fff;
+  border-color: #2563eb;
+}
+
+.cta:hover {
+  transform: translateY(-3px);
+  opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  .card {
+    padding: 30px;
+  }
+}

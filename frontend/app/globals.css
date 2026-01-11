@@ -1,0 +1,100 @@
+:root {
+  /* Light Mode - Clean Pearl */
+  --background: #ffffff;
+  --foreground: #000000;
+  --accent: #0066ff;
+  --card-bg: #ffffff;
+  --card-border: #000000;
+  --neon-accent: #ccff00;
+  --font-space: "Space Mono", monospace;
+
+  --pattern-color: rgba(0, 0, 0, 0.1);
+  --pattern-bg: radial-gradient(var(--pattern-color) 1px, transparent 1px);
+
+  --nav-bg: linear-gradient(180deg, #f0f9f4 0%, #d1eadd 50%, #e8f3ed 100%);
+  --nav-border: #000000;
+  --nav-shadow: #000000;
+  --glow-opacity: 0.05;
+}
+
+.dark {
+  /* Dark Mode - True Carbon Stealth */
+  --background: #050505;
+  --foreground: #ffffff;
+  --accent: #3b82f6;
+
+  /* Depth Variables for Dark Mode */
+  --card-bg: #111111; /* Deep Carbon Surface */
+  --card-border: #252525;
+  --neon-accent: #d4ff00;
+
+  --pattern-color: rgba(255, 255, 255, 0.08);
+
+  --nav-bg: linear-gradient(180deg, #111111 0%, #000000 50%, #111111 100%);
+  --nav-border: #ffffff;
+  --nav-shadow: rgba(0, 255, 127, 0.2);
+  --glow-opacity: 0.15;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 100px; /* Offset for fixed navbar */
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: "Inter", system-ui, sans-serif;
+  min-height: 100vh;
+  /* Smooth transitions for theme switching */
+  transition: background 0.4s ease, color 0.4s ease;
+  position: relative;
+  overflow-x: clip;
+
+  background-image: var(--pattern-bg),
+    linear-gradient(var(--pattern-color) 0.5px, transparent 0.5px),
+    linear-gradient(90deg, var(--pattern-color) 0.5px, transparent 0.5px);
+
+  background-size: 40px 40px, 120px 120px, 120px 120px;
+  background-attachment: fixed;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 50% 0%, var(--accent), transparent 70%);
+  opacity: var(--glow-opacity);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* --- UTILITY CLASSES --- */
+
+/* Use this on titles and tags for the technical look */
+.mono {
+  font-family: var(--font-space);
+  letter-spacing: 1px;
+}
+
+/* Global Transition Helper */
+section,
+div,
+h1,
+h2,
+h3,
+p,
+span,
+svg {
+  transition: background-color 0.4s ease, border-color 0.4s ease,
+    box-shadow 0.4s ease, color 0.4s ease;
+}

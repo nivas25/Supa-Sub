@@ -1,0 +1,240 @@
+/* --- BASE WRAPPER --- */
+.navWrapper {
+  position: fixed;
+  top: 15px;
+  left: 0;
+  width: 100%;
+  padding: 0 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 9999;
+}
+
+/* --- THE MAIN BAR --- */
+.navMain {
+  width: 100%;
+  max-width: 1100px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  border-radius: 100px;
+  border: 3px solid var(--nav-border);
+  background: var(--nav-bg);
+
+  /* Enhances the metallic green in Dark Mode */
+  backdrop-filter: saturate(160%) brightness(1.1);
+
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.4),
+    0 8px 0px var(--nav-shadow);
+
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* --- LOGO --- */
+.logo {
+  font-family: var(--font-outfit), sans-serif;
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: var(--foreground);
+  text-decoration: none;
+  letter-spacing: -2.5px;
+  text-transform: uppercase;
+}
+.logo span {
+  color: var(--accent);
+}
+
+/* --- DESKTOP NAV LINKS --- */
+.desktopLinks {
+  display: none;
+  gap: 25px;
+}
+
+.desktopLinks a {
+  text-decoration: none;
+  color: var(--foreground);
+  font-family: var(--font-space), sans-serif;
+  font-weight: 800;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  padding: 10px 15px;
+  border-radius: 12px;
+  transition: 0.2s;
+  cursor: pointer;
+}
+
+.desktopLinks a:hover {
+  background: var(--accent);
+  color: #fff;
+  transform: translateY(-3px);
+  box-shadow: 4px 4px 0px var(--nav-border);
+}
+
+.desktopLinks a.active {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 2px 2px 0px var(--nav-border);
+}
+
+/* --- ACTIONS & BUTTONS --- */
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.desktopButtons {
+  display: none;
+  align-items: center;
+  gap: 35px; /* Clean spacing between Login and CTA */
+}
+
+.loginBtn {
+  text-decoration: none;
+  color: var(--foreground);
+  font-family: var(--font-space), sans-serif;
+  font-weight: 800;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  transition: 0.2s;
+}
+
+.loginBtn:hover {
+  color: var(--accent);
+}
+
+/* THE MAIN CTA --- */
+.cta {
+  background: var(--foreground);
+  color: var(--background) !important;
+  padding: 12px 28px;
+  border-radius: 40px;
+  text-decoration: none;
+  font-family: var(--font-space), sans-serif;
+  font-weight: 800;
+  font-size: 0.85rem;
+  border: 2px solid var(--nav-border);
+  text-transform: uppercase;
+  transition: all 0.2s ease;
+}
+
+.cta:hover {
+  background: var(--background);
+  color: var(--foreground) !important;
+  transform: translate(-5px, -5px);
+  box-shadow: 7px 7px 0px var(--nav-border);
+}
+
+/* --- THEME TOGGLE BUTTON --- */
+.themeBtn {
+  background: none;
+  border: 2px solid var(--nav-border);
+  color: var(--foreground);
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: 0.2s;
+}
+
+.themeBtn:hover {
+  transform: scale(1.1) rotate(15deg);
+  background: var(--accent);
+}
+
+/* --- MOBILE TOGGLE --- */
+.mobileToggle {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.bar {
+  width: 22px;
+  height: 3px;
+  background: var(--foreground);
+  border-radius: 10px;
+  transition: 0.3s;
+}
+
+.bar1 {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+.bar2 {
+  opacity: 0;
+}
+.bar3 {
+  transform: rotate(-45deg) translate(5px, -5px);
+}
+
+/* --- MOBILE MENU OVERLAY --- */
+.mobileMenu {
+  display: none;
+  position: absolute;
+  top: 80px;
+  width: calc(100% - 30px);
+  max-width: 400px;
+  background: var(--nav-bg);
+  border: 3px solid var(--nav-border);
+  border-radius: 24px;
+  box-shadow: 0 10px 0px var(--nav-shadow);
+  flex-direction: column;
+  padding: 25px;
+  gap: 10px;
+}
+
+.menuActive {
+  display: flex;
+}
+
+.mobileMenu a {
+  text-decoration: none;
+  color: var(--foreground);
+  font-family: var(--font-space), sans-serif;
+  font-weight: 800;
+  padding: 15px;
+  border-radius: 12px;
+  text-transform: uppercase;
+  transition: 0.2s;
+  cursor: pointer;
+}
+
+.mobileMenu a:hover {
+  background: var(--accent);
+  color: #fff;
+  transform: translateX(10px);
+}
+
+.mobileMenu a.active {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* --- DESKTOP ADAPTATION --- */
+@media (min-width: 850px) {
+  .mobileToggle,
+  .mobileMenu {
+    display: none !important;
+  }
+  .desktopLinks,
+  .desktopButtons {
+    display: flex;
+  }
+  .navMain {
+    height: 72px;
+    padding: 0 40px;
+  }
+  .logo {
+    font-size: 1.8rem;
+  }
+}

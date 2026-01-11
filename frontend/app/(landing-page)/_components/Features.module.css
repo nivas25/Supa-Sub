@@ -1,0 +1,269 @@
+.wrapper {
+  position: relative;
+  background: var(--background);
+  /* The Blueprint Grid */
+  background-image: linear-gradient(var(--pattern-color) 1px, transparent 1px),
+    linear-gradient(90deg, var(--pattern-color) 1px, transparent 1px);
+  background-size: 100px 100px;
+  padding: 80px 0 0px;
+  overflow: clip;
+}
+
+/* Add a glowing 'Spotlight' behind the sticky cards */
+.wrapper::before {
+  content: "";
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 600px;
+  background: var(--neon-accent);
+  filter: blur(120px);
+  opacity: 0.05;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* --- RECURRING WIPE & REVEAL --- */
+.revealWrapper {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+}
+
+.mainTitle {
+  font-size: clamp(3rem, 10vw, 7rem);
+  font-weight: 1000;
+  color: var(--foreground);
+  letter-spacing: -4px;
+  line-height: 0.9;
+  text-transform: uppercase;
+  opacity: 0;
+  /* Loops every 5 seconds */
+  animation: revealTextLoop 5s infinite;
+}
+
+.revealWrapper::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 100%;
+  background: var(--neon-accent);
+  z-index: 10;
+  animation: revealBlockLoop 5s cubic-bezier(0.19, 1, 0.22, 1) infinite;
+}
+
+/* --- THE STACK ENGINE --- */
+.stickyStack {
+  max-width: 850px;
+  margin: 0 auto;
+  padding: 0 20px;
+  position: relative;
+}
+
+.cardWrapper {
+  position: sticky;
+  width: 100%;
+  margin-bottom: 25vh;
+  will-change: transform;
+}
+
+.card {
+  background: var(--bg);
+  border: 5px solid var(--foreground);
+  min-height: 400px;
+  max-height: 500px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 15px 15px 0 var(--foreground);
+  /* Alternating tilt */
+  transform: rotate(calc((var(--index) % 2 == 0 ? 1: -1) * 1.5deg));
+  transition: transform 0.2s ease-out, box-shadow 0.4s ease;
+}
+
+.dark .card {
+  box-shadow: 15px 15px 0px rgba(0, 0, 0, 0.9);
+}
+
+.scanline {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 50%,
+    rgba(0, 0, 0, 0.03) 50%
+  );
+  background-size: 100% 4px;
+  pointer-events: none;
+}
+
+.dark .scanline {
+  background: linear-gradient(
+    to bottom,
+    transparent 50%,
+    rgba(255, 255, 255, 0.05) 50%
+  );
+}
+
+.content {
+  padding: 40px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  z-index: 5;
+  color: #000; /* High contrast text on color backgrounds */
+}
+
+.topBar {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.moduleTag {
+  background: #000;
+  color: #fff;
+  padding: 4px 12px;
+  font-weight: 900;
+  font-size: 0.9rem;
+}
+
+.detailTag {
+  font-family: var(--font-space), monospace;
+  font-weight: 900;
+  border: 2px solid #000;
+  padding: 4px 12px;
+  font-size: 0.7rem;
+}
+
+.cardTitle {
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  font-weight: 1000;
+  line-height: 0.85;
+  margin-bottom: 20px;
+  letter-spacing: -2px;
+}
+
+.desc {
+  font-size: 1.1rem;
+  font-weight: 700;
+  max-width: 480px;
+  line-height: 1.2;
+}
+
+.footer {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.terminal {
+  font-family: var(--font-space), monospace;
+  font-size: 0.6rem;
+  font-weight: 900;
+  display: flex;
+  flex-direction: column;
+  opacity: 0.6;
+}
+
+.bigArrow {
+  font-size: 3rem;
+  font-weight: 900;
+}
+
+/* --- KEYFRAMES --- */
+@keyframes revealBlockLoop {
+  0% {
+    width: 0%;
+    left: 0;
+    background: var(--neon-accent);
+  }
+  10% {
+    width: 100%;
+    left: 0;
+  }
+  20% {
+    width: 0%;
+    left: 100%;
+    background: #0066ff;
+  } /* Wipe to Blue */
+  80% {
+    width: 0%;
+    left: 0;
+  }
+  90% {
+    width: 100%;
+    left: 0;
+    background: #ff0055;
+  } /* Wipe to Pink on exit */
+  100% {
+    width: 0%;
+    left: 100%;
+  }
+}
+
+@keyframes revealTextLoop {
+  0%,
+  10% {
+    opacity: 0;
+  }
+  15%,
+  85% {
+    opacity: 1;
+  }
+  90%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.systemStatus {
+  font-family: var(--font-space);
+  font-size: 0.7rem;
+  font-weight: 900;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+  color: var(--foreground);
+}
+
+.blink {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background: var(--neon-accent);
+  border-radius: 50%;
+  margin-right: 8px;
+  animation: blinkAnim 1s infinite;
+}
+
+@keyframes blinkAnim {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+@media (max-width: 768px) {
+  .card {
+    transform: none !important;
+    min-height: 350px;
+  }
+  .mainTitle {
+    font-size: 3.5rem;
+  }
+}
