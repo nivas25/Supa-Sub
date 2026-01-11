@@ -23,11 +23,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html
-      lang="en"
-      className={`${spaceGrotesk.variable} ${outfit.variable}`}
-      suppressHydrationWarning
-    >
+    <html lang="en" className={`${spaceGrotesk.variable} ${outfit.variable}`}>
       <body>
         <Providers>{children}</Providers>
       </body>

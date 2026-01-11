@@ -2,17 +2,19 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import styles from "./Navbar.module.css";
-import ThemeToggle from "./ThemeToggle";
 
 export default function LandingNavbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
 
   useEffect(() => {
-    const handleScroll = () => {
-      const sections = ["marketplace", "features", "vault", "pricing"];
+    let ticking = false;
+    const sections = ["features", "blueprint", "showcase", "faq", "pricing"];
+
+    const runMeasurement = () => {
       const scrollPosition = window.scrollY + 150; // Offset for navbar
 
+      let foundSection = "";
       for (const section of sections) {
         const element = document.getElementById(section);
         if (element) {
@@ -21,15 +23,24 @@ export default function LandingNavbar() {
             scrollPosition >= offsetTop &&
             scrollPosition < offsetTop + offsetHeight
           ) {
-            setActiveSection(section);
+            foundSection = section;
             break;
           }
         }
       }
+
+      setActiveSection((prev) => (prev === foundSection ? prev : foundSection));
+      ticking = false;
     };
 
-    window.addEventListener("scroll", handleScroll);
-    handleScroll(); // Initial check
+    const handleScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(runMeasurement);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    runMeasurement(); // Initial check
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -56,16 +67,6 @@ export default function LandingNavbar() {
         {/* Desktop Links - Hidden on Mobile */}
         <div className={styles.desktopLinks}>
           <a
-            href="#marketplace"
-            onClick={(e) => {
-              e.preventDefault();
-              handleNavClick("marketplace");
-            }}
-            className={activeSection === "marketplace" ? styles.active : ""}
-          >
-            Marketplace
-          </a>
-          <a
             href="#features"
             onClick={(e) => {
               e.preventDefault();
@@ -76,14 +77,34 @@ export default function LandingNavbar() {
             Features
           </a>
           <a
-            href="#vault"
+            href="#blueprint"
             onClick={(e) => {
               e.preventDefault();
-              handleNavClick("vault");
+              handleNavClick("blueprint");
             }}
-            className={activeSection === "vault" ? styles.active : ""}
+            className={activeSection === "blueprint" ? styles.active : ""}
           >
-            The Vault
+            Blueprint
+          </a>
+          <a
+            href="#showcase"
+            onClick={(e) => {
+              e.preventDefault();
+              handleNavClick("showcase");
+            }}
+            className={activeSection === "showcase" ? styles.active : ""}
+          >
+            Showcase
+          </a>
+          <a
+            href="#faq"
+            onClick={(e) => {
+              e.preventDefault();
+              handleNavClick("faq");
+            }}
+            className={activeSection === "faq" ? styles.active : ""}
+          >
+            FAQ
           </a>
           <a
             href="#pricing"
@@ -98,7 +119,6 @@ export default function LandingNavbar() {
         </div>
 
         <div className={styles.actions}>
-          <ThemeToggle />
           {/* These will stay styled as buttons on desktop */}
           <div className={styles.desktopButtons}>
             <Link href="/login" className={styles.loginBtn}>
@@ -133,16 +153,6 @@ export default function LandingNavbar() {
         }`}
       >
         <a
-          href="#marketplace"
-          onClick={(e) => {
-            e.preventDefault();
-            handleNavClick("marketplace");
-          }}
-          className={activeSection === "marketplace" ? styles.active : ""}
-        >
-          Marketplace
-        </a>
-        <a
           href="#features"
           onClick={(e) => {
             e.preventDefault();
@@ -153,14 +163,34 @@ export default function LandingNavbar() {
           Features
         </a>
         <a
-          href="#vault"
+          href="#blueprint"
           onClick={(e) => {
             e.preventDefault();
-            handleNavClick("vault");
+            handleNavClick("blueprint");
           }}
-          className={activeSection === "vault" ? styles.active : ""}
+          className={activeSection === "blueprint" ? styles.active : ""}
         >
-          The Vault
+          Blueprint
+        </a>
+        <a
+          href="#showcase"
+          onClick={(e) => {
+            e.preventDefault();
+            handleNavClick("showcase");
+          }}
+          className={activeSection === "showcase" ? styles.active : ""}
+        >
+          Showcase
+        </a>
+        <a
+          href="#faq"
+          onClick={(e) => {
+            e.preventDefault();
+            handleNavClick("faq");
+          }}
+          className={activeSection === "faq" ? styles.active : ""}
+        >
+          FAQ
         </a>
         <a
           href="#pricing"

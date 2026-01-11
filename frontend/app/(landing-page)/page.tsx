@@ -1,44 +1,51 @@
 import Navbar from "./_components/Navbar";
 import Hero from "./_components/Hero";
-import Marketplace from "./_components/Marketplace";
 import Features from "./_components/Features";
-import Vault from "./_components/Vault";
+import Steps from "./_components/Steps";
+import ProfileShowcase from "./_components/ProfileShowcase";
+import Identity from "./_components/Identity";
+import FAQ from "./_components/FAQ";
 import Pricing from "./_components/Pricing";
 import Footer from "./_components/Footer";
 
 export default function LandingPage() {
   return (
-    /* IMPORTANT: We use overflow: clip instead of hidden. 
-       'clip' prevents horizontal scroll but does NOT break position: sticky.
-    */
-    <main style={{ overflow: "clip", scrollBehavior: "smooth" }}>
-      {/* 1. FIXED NAVIGATION */}
+    <main
+      style={{
+        overflow: "clip",
+        scrollBehavior: "smooth",
+        background: "#ffffff00", // Pure white base for the industrial look
+      }}
+    >
       <Navbar />
 
-      {/* 2. HERO SECTION */}
       <Hero />
 
-      {/* 3. MARKETPLACE SECTION */}
-      <section id="marketplace">
-        <Marketplace />
-      </section>
-
-      {/* 4. FEATURES SECTION - Sticky scroll now works */}
       <section id="features">
         <Features />
       </section>
 
-      {/* 5. VAULT SECTION */}
-      <section id="vault">
-        <Vault />
+      <section id="blueprint">
+        <Steps />
       </section>
 
-      {/* 6. PRICING SECTION */}
+      {/* NEW SECTION: SHOWCASE THE CREATORS */}
+      <section id="showcase">
+        <ProfileShowcase />
+      </section>
+
+      <section>
+        <Identity />
+      </section>
+
+      <section id="faq">
+        <FAQ />
+      </section>
+
       <section id="pricing">
         <Pricing />
       </section>
 
-      {/* 7. FULL COMMAND CENTER FOOTER */}
       <Footer />
     </main>
   );

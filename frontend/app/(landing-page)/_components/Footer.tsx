@@ -6,6 +6,7 @@ import {
   RiTwitterXFill,
   RiGithubFill,
   RiPulseLine,
+  RiArrowUpLine,
 } from "react-icons/ri";
 
 export default function Footer() {
@@ -21,74 +22,71 @@ export default function Footer() {
   return (
     <footer className={styles.wrapper}>
       <div className={styles.container}>
-        {/* TOP ROW: SYSTEM METRICS */}
-        <div className={styles.topRow}>
-          <div className={styles.metric}>
-            <RiPulseLine className={styles.pulseIcon} />
+        {/* SYSTEM STATUS BAR */}
+        <div className={styles.statusRow}>
+          <div className={styles.statusItem}>
+            <RiPulseLine className={styles.pulse} />
             <span>
-              SYSTEM_STATUS: <span className={styles.online}>ONLINE</span>
+              STATUS: <span className={styles.green}>OPERATIONAL</span>
             </span>
           </div>
-          <div className={styles.metric}>
-            <span>LOCAL_TIME: {time}</span>
-          </div>
-          <div className={styles.metric}>
-            <span>UPLINK_v1.04</span>
+          <div className={styles.statusItem}>
+            <span>{time} UTC</span>
           </div>
         </div>
 
-        {/* MIDDLE ROW: MEGA NAVIGATION */}
+        {/* MAIN NAVIGATION BLOCK */}
         <div className={styles.mainGrid}>
           <div className={styles.brandSide}>
-            <h2 className={styles.logo}>SUPASUB</h2>
-            <p className={styles.tagline}>
-              THE_ELITE_INFRASTRUCTURE_FOR_DIGITAL_CREATORS
-            </p>
+            <h2 className={styles.logo}>
+              SUPA<span className={styles.outline}>SUB</span>
+            </h2>
+            <div className={styles.profitTag}>90/10_REVENUE_PROTOCOL</div>
           </div>
 
-          <div className={styles.linkColumn}>
-            <h4>PROTOCOL</h4>
-            <a href="#">MARKETPLACE</a>
-            <a href="#">VIDEO_VAULT</a>
-            <a href="#">FEATURES</a>
-          </div>
-
-          <div className={styles.linkColumn}>
-            <h4>SUPPORT</h4>
-            <a href="#">DOCUMENTATION</a>
-            <a href="#">API_REF</a>
-            <a href="#">SYSTEM_LOGS</a>
-          </div>
-
-          <div className={styles.socialSide}>
-            <h4>CONNECT</h4>
-            <div className={styles.socialIcons}>
-              <a href="#">
-                <RiTelegramFill />
-              </a>
-              <a href="#">
-                <RiTwitterXFill />
-              </a>
-              <a href="#">
-                <RiGithubFill />
-              </a>
+          <div className={styles.navGroups}>
+            <div className={styles.linkCol}>
+              <h4>PROTOCOL</h4>
+              <a href="#">NETWORK</a>
+              <a href="#">VAULT</a>
+              <a href="#">BLUEPRINT</a>
+            </div>
+            <div className={styles.linkCol}>
+              <h4>SUPPORT</h4>
+              <a href="#">DOCS</a>
+              <a href="#">UPLINK</a>
+              <a href="#">LOGS</a>
+            </div>
+            <div className={styles.linkCol}>
+              <h4>SOCIAL</h4>
+              <div className={styles.socialIcons}>
+                <a href="#">
+                  <RiTelegramFill />
+                </a>
+                <a href="#">
+                  <RiTwitterXFill />
+                </a>
+                <a href="#">
+                  <RiGithubFill />
+                </a>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* BOTTOM ROW: LEGAL & COPYRIGHT */}
-        <div className={styles.bottomRow}>
+        {/* COMPACT BOTTOM BAR */}
+        <div className={styles.bottomBar}>
           <div className={styles.legal}>
-            <span>© 2026 // ALL_SYSTEMS_GO</span>
-            <a href="#">TERMS_OF_SERVICE</a>
-            <a href="#">PRIVACY_POLICY</a>
+            <span>© 2026</span>
+            <a href="#">TERMS</a>
+            <a href="#">PRIVACY</a>
           </div>
-          <div
+          <button
             className={styles.backToTop}
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           >
-            BACK_TO_TOP ↑
-          </div>
+            TOP <RiArrowUpLine />
+          </button>
         </div>
       </div>
     </footer>

@@ -1,0 +1,230 @@
+.wrapper {
+  background: #ffffff;
+  padding: 140px 0;
+  position: relative;
+  overflow: hidden;
+  border-top: 4px solid #000;
+}
+
+/* --- SCANNER OVERLAY --- */
+.scannerOverlay {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(to right, #f2f2f2 1px, transparent 1px),
+    linear-gradient(to bottom, #f2f2f2 1px, transparent 1px);
+  background-size: 80px 80px;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.titleStack {
+  display: flex;
+  flex-direction: column;
+  line-height: 0.8;
+}
+.outlineText {
+  font-size: clamp(3rem, 10vw, 6rem);
+  font-weight: 1000;
+  color: transparent;
+  -webkit-text-stroke: 2px #000;
+  letter-spacing: -4px;
+}
+.solidText {
+  font-size: clamp(3rem, 10vw, 6rem);
+  font-weight: 1000;
+  color: #000;
+  letter-spacing: -4px;
+}
+
+.systemStatus {
+  margin-top: 30px;
+  font-family: monospace;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #000;
+  color: #fff;
+  padding: 6px 15px;
+  font-size: 0.7rem;
+}
+
+.pulseIcon {
+  color: #05ac72;
+  animation: blink 1s infinite;
+}
+
+/* --- MARQUEE ENGINE --- */
+.marqueeContainer {
+  display: flex;
+  width: 100%;
+}
+.marquee {
+  display: flex;
+  gap: 50px;
+  animation: scrollMarquee 50s linear infinite;
+  padding: 30px;
+}
+
+@keyframes scrollMarquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* --- THE ELITE CARD --- */
+.card {
+  min-width: 320px;
+  background: #fff;
+  border: 3px solid #000;
+  padding: 30px;
+  box-shadow: 15px 15px 0 #000;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  transition: 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.card:hover {
+  transform: translateY(-15px);
+  box-shadow: 20px 20px 0 var(--accent);
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 25px;
+}
+.idBadge {
+  font-family: monospace;
+  font-weight: 1000;
+  font-size: 0.75rem;
+  opacity: 0.3;
+}
+.expandIcon {
+  font-size: 1.2rem;
+  opacity: 0.2;
+}
+
+.avatarSection {
+  position: relative;
+  width: 90px;
+  height: 90px;
+  margin-bottom: 30px;
+}
+.avatarPlaceholder {
+  width: 100%;
+  height: 100%;
+  border: 2px dashed #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fafafa;
+}
+.crosshair {
+  width: 20px;
+  height: 20px;
+  border: 1px solid #000;
+  opacity: 0.2;
+}
+.verify {
+  position: absolute;
+  bottom: -5px;
+  right: -5px;
+  font-size: 1.8rem;
+  color: var(--accent);
+}
+
+.name {
+  font-size: 1.8rem;
+  font-weight: 1000;
+  letter-spacing: -1.5px;
+  margin-bottom: 5px;
+}
+.niche {
+  font-family: monospace;
+  font-weight: 900;
+  color: var(--accent);
+  font-size: 0.75rem;
+}
+
+.techData {
+  margin: 25px 0;
+  border-top: 1px solid #eee;
+  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dataPoint {
+  display: flex;
+  justify-content: space-between;
+}
+.label {
+  font-family: monospace;
+  font-weight: 900;
+  font-size: 0.65rem;
+  opacity: 0.4;
+}
+.value {
+  font-weight: 1000;
+  font-size: 0.9rem;
+}
+
+.cardFooter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: monospace;
+  font-size: 0.65rem;
+  font-weight: 900;
+  opacity: 0.3;
+}
+.statusDot {
+  width: 6px;
+  height: 6px;
+  background: #05ac72;
+  border-radius: 50%;
+}
+
+/* HARDWARE BRACKETS */
+.bracketTL {
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  width: 15px;
+  height: 15px;
+  border-top: 5px solid #000;
+  border-left: 5px solid #000;
+}
+.bracketBR {
+  position: absolute;
+  bottom: -5px;
+  right: -5px;
+  width: 15px;
+  height: 15px;
+  border-bottom: 5px solid #000;
+  border-right: 5px solid #000;
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.2;
+  }
+}

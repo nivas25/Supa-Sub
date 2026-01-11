@@ -1,0 +1,171 @@
+.wrapper {
+  background: #ffffff;
+  padding: 120px 0;
+  position: relative;
+  overflow: hidden;
+  border-top: 4px solid #000;
+  background-image: radial-gradient(#000 1.2px, transparent 1.2px);
+  background-size: 40px 40px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 40px;
+  position: relative;
+  z-index: 2;
+}
+
+.blueprintHeader {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 50px;
+}
+
+.stamp {
+  font-family: monospace;
+  background: #000;
+  color: #fff;
+  padding: 6px 16px;
+  font-weight: 1000;
+  font-size: 0.7rem;
+  letter-spacing: 2px;
+  transform: rotate(-2deg);
+}
+
+.serial {
+  font-family: monospace;
+  font-weight: 900;
+  opacity: 0.3;
+  font-size: 0.65rem;
+}
+
+.mainLayout {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr; /* Adjusted for better text balance */
+  gap: 80px;
+  align-items: flex-start;
+}
+
+/* --- REFINED WORDMAP --- */
+.wordMapTitle {
+  font-size: clamp(
+    2rem,
+    4.5vw,
+    3.8rem
+  ); /* Reduced size to remove awkwardness */
+  font-weight: 1000;
+  line-height: 1.1;
+  letter-spacing: -1.5px;
+  color: #000;
+}
+
+.pillPink {
+  background: #ff90e8;
+  padding: 0 12px;
+  border-radius: 50px;
+  font-size: 0.9em;
+  border: 2px solid #000;
+}
+
+.outline {
+  color: transparent;
+  -webkit-text-stroke: 1.5px #000;
+}
+.blue {
+  color: #0066ff;
+}
+.yellowItalic {
+  color: #ffc900;
+  font-style: italic;
+  font-family: serif;
+  font-weight: 500;
+}
+
+.subNarrative {
+  font-size: 1.3rem;
+  font-weight: 800;
+  line-height: 1.4;
+  margin-top: 30px;
+  max-width: 550px;
+  opacity: 0.6;
+}
+
+.greenUnderline {
+  border-bottom: 4px solid #05ac72;
+}
+.pinkHighlight {
+  color: #ff90e8;
+}
+
+/* --- CARDS REMAIN VIBRANT --- */
+.specColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.vibrantCard {
+  background: #fff;
+  border: 3px solid #000;
+  padding: 20px 25px;
+  box-shadow: 8px 8px 0 #000;
+  transition: 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.vibrantCard:hover {
+  transform: rotate(-1.5deg) scale(1.02);
+  box-shadow: 12px 12px 0 var(--accent);
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.code {
+  font-family: monospace;
+  font-weight: 900;
+  opacity: 0.2;
+  font-size: 0.65rem;
+}
+.iconCircle {
+  font-size: 1.5rem;
+  color: var(--accent);
+  background: #000;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.specLabel {
+  font-family: monospace;
+  font-weight: 1000;
+  font-size: 0.75rem;
+  opacity: 0.4;
+}
+.specValue {
+  font-size: 2.2rem;
+  font-weight: 1000;
+  letter-spacing: -1px;
+  line-height: 1;
+}
+
+@media (max-width: 900px) {
+  .mainLayout {
+    grid-template-columns: 1fr;
+    gap: 50px;
+  }
+  .wordMapTitle {
+    font-size: 2.2rem;
+    line-height: 1.2;
+  }
+  .subNarrative {
+    font-size: 1.1rem;
+  }
+}

@@ -1,149 +1,250 @@
 .wrapper {
-  padding: 80px 20px;
-  background: var(--background);
-  color: var(--foreground);
+  background: #ffffff;
+  padding: 120px 0;
+  border-top: 4px solid #000;
+  background-image: radial-gradient(#000 1.2px, transparent 1.2px);
+  background-size: 35px 35px;
+  overflow: hidden;
 }
 
 .container {
-  max-width: 900px; /* Smaller, tighter container */
+  max-width: 1000px;
   margin: 0 auto;
+  padding: 0 25px;
 }
 
+/* --- HEADER --- */
 .header {
   text-align: center;
-  margin-bottom: 50px;
+  margin-bottom: 60px;
 }
 
-.mainTitle {
+.statusLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: #000;
+  color: #fff;
+  padding: 6px 15px;
+  font-family: monospace;
+  font-size: 0.7rem;
+  font-weight: 900;
+  margin-bottom: 20px;
+}
+
+.pulse {
+  width: 8px;
+  height: 8px;
+  background: #05ac72;
+  border-radius: 50%;
+  animation: blink 1s infinite;
+}
+
+.title {
   font-size: clamp(2.5rem, 8vw, 4.5rem);
   font-weight: 1000;
   letter-spacing: -3px;
-  text-transform: uppercase;
+  line-height: 0.9;
 }
 
-.grid {
+.outline {
+  color: transparent;
+  -webkit-text-stroke: 1.5px #000;
+}
+
+/* --- THE CARD --- */
+.pricingCard {
+  background: #fff;
+  border: 4px solid #000;
+  box-shadow: 15px 15px 0 #000;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
+  grid-template-columns: 1fr 1fr; /* Desktop default */
+  position: relative;
+  transition: 0.4s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
-.card {
-  background: var(--background);
-  border: 2px solid var(--foreground); /* Thinner, cleaner borders */
-  padding: 40px;
+.revenueHero {
+  background: #f8f8f8;
+  padding: 60px;
+  border-right: 4px solid #000;
   display: flex;
   flex-direction: column;
-  transition: transform 0.2s ease;
+  align-items: center;
+  justify-content: center;
 }
 
-/* PRO HIGHLIGHT: Using Blue instead of Lime */
-.pro {
-  border-color: #2563eb; /* Royal Blue */
-  box-shadow: 10px 10px 0 #2563eb;
-}
-
-.cardHeader {
+.splitWrapper {
   display: flex;
-  justify-content: space-between;
-  margin-bottom: 25px;
+  align-items: center;
+  gap: 15px;
 }
 
-.idTag {
-  font-family: var(--font-space), monospace;
-  font-weight: 900;
-  font-size: 0.7rem;
-  background: var(--foreground);
-  color: var(--background);
-  padding: 2px 8px;
-}
-
-.pro .idTag {
-  background: #2563eb;
-  color: #fff;
-}
-
-.icon {
-  font-size: 2rem;
-  color: var(--foreground);
-}
-.pro .icon {
-  color: #2563eb;
-}
-
-.tierName {
-  font-size: 1.5rem;
+.bigNumber {
+  font-size: 8rem;
   font-weight: 1000;
-  margin-bottom: 5px;
+  line-height: 1;
+  color: #000;
 }
 
-.priceBlock {
+.splitDivider {
   display: flex;
-  align-items: baseline;
-  gap: 4px;
-  margin-bottom: 30px;
+  flex-direction: column;
+  align-items: center;
 }
 
-.amount {
-  font-size: 3rem;
+.percent {
+  font-size: 2.5rem;
   font-weight: 1000;
+  color: #000;
 }
-.per {
-  font-weight: 800;
-  opacity: 0.5;
-  font-size: 0.9rem;
+.verticalLine {
+  width: 4px;
+  height: 40px;
+  background: #000;
+  margin: 5px 0;
+}
+.ten {
+  font-size: 2.5rem;
+  font-weight: 1000;
+  color: #05ac72;
+}
+
+.heroText {
+  font-family: monospace;
+  font-weight: 1000;
+  font-size: 0.8rem;
+  margin-top: 20px;
+  opacity: 0.4;
+}
+
+/* --- DETAILS AREA --- */
+.detailsArea {
+  padding: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .featureList {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 15px;
   margin-bottom: 40px;
 }
 
 .featureItem {
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-weight: 700;
-  font-size: 0.85rem;
+  gap: 12px;
+  font-weight: 800;
+  font-size: 1.05rem;
 }
 
-.inactive {
+.check {
+  color: #05ac72;
+  font-size: 1.4rem;
+}
+
+.ctaButton {
+  background: #000;
+  color: #fff;
+  border: none;
+  padding: 22px;
+  font-size: 1.1rem;
+  font-weight: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.ctaButton:hover {
+  background: #05ac72;
+  transform: scale(1.02);
+}
+
+.securityTag {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: monospace;
+  font-size: 0.65rem;
+  font-weight: 900;
   opacity: 0.3;
 }
 
-.checkIcon {
-  color: #2563eb;
+/* HARDWARE CORNERS */
+.cornerTL {
+  position: absolute;
+  top: -8px;
+  left: -8px;
+  width: 25px;
+  height: 25px;
+  border-top: 6px solid #05ac72;
+  border-left: 6px solid #05ac72;
+}
+.cornerBR {
+  position: absolute;
+  bottom: -8px;
+  right: -8px;
+  width: 25px;
+  height: 25px;
+  border-bottom: 6px solid #05ac72;
+  border-right: 6px solid #05ac72;
 }
 
-.cta {
-  margin-top: auto;
-  padding: 15px;
-  font-weight: 1000;
-  font-size: 0.9rem;
-  border: 2px solid var(--foreground);
-  background: var(--foreground);
-  color: var(--background);
-  cursor: pointer;
-  transition: 0.2s;
+.footerNote {
+  margin-top: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-family: monospace;
+  font-size: 0.7rem;
+  font-weight: 900;
+  opacity: 0.3;
 }
 
-.pro .cta {
-  background: #2563eb;
-  color: #fff;
-  border-color: #2563eb;
-}
-
-.cta:hover {
-  transform: translateY(-3px);
-  opacity: 0.9;
-}
-
-@media (max-width: 768px) {
-  .grid {
-    grid-template-columns: 1fr;
+/* --- MOBILE OPTIMIZATION --- */
+@media (max-width: 900px) {
+  .pricingCard {
+    grid-template-columns: 1fr; /* Stacks vertically */
+    box-shadow: 10px 10px 0 #000;
   }
-  .card {
-    padding: 30px;
+
+  .revenueHero {
+    padding: 40px 20px;
+    border-right: none;
+    border-bottom: 4px solid #000;
+  }
+
+  .bigNumber {
+    font-size: 6rem;
+  }
+
+  .detailsArea {
+    padding: 40px 25px;
+  }
+
+  .featureList {
+    grid-template-columns: 1fr; /* Kept clean for mobile */
+  }
+
+  .title {
+    font-size: 3rem;
+  }
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
   }
 }

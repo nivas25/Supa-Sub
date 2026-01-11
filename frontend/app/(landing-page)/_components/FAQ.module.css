@@ -1,0 +1,150 @@
+.wrapper {
+  background: #ffffff;
+  padding: 140px 0;
+  border-top: 4px solid #000;
+  background-image: radial-gradient(#e5e5e5 1.5px, transparent 1.5px);
+  background-size: 30px 30px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: 80px;
+  padding: 0 40px;
+}
+
+/* --- SIDEBAR --- */
+.sidebar {
+  position: sticky;
+  top: 140px;
+  height: fit-content;
+}
+
+.terminalHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: monospace;
+  font-weight: 1000;
+  font-size: 0.75rem;
+  margin-bottom: 20px;
+  opacity: 0.4;
+}
+
+.title {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 1000;
+  line-height: 0.9;
+  letter-spacing: -2px;
+}
+
+.outline {
+  color: transparent;
+  -webkit-text-stroke: 1.5px #000;
+}
+
+.statusBox {
+  margin-top: 40px;
+  padding: 15px;
+  border: 2px solid #000;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: monospace;
+  font-size: 0.7rem;
+  font-weight: 1000;
+  background: #f8f8f8;
+}
+
+.pulse {
+  width: 8px;
+  height: 8px;
+  background: #05ac72;
+  border-radius: 50%;
+  animation: blink 1s infinite;
+}
+
+/* --- FAQ LIST --- */
+.faqItem {
+  border-bottom: 2px solid #000;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.questionRow {
+  padding: 30px 0;
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+
+.index {
+  font-family: monospace;
+  font-weight: 1000;
+  font-size: 0.9rem;
+  color: #ff90e8; /* Pink Accent */
+}
+
+.question {
+  flex: 1;
+  font-size: 1.4rem;
+  font-weight: 1000;
+  letter-spacing: -0.5px;
+}
+
+.toggleIcon {
+  font-size: 1.8rem;
+  transition: transform 0.3s ease;
+}
+
+/* --- ANSWER TRANSITION --- */
+.answerRow {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0, 1, 0, 1);
+}
+
+.active .answerRow {
+  max-height: 1000px;
+  transition: max-height 0.4s cubic-bezier(1, 0, 1, 0);
+}
+
+.answer {
+  padding-bottom: 30px;
+  padding-left: 55px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  line-height: 1.5;
+  opacity: 0.6;
+  max-width: 600px;
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+/* --- MOBILE --- */
+@media (max-width: 900px) {
+  .container {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .sidebar {
+    position: relative;
+    top: 0;
+  }
+  .question {
+    font-size: 1.2rem;
+  }
+  .answer {
+    padding-left: 0;
+  }
+}
