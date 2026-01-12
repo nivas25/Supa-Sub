@@ -100,10 +100,22 @@
   font-size: 0.85rem;
   text-transform: uppercase;
   transition: 0.2s;
+  background: none;
+  border: none;
+  cursor: pointer;
 }
 
 .loginBtn:hover {
   color: var(--accent);
+}
+
+.userName {
+  color: var(--foreground);
+  font-family: var(--font-space), sans-serif;
+  font-weight: 800;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 /* THE MAIN CTA --- */
@@ -207,9 +219,27 @@
   text-transform: uppercase;
   transition: 0.2s;
   cursor: pointer;
+  border: none;
+  background: none;
 }
 
-.mobileMenu a:hover {
+.mobileMenu a,
+.mobileMenu button {
+  text-decoration: none;
+  color: var(--foreground);
+  font-family: var(--font-space), sans-serif;
+  font-weight: 800;
+  padding: 15px;
+  border-radius: 12px;
+  text-transform: uppercase;
+  transition: 0.2s;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+.mobileMenu a:hover,
+.mobileMenu button:hover {
   background: var(--accent);
   color: #fff;
   transform: translateX(10px);

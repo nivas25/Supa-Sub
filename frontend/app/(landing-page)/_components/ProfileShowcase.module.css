@@ -1,230 +1,161 @@
 .wrapper {
   background: #ffffff;
-  padding: 140px 0;
-  position: relative;
+  padding: 120px 0;
   overflow: hidden;
   border-top: 4px solid #000;
+  background-image: radial-gradient(#eee 1.5px, transparent 1.5px);
+  background-size: 30px 30px;
 }
 
-/* --- SCANNER OVERLAY --- */
-.scannerOverlay {
-  position: absolute;
-  inset: 0;
-  background-image: linear-gradient(to right, #f2f2f2 1px, transparent 1px),
-    linear-gradient(to bottom, #f2f2f2 1px, transparent 1px);
-  background-size: 80px 80px;
-  opacity: 0.6;
-  pointer-events: none;
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
 .header {
   text-align: center;
-  margin-bottom: 100px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  margin-bottom: 80px;
+}
+.title {
+  font-size: clamp(2.5rem, 9vw, 5.5rem);
+  font-weight: 1000;
+  letter-spacing: -3px;
+  line-height: 0.95;
+}
+.highlight {
+  color: #ff90e8;
+  font-style: italic;
+  font-family: serif;
+  -webkit-text-stroke: 1px #000;
 }
 
-.titleStack {
-  display: flex;
-  flex-direction: column;
-  line-height: 0.8;
-}
-.outlineText {
-  font-size: clamp(3rem, 10vw, 6rem);
+/* SIMPLE HOOK TYPOGRAPHY */
+.description {
+  margin-top: 25px;
   font-weight: 1000;
-  color: transparent;
-  -webkit-text-stroke: 2px #000;
-  letter-spacing: -4px;
-}
-.solidText {
-  font-size: clamp(3rem, 10vw, 6rem);
-  font-weight: 1000;
-  color: #000;
-  letter-spacing: -4px;
+  text-transform: uppercase;
+  font-size: 1.1rem;
+  line-height: 1.4;
+  letter-spacing: 0.5px;
 }
 
-.systemStatus {
-  margin-top: 30px;
-  font-family: monospace;
-  font-weight: 900;
+.memberCard {
+  width: 340px;
+  background: #fff;
+  border: 4px solid #000;
+  padding: 35px;
+  box-shadow: 12px 12px 0 #000;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.memberCard:nth-child(even) {
+  transform: translateY(40px);
+}
+
+/* STICKER NAME TAG */
+.nameTag {
+  background: #000;
+  padding: 6px 18px;
+  display: inline-block;
+  margin: 0 auto 15px;
+  transform: rotate(-2deg);
+  box-shadow: 4px 4px 0 var(--accent);
+}
+.userName {
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: 1000;
+}
+
+.photoArea {
+  height: 200px;
+  margin-bottom: 25px;
   display: flex;
-  align-items: center;
-  gap: 10px;
+  justify-content: center;
+}
+.frame {
+  width: 180px;
+  height: 180px;
+  border: 4px solid #000;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 10px 10px 0 #000;
+  background: #eee;
+}
+.circle {
+  border-radius: 50%;
+}
+.hexagon {
+  clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+}
+.diamond {
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+}
+
+.bgShape {
+  position: absolute;
+  top: -10%;
+  left: -10%;
+  width: 120%;
+  height: 50%;
+  background: var(--accent);
+  opacity: 0.15;
+  z-index: 0;
+  transform: rotate(-5deg);
+}
+.typeTag {
   background: #000;
   color: #fff;
-  padding: 6px 15px;
-  font-size: 0.7rem;
-}
-
-.pulseIcon {
-  color: #05ac72;
-  animation: blink 1s infinite;
-}
-
-/* --- MARQUEE ENGINE --- */
-.marqueeContainer {
-  display: flex;
-  width: 100%;
-}
-.marquee {
-  display: flex;
-  gap: 50px;
-  animation: scrollMarquee 50s linear infinite;
-  padding: 30px;
-}
-
-@keyframes scrollMarquee {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
-}
-
-/* --- THE ELITE CARD --- */
-.card {
-  min-width: 320px;
-  background: #fff;
-  border: 3px solid #000;
-  padding: 30px;
-  box-shadow: 15px 15px 0 #000;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  transition: 0.4s cubic-bezier(0.19, 1, 0.22, 1);
-}
-
-.card:hover {
-  transform: translateY(-15px);
-  box-shadow: 20px 20px 0 var(--accent);
-}
-
-.cardHeader {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 25px;
-}
-.idBadge {
+  padding: 4px 10px;
   font-family: monospace;
-  font-weight: 1000;
-  font-size: 0.75rem;
-  opacity: 0.3;
+  font-size: 0.7rem;
+  font-weight: 900;
 }
-.expandIcon {
-  font-size: 1.2rem;
-  opacity: 0.2;
+.priceTag {
+  font-weight: 1000;
+  font-size: 1.4rem;
+  color: #000;
 }
 
-.avatarSection {
-  position: relative;
-  width: 90px;
-  height: 90px;
-  margin-bottom: 30px;
-}
-.avatarPlaceholder {
+.joinBtn {
+  margin-top: 30px;
   width: 100%;
-  height: 100%;
-  border: 2px dashed #000;
+  background: #000;
+  color: #fff;
+  padding: 18px;
+  font-weight: 1000;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #fafafa;
+  gap: 10px;
+  transition: 0.2s;
 }
-.crosshair {
-  width: 20px;
-  height: 20px;
-  border: 1px solid #000;
-  opacity: 0.2;
-}
-.verify {
-  position: absolute;
-  bottom: -5px;
-  right: -5px;
-  font-size: 1.8rem;
-  color: var(--accent);
+.joinBtn:hover {
+  background: var(--accent);
+  color: #000;
+  transform: translateY(-3px);
 }
 
-.name {
-  font-size: 1.8rem;
-  font-weight: 1000;
-  letter-spacing: -1.5px;
-  margin-bottom: 5px;
+.scrollWrapper {
+  overflow-x: auto;
+  padding: 40px 0 100px;
+  scrollbar-width: none;
+  cursor: grab;
 }
-.niche {
-  font-family: monospace;
-  font-weight: 900;
-  color: var(--accent);
-  font-size: 0.75rem;
-}
-
-.techData {
-  margin: 25px 0;
-  border-top: 1px solid #eee;
-  padding-top: 20px;
+.scrollTrack {
   display: flex;
-  flex-direction: column;
-  gap: 12px;
+  gap: 40px;
+  padding: 0 10vw;
+  width: max-content;
 }
 
-.dataPoint {
-  display: flex;
-  justify-content: space-between;
-}
-.label {
-  font-family: monospace;
-  font-weight: 900;
-  font-size: 0.65rem;
-  opacity: 0.4;
-}
-.value {
-  font-weight: 1000;
-  font-size: 0.9rem;
-}
-
-.cardFooter {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-family: monospace;
-  font-size: 0.65rem;
-  font-weight: 900;
-  opacity: 0.3;
-}
-.statusDot {
-  width: 6px;
-  height: 6px;
-  background: #05ac72;
-  border-radius: 50%;
-}
-
-/* HARDWARE BRACKETS */
-.bracketTL {
-  position: absolute;
-  top: -5px;
-  left: -5px;
-  width: 15px;
-  height: 15px;
-  border-top: 5px solid #000;
-  border-left: 5px solid #000;
-}
-.bracketBR {
-  position: absolute;
-  bottom: -5px;
-  right: -5px;
-  width: 15px;
-  height: 15px;
-  border-bottom: 5px solid #000;
-  border-right: 5px solid #000;
-}
-
-@keyframes blink {
-  0%,
-  100% {
-    opacity: 1;
+@media (max-width: 768px) {
+  .memberCard {
+    width: 300px;
   }
-  50% {
-    opacity: 0.2;
+  .title {
+    font-size: 2.8rem;
   }
 }

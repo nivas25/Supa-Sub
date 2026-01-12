@@ -167,9 +167,13 @@
 }
 
 @media (max-width: 768px) {
+  .heroWrapper {
+    min-height: 70vh;
+  }
   .mainTitle {
-    font-size: 2.3rem;
+    font-size: clamp(2.2rem, 10vw, 4rem);
     letter-spacing: -1.5px;
+    gap: 16px;
   }
   .staggeredSuffix,
   .row1,
@@ -179,5 +183,13 @@
   }
   .subtitleWrapper {
     margin-top: 3rem;
+  }
+  .subtitleEmphasis {
+    font-size: clamp(0.95rem, 2.5vw, 1.1rem);
+    padding: 14px 28px;
+  }
+  .subtitleDetail {
+    font-size: 0.8rem;
+    margin-top: 24px;
   }
 }

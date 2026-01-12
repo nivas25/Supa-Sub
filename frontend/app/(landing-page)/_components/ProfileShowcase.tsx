@@ -1,119 +1,184 @@
 "use client";
 import React from "react";
+import Image from "next/image";
 import styles from "./ProfileShowcase.module.css";
 import {
-  RiVerifiedBadgeFill,
-  RiPulseFill,
-  RiGlobalLine,
-  RiArrowRightUpLine,
+  RiAddCircleFill,
+  RiCheckFill,
+  RiHandCoinLine,
+  RiFlashlightFill,
 } from "react-icons/ri";
 
-const CREATORS = [
+const MEMBERS = [
   {
-    id: "NODE_01",
-    name: "AERO_VISUALS",
-    niche: "3D_MOTION",
-    members: "12.4K",
-    rev: "92%",
+    id: "01",
+    name: "COACH_KYRA",
+    type: "FITNESS",
+    price: "$19",
+    fans: "140K",
+    likes: "2M",
     color: "#ff90e8",
+    shape: "circle",
+    image: "/images/Profiles/1.jpg",
   },
   {
-    id: "NODE_02",
-    name: "CRYPTO_CHASE",
-    niche: "MARKET_DATA",
-    members: "82.1K",
-    rev: "88%",
-    color: "#ffc900",
-  },
-  {
-    id: "NODE_03",
-    name: "DESIGN_OPS",
-    niche: "MASTERCLASS",
-    members: "9.2K",
-    rev: "94%",
-    color: "#05ac72",
-  },
-  {
-    id: "NODE_04",
-    name: "VFX_LAB",
-    niche: "ASSET_PACKS",
-    members: "24.5K",
-    rev: "91%",
-    color: "#ff4d00",
-  },
-  {
-    id: "NODE_05",
-    name: "SCALE_PRO",
-    niche: "SAAS_ALGO",
-    members: "105K",
-    rev: "97%",
+    id: "02",
+    name: "ALEX_CODING",
+    type: "CODING",
+    price: "$25",
+    fans: "42K",
+    likes: "500K",
     color: "#0066ff",
+    shape: "hexagon",
+    image: "/images/Profiles/2.jpg",
+  },
+  {
+    id: "03",
+    name: "DR_SARA",
+    type: "HEALTH",
+    price: "$15",
+    fans: "89K",
+    likes: "1.5M",
+    color: "#05ac72",
+    shape: "diamond",
+    image: "/images/Profiles/3.jpg",
+  },
+  {
+    id: "04",
+    name: "ART_BY_VFX",
+    type: "VFX_ART",
+    price: "$30",
+    fans: "256K",
+    likes: "8M",
+    color: "#ff4d00",
+    shape: "square",
+    image: "/images/Profiles/4.jpg",
+  },
+  {
+    id: "05",
+    name: "CHEF_MARC",
+    type: "COOKING",
+    price: "$12",
+    fans: "12K",
+    likes: "100K",
+    color: "#ffc900",
+    shape: "circle",
+    image: "/images/Profiles/5.jpg",
+  },
+  {
+    id: "06",
+    name: "GUITAR_DAN",
+    type: "MUSIC",
+    price: "$20",
+    fans: "35K",
+    likes: "400K",
+    color: "#ff90e8",
+    shape: "hexagon",
+    image: "/images/Profiles/6.jpg",
+  },
+  {
+    id: "07",
+    name: "FINANCE_PRO",
+    type: "MONEY",
+    price: "$49",
+    fans: "110K",
+    likes: "3M",
+    color: "#0066ff",
+    shape: "diamond",
+    image: "/images/Profiles/7.jpg",
+  },
+  {
+    id: "08",
+    name: "TRAVEL_ZOE",
+    type: "TRAVEL",
+    price: "$10",
+    fans: "65K",
+    likes: "900K",
+    color: "#05ac72",
+    shape: "square",
+    image: "/images/Profiles/8.jpg",
   },
 ];
 
 export default function ProfileShowcase() {
   return (
     <section className={styles.wrapper}>
-      {/* Blueprint Grid with animated crosshairs */}
-      <div className={styles.scannerOverlay}></div>
-
-      <div className={styles.header}>
-        <div className={styles.titleStack}>
-          <span className={styles.outlineText}>NETWORK</span>
-          <span className={styles.solidText}>TERMINAL</span>
+      <div className={styles.container}>
+        <div className={styles.header}>
+          <div className={styles.topBadge}>
+            <RiFlashlightFill /> JOIN_NOW
+          </div>
+          <h2 className={styles.title}>
+            JOIN THE <br />
+            <span className={styles.highlight}>ELITE NETWORK.</span>
+          </h2>
+          {/* SUPER SIMPLE HOOK */}
+          <p className={styles.description}>
+            IF YOU MAKE STUFF, YOU CAN SELL STUFF. <br />
+            EVERYONE IS WELCOME HERE.
+          </p>
+          <div className={styles.scrollHint}>
+            <RiHandCoinLine /> <span>DRAG_TO_SEE_MORE</span>
+          </div>
         </div>
-        <div className={styles.systemStatus}>
-          <RiPulseFill className={styles.pulseIcon} />
-          <span>LIVE_CREATOR_FEED_V2.0</span>
-        </div>
-      </div>
 
-      <div className={styles.marqueeContainer}>
-        <div className={styles.marquee}>
-          {[...CREATORS, ...CREATORS].map((creator, i) => (
-            <div
-              key={i}
-              className={styles.card}
-              style={{ "--accent": creator.color } as any}
-            >
-              <div className={styles.cardHeader}>
-                <div className={styles.idBadge}>{creator.id}</div>
-                <RiArrowRightUpLine className={styles.expandIcon} />
-              </div>
+        <div className={styles.scrollWrapper}>
+          <div className={styles.scrollTrack}>
+            {MEMBERS.map((person, i) => (
+              <div
+                key={i}
+                className={styles.memberCard}
+                style={{ "--accent": person.color } as any}
+              >
+                <div className={`${styles.bgShape} ${styles[person.shape]}`} />
 
-              <div className={styles.avatarSection}>
-                <div className={styles.avatarPlaceholder}>
-                  <div className={styles.crosshair}></div>
+                <div className={styles.cardHeader}>
+                  <div className={styles.typeTag}>{person.type}</div>
+                  <div className={styles.priceTag}>
+                    {person.price}
+                    <span>/mo</span>
+                  </div>
                 </div>
-                <RiVerifiedBadgeFill className={styles.verify} />
-              </div>
 
-              <div className={styles.cardBody}>
-                <h4 className={styles.name}>{creator.name}</h4>
-                <p className={styles.niche}>// {creator.niche}</p>
-              </div>
-
-              <div className={styles.techData}>
-                <div className={styles.dataPoint}>
-                  <span className={styles.label}>MEMBERSHIP</span>
-                  <span className={styles.value}>{creator.members}</span>
+                <div className={styles.photoArea}>
+                  <div className={`${styles.frame} ${styles[person.shape]}`}>
+                    <Image
+                      src={person.image}
+                      alt={person.name}
+                      fill
+                      className={styles.profileImage}
+                    />
+                  </div>
                 </div>
-                <div className={styles.dataPoint}>
-                  <span className={styles.label}>RETENTION</span>
-                  <span className={styles.value}>{creator.rev}</span>
+
+                <div className={styles.cardInfo}>
+                  <div className={styles.nameTag}>
+                    <h3 className={styles.userName}>{person.name}</h3>
+                  </div>
+
+                  <div className={styles.statsRow}>
+                    <div className={styles.statLine}>
+                      <span className={styles.smallLabel}>FANS</span>
+                      <span className={styles.bigValue}>{person.fans}</span>
+                    </div>
+                    <div className={styles.statLine}>
+                      <span className={styles.smallLabel}>LIKES</span>
+                      <span className={styles.bigValue}>{person.likes}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <button className={styles.joinBtn}>
+                  JOIN_NOW <RiAddCircleFill />
+                </button>
+
+                <div className={styles.footerRow}>
+                  <RiCheckFill className={styles.checkIcon} />{" "}
+                  <span>REAL_MEMBER</span>
                 </div>
               </div>
-
-              <div className={styles.cardFooter}>
-                <div className={styles.statusDot}></div>
-                <span>ENCRYPTED_NODE</span>
-              </div>
-
-              {/* Corner Hardware Details */}
-              <div className={styles.bracketTL}></div>
-              <div className={styles.bracketBR}></div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </section>

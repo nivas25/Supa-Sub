@@ -1,15 +1,18 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { signIn, signOut, useSession } from "next-auth/react";
 import styles from "./Navbar.module.css";
 
 export default function LandingNavbar() {
+  const { data: session, status } = useSession();
+  const isAuthed = status === "authenticated";
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
 
   useEffect(() => {
     let ticking = false;
-    const sections = ["features", "blueprint", "showcase", "faq", "pricing"];
+    const sections = ["features", "blueprint", "showcase", "pricing", "faq"];
 
     const runMeasurement = () => {
       const scrollPosition = window.scrollY + 150; // Offset for navbar
@@ -97,16 +100,6 @@ export default function LandingNavbar() {
             Showcase
           </a>
           <a
-            href="#faq"
-            onClick={(e) => {
-              e.preventDefault();
-              handleNavClick("faq");
-            }}
-            className={activeSection === "faq" ? styles.active : ""}
-          >
-            FAQ
-          </a>
-          <a
             href="#pricing"
             onClick={(e) => {
               e.preventDefault();
@@ -116,17 +109,53 @@ export default function LandingNavbar() {
           >
             Pricing
           </a>
+          <a
+            href="#faq"
+            onClick={(e) => {
+              e.preventDefault();
+              handleNavClick("faq");
+            }}
+            className={activeSection === "faq" ? styles.active : ""}
+          >
+            FAQ
+          </a>
         </div>
 
         <div className={styles.actions}>
           {/* These will stay styled as buttons on desktop */}
           <div className={styles.desktopButtons}>
-            <Link href="/login" className={styles.loginBtn}>
-              Login
-            </Link>
-            <Link href="/signup" className={styles.cta}>
-              Start Selling
-            </Link>
+            {isAuthed && session?.user ? (
+              <>
+                <span className={styles.userName}>
+                  HI, {session.user.name?.split(" ")[0]?.toUpperCase()}
+                </span>
+                <button
+                  onClick={() => signOut({ callbackUrl: "/" })}
+                  className={styles.loginBtn}
+                >
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  onClick={() =>
+                    signIn("google", { callbackUrl: "/dashboard" })
+                  }
+                  className={styles.loginBtn}
+                >
+                  Login
+                </button>
+                <button
+                  onClick={() =>
+                    signIn("google", { callbackUrl: "/dashboard" })
+                  }
+                  className={styles.cta}
+                >
+                  Start Selling
+                </button>
+              </>
+            )}
           </div>
 
           <button
@@ -183,16 +212,6 @@ export default function LandingNavbar() {
           Showcase
         </a>
         <a
-          href="#faq"
-          onClick={(e) => {
-            e.preventDefault();
-            handleNavClick("faq");
-          }}
-          className={activeSection === "faq" ? styles.active : ""}
-        >
-          FAQ
-        </a>
-        <a
           href="#pricing"
           onClick={(e) => {
             e.preventDefault();
@@ -202,13 +221,45 @@ export default function LandingNavbar() {
         >
           Pricing
         </a>
+        <a
+          href="#faq"
+          onClick={(e) => {
+            e.preventDefault();
+            handleNavClick("faq");
+          }}
+          className={activeSection === "faq" ? styles.active : ""}
+        >
+          FAQ
+        </a>
         <hr className={styles.divider} />
-        <Link href="/login" className={styles.mobileLogin}>
-          Login
-        </Link>
-        <Link href="/signup" className={styles.mobileCta}>
-          Start Selling
-        </Link>
+        {isAuthed && session?.user ? (
+          <>
+            <span className={styles.userName}>
+              HI, {session.user.name?.split(" ")[0]?.toUpperCase()}
+            </span>
+            <button
+              onClick={() => signOut({ callbackUrl: "/" })}
+              className={styles.mobileLogin}
+            >
+              Logout
+            </button>
+          </>
+        ) : (
+          <>
+            <button
+              onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
+              className={styles.mobileLogin}
+            >
+              Login
+            </button>
+            <button
+              onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
+              className={styles.mobileCta}
+            >
+              Start Selling
+            </button>
+          </>
+        )}
       </div>
     </nav>
   );

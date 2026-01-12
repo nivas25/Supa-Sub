@@ -38,12 +38,12 @@ export default function LandingPage() {
         <Identity />
       </section>
 
-      <section id="faq">
-        <FAQ />
-      </section>
-
       <section id="pricing">
         <Pricing />
+      </section>
+
+      <section id="faq">
+        <FAQ />
       </section>
 
       <Footer />
