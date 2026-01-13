@@ -1,105 +1,143 @@
-"use client";
+import { currentUser } from "@clerk/nextjs/server";
+import { supabase } from "@/lib/supabase";
+import { redirect } from "next/navigation";
+import styles from "./Dashboard.module.css";
 
-import React from "react";
-import Link from "next/link";
-import { useSession, signOut } from "next-auth/react";
+export default async function DashboardPage() {
+  const user = await currentUser();
+  if (!user) redirect("/");
 
-export default function DashboardPage() {
-  const { data: session, status } = useSession();
+  // This is the "Sync" logic using upsert
+  const { data, error } = await supabase
+    .from("profiles")
+    .upsert(
+      {
+        id: user.id, // Links Clerk ID to Supabase ID
+        username: user.username || user.firstName,
+      },
+      { onConflict: "id" }
+    )
+    .select();
 
-  if (status === "loading") {
-    return <main style={shell}>Loading dashboard...</main>;
-  }
+  const profile = data?.[0];
 
-  if (!session) {
-    return (
-      <main style={shell}>
-        <div style={card}>
-          <h1 style={title}>You are logged out</h1>
-          <p style={text}>Head back to the home page.</p>
-          <Link href="/" style={cta}>
-            Go Home
-          </Link>
-        </div>
-      </main>
-    );
+  if (error) {
+    console.error("Supabase Sync Error:", error.message);
   }
 
   return (
-    <main style={shell}>
-      <div style={card}>
-        <h1 style={title}>Welcome, {session.user?.name || "Creator"}</h1>
-        <p style={text}>Your account is active. Pick where to go next.</p>
-        <div style={row}>
-          <Link href="/" style={cta}>
-            Go to Landing
-          </Link>
-          <button
-            style={secondary}
-            onClick={() => signOut({ callbackUrl: "/" })}
-          >
-            Logout
-          </button>
+    <div className={styles.dashboardWrapper}>
+      <div className={styles.container}>
+        <div className={styles.header}>
+          <div className={styles.statusRow}>
+            <div className={styles.statusDot} />
+            <span className={styles.pill}>SYSTEM_ACTIVE</span>
+          </div>
+          <h1 className={styles.title}>
+            WELCOME BACK, <br />
+            <span className={styles.highlight}>
+              {user.firstName?.toUpperCase()}
+            </span>
+          </h1>
+          <p className={styles.subtitle}>
+            Your infrastructure is ready. Time to monetize.
+          </p>
         </div>
+
+        <div className={styles.grid}>
+          {/* Profile Card */}
+          <div className={styles.card}>
+            <div className={styles.cardHeader}>
+              <h3 className={styles.cardTitle}>Profile Status</h3>
+              <span className={styles.cardIcon}>👤</span>
+            </div>
+            <div className={styles.cardContent}>
+              <div className={styles.dataRow}>
+                <span className={styles.dataLabel}>Username</span>
+                <span className={styles.dataValue}>
+                  {profile?.username || "Not Set"}
+                </span>
+              </div>
+              <div className={styles.dataRow}>
+                <span className={styles.dataLabel}>Creator Mode</span>
+                <span className={styles.dataValue}>
+                  {profile?.is_creator ? "ACTIVE" : "INACTIVE"}
+                </span>
+              </div>
+              <div className={styles.dataRow}>
+                <span className={styles.dataLabel}>User ID</span>
+                <span
+                  className={styles.dataValue}
+                  style={{ fontSize: "0.7rem" }}
+                >
+                  {user.id.slice(0, 12)}...
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Creator Setup Card */}
+          <div className={`${styles.card} ${styles.actionCard}`}>
+            <div className={styles.cardHeader}>
+              <h3
+                className={styles.cardTitle}
+                style={{ color: "var(--background)" }}
+              >
+                {profile?.is_creator ? "Manage Content" : "Become a Creator"}
+              </h3>
+              <span className={styles.cardIcon}>🚀</span>
+            </div>
+            <div className={styles.cardContent}>
+              <p style={{ marginBottom: "10px", fontSize: "0.85rem" }}>
+                {profile?.is_creator
+                  ? "Your creator profile is active. Start uploading content."
+                  : "Start monetizing your expertise. Set up your creator profile now."}
+              </p>
+              <button className={styles.actionButton}>
+                {profile?.is_creator ? "UPLOAD_CONTENT" : "ENABLE_CREATOR_MODE"}
+              </button>
+            </div>
+          </div>
+
+          {/* Earnings Card */}
+          <div className={styles.card}>
+            <div className={styles.cardHeader}>
+              <h3 className={styles.cardTitle}>Earnings</h3>
+              <span className={styles.cardIcon}>💰</span>
+            </div>
+            <div className={styles.cardContent}>
+              <div className={styles.dataRow}>
+                <span className={styles.dataLabel}>This Month</span>
+                <span className={styles.dataValue}>$0.00</span>
+              </div>
+              <div className={styles.dataRow}>
+                <span className={styles.dataLabel}>Total</span>
+                <span className={styles.dataValue}>$0.00</span>
+              </div>
+              <div className={styles.dataRow}>
+                <span className={styles.dataLabel}>Profit Split</span>
+                <span className={styles.dataValue}>90/10</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Debug Info */}
+        {error && (
+          <div
+            style={{
+              marginTop: "40px",
+              padding: "20px",
+              border: "2px solid red",
+              borderRadius: "12px",
+            }}
+          >
+            <p style={{ color: "red", fontFamily: "monospace" }}>
+              Error: {error.message}
+            </p>
+          </div>
+        )}
       </div>
-    </main>
+    </div>
   );
 }
-
-const shell: React.CSSProperties = {
-  minHeight: "100vh",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  background: "linear-gradient(135deg, #0c0c0f 0%, #16161e 100%)",
-  color: "#f5f5f5",
-  padding: "32px",
-};
-
-const card: React.CSSProperties = {
-  width: "100%",
-  maxWidth: 780,
-  background: "#13131a",
-  border: "1px solid #202030",
-  borderRadius: 18,
-  padding: "28px 32px",
-  boxShadow: "0 20px 60px rgba(0,0,0,0.35)",
-};
-
-const title: React.CSSProperties = {
-  margin: "0 0 10px",
-  fontSize: 28,
-  fontWeight: 800,
-};
-
-const text: React.CSSProperties = {
-  margin: "0 0 20px",
-  color: "#cfcfe0",
-};
-
-const row: React.CSSProperties = {
-  display: "flex",
-  gap: 12,
-  flexWrap: "wrap",
-};
-
-const cta: React.CSSProperties = {
-  background: "#f5f5f5",
-  color: "#0c0c0f",
-  padding: "12px 18px",
-  borderRadius: 10,
-  fontWeight: 800,
-  textDecoration: "none",
-  border: "2px solid #f5f5f5",
-};
-
-const secondary: React.CSSProperties = {
-  background: "transparent",
-  color: "#f5f5f5",
-  padding: "12px 18px",
-  borderRadius: 10,
-  fontWeight: 800,
-  textDecoration: "none",
-  border: "2px solid #3a3a4a",
-  cursor: "pointer",
-};

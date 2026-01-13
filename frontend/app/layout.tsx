@@ -1,10 +1,8 @@
 import "./globals.css";
-import { Space_Grotesk } from "next/font/google";
-import localFont from "next/font/local"; // Clash is best as a local font or high-end sans
-
-// If you want a Google equivalent that is NOT average, use "Outfit"
-import { Outfit } from "next/font/google";
+import { ClerkProvider } from "@clerk/nextjs";
+import { Space_Grotesk, Outfit } from "next/font/google";
 import { Providers } from "./providers";
+import { clerkAppearance } from "@/lib/clerk-theme"; // Import from your new file
 
 const outfit = Outfit({
   subsets: ["latin"],
@@ -23,10 +21,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${spaceGrotesk.variable} ${outfit.variable}`}>
-      <body>
-        <Providers>{children}</Providers>
-      </body>
-    </html>
+    <ClerkProvider appearance={clerkAppearance}>
+      <html lang="en" className={`${spaceGrotesk.variable} ${outfit.variable}`}>
+        <body className="antialiased">
+          <Providers>{children}</Providers>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

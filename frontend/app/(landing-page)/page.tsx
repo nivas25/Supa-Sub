@@ -21,6 +21,10 @@ export default function LandingPage() {
 
       <Hero />
 
+      <section>
+        <Identity />
+      </section>
+
       <section id="features">
         <Features />
       </section>
@@ -32,10 +36,6 @@ export default function LandingPage() {
       {/* NEW SECTION: SHOWCASE THE CREATORS */}
       <section id="showcase">
         <ProfileShowcase />
-      </section>
-
-      <section>
-        <Identity />
       </section>
 
       <section id="pricing">

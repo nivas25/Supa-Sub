@@ -1,29 +1,22 @@
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
-import { getToken } from "next-auth/jwt";
+import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
-export async function middleware(req: NextRequest) {
-  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+// 1. Define which routes are "Protected" (Private)
+// This matches /dashboard and anything after it (like /dashboard/settings)
+const isProtectedRoute = createRouteMatcher(["/dashboard(.*)"]);
 
-  if (!token) {
-    return NextResponse.next();
+export default clerkMiddleware(async (auth, req) => {
+  // 2. If the user is trying to visit a protected route...
+  if (isProtectedRoute(req)) {
+    // ...check if they are logged in. If not, redirect to Sign In.
+    await auth.protect();
   }
-
-  const { pathname } = req.nextUrl;
-
-  const isAuthRoute = pathname.startsWith("/api/auth");
-  const isOnboarding = pathname.startsWith("/onboarding");
-
-  if (token.onboarded === false && !isOnboarding && !isAuthRoute) {
-    const url = req.nextUrl.clone();
-    url.pathname = "/onboarding";
-    url.search = "";
-    return NextResponse.redirect(url);
-  }
-
-  return NextResponse.next();
-}
+});
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico|images|api).*)"],
+  matcher: [
+    // This complex "matcher" tells Next.js which files to ignore (like images/css)
+    // and which ones to run the bouncer check on.
+    "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
+    "/(api|trpc)(.*)",
+  ],
 };

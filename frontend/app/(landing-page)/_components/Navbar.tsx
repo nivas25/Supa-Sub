@@ -1,12 +1,10 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import styles from "./Navbar.module.css";
 
 export default function LandingNavbar() {
-  const { data: session, status } = useSession();
-  const isAuthed = status === "authenticated";
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
 
@@ -124,38 +122,17 @@ export default function LandingNavbar() {
         <div className={styles.actions}>
           {/* These will stay styled as buttons on desktop */}
           <div className={styles.desktopButtons}>
-            {isAuthed && session?.user ? (
-              <>
-                <span className={styles.userName}>
-                  HI, {session.user.name?.split(" ")[0]?.toUpperCase()}
-                </span>
-                <button
-                  onClick={() => signOut({ callbackUrl: "/" })}
-                  className={styles.loginBtn}
-                >
-                  Logout
-                </button>
-              </>
-            ) : (
-              <>
-                <button
-                  onClick={() =>
-                    signIn("google", { callbackUrl: "/dashboard" })
-                  }
-                  className={styles.loginBtn}
-                >
-                  Login
-                </button>
-                <button
-                  onClick={() =>
-                    signIn("google", { callbackUrl: "/dashboard" })
-                  }
-                  className={styles.cta}
-                >
-                  Start Selling
-                </button>
-              </>
-            )}
+            <SignedOut>
+              <SignInButton mode="modal" forceRedirectUrl="/dashboard">
+                <button className={styles.cta}>Login</button>
+              </SignInButton>
+            </SignedOut>
+            <SignedIn>
+              <Link href="/dashboard" className={styles.dashboardLink}>
+                Dashboard
+              </Link>
+              <UserButton afterSignOutUrl="/" />
+            </SignedIn>
           </div>
 
           <button
@@ -232,34 +209,17 @@ export default function LandingNavbar() {
           FAQ
         </a>
         <hr className={styles.divider} />
-        {isAuthed && session?.user ? (
-          <>
-            <span className={styles.userName}>
-              HI, {session.user.name?.split(" ")[0]?.toUpperCase()}
-            </span>
-            <button
-              onClick={() => signOut({ callbackUrl: "/" })}
-              className={styles.mobileLogin}
-            >
-              Logout
-            </button>
-          </>
-        ) : (
-          <>
-            <button
-              onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
-              className={styles.mobileLogin}
-            >
-              Login
-            </button>
-            <button
-              onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
-              className={styles.mobileCta}
-            >
-              Start Selling
-            </button>
-          </>
-        )}
+        <SignedOut>
+          <SignInButton mode="modal" forceRedirectUrl="/dashboard">
+            <button className={styles.mobileCta}>Login</button>
+          </SignInButton>
+        </SignedOut>
+        <SignedIn>
+          <Link href="/dashboard" className={styles.mobileDashboard}>
+            Dashboard
+          </Link>
+          <UserButton afterSignOutUrl="/" />
+        </SignedIn>
       </div>
     </nav>
   );

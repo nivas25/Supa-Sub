@@ -92,6 +92,52 @@
   gap: 35px; /* Clean spacing between Login and CTA */
 }
 
+.dashboardLink {
+  text-decoration: none;
+  color: var(--foreground);
+  font-family: var(--font-space), sans-serif;
+  font-weight: 800;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  padding: 10px 20px;
+  border-radius: 12px;
+  border: 2px solid var(--nav-border);
+  transition: 0.2s;
+  cursor: pointer;
+  background: var(--background);
+}
+
+.dashboardLink:hover {
+  background: var(--accent);
+  color: #fff;
+  transform: translateY(-3px);
+  box-shadow: 4px 4px 0px var(--nav-border);
+}
+
+.mobileDashboard {
+  text-decoration: none;
+  color: var(--foreground);
+  font-family: var(--font-space), sans-serif;
+  font-weight: 800;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  padding: 12px 20px;
+  border-radius: 12px;
+  border: 2px solid var(--nav-border);
+  transition: 0.2s;
+  cursor: pointer;
+  background: var(--background);
+  text-align: center;
+  display: block;
+}
+
+.mobileDashboard:hover {
+  background: var(--accent);
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 3px 3px 0px var(--nav-border);
+}
+
 .loginBtn {
   text-decoration: none;
   color: var(--foreground);
