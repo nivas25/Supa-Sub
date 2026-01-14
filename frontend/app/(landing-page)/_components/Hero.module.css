@@ -1,83 +1,169 @@
 .heroWrapper {
-  min-height: 80vh;
+  min-height: 85vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: transparent; /* Background removed as requested */
+  background: transparent; /* Kept transparent as requested */
+  padding: 60px 24px;
   overflow: hidden;
-  position: relative;
-  padding: 40px 20px;
 }
 
 .container {
-  max-width: 1300px;
+  max-width: 1200px;
   width: 100%;
   text-align: center;
-  z-index: 10;
+}
+
+/* --- BADGE --- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(0, 0, 0, 0.05);
+  padding: 8px 16px;
+  border-radius: 100px;
+  margin-bottom: 2.5rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.statusDot {
+  width: 8px;
+  height: 8px;
+  background: #05ac72;
+  border-radius: 50%;
+  box-shadow: 0 0 12px #05ac72;
+}
+
+.badgeText {
+  font-family: monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 1px;
 }
 
 /* --- TYPOGRAPHY --- */
 .mainTitle {
-  font-size: clamp(2.2rem, 8vw, 5.8rem);
-  font-weight: 1000;
+  font-size: clamp(2.8rem, 10vw, 7rem);
+  font-weight: 900;
   line-height: 1;
-  letter-spacing: -3px;
-  text-transform: uppercase;
-}
-
-.titleLine {
-  display: inline-flex;
+  letter-spacing: -0.05em;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 0.15em;
+  margin-bottom: 3rem;
 }
 
-/* Staggered Offset */
-.staggeredSuffix {
-  display: block;
-  margin-top: 10px;
-  transform: translateX(25px);
-  font-family: serif;
-  font-style: italic;
-  font-weight: 400;
-  letter-spacing: 0;
+.lightText {
+  font-weight: 300;
+  color: #333;
 }
 
-.outline {
-  color: transparent;
-  -webkit-text-stroke: 1.5px #000;
-}
-
-/* --- WORDMAP ENGINE --- */
-.revealContainer {
-  display: inline-flex;
-  vertical-align: middle;
-  height: 1.15em;
+.slidingContainer {
+  height: 1.1em;
   overflow: hidden;
-}
-
-.row1 {
-  transform: translateX(0);
-}
-.row2 {
-  transform: translateX(15px);
-}
-.row3 {
-  transform: translateX(-15px);
+  background: #000;
+  color: #fff;
+  padding: 0 0.4em;
+  margin: 0.1em 0;
+  /* Brutalist "Cool" Tweak */
+  transform: skewX(-5deg);
 }
 
 .wordSlider {
   display: flex;
   flex-direction: column;
-  animation: stepJump 18s steps(6) infinite;
+  animation: slideWords 14s cubic-bezier(0.76, 0, 0.24, 1) infinite;
 }
 
 .word {
-  height: 1.15em;
+  height: 1.1em;
   display: flex;
   align-items: center;
   justify-content: center;
+  transform: skewX(5deg); /* Revert skew for text readability */
+}
+
+/* --- CONTENT & CTA --- */
+.contentSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.5rem;
+}
+
+.description {
+  font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+  max-width: 550px;
+  line-height: 1.4;
+  color: #444;
+}
+
+.ctaGroup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.primaryBtn {
+  background: #000;
+  color: #fff;
+  padding: 22px 48px;
+  font-size: 1.1rem;
+  font-weight: 900;
+  text-decoration: none;
+  border-radius: 2px; /* Sharper industrial corners */
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  box-shadow: 10px 10px 0px rgba(0, 0, 0, 0.1);
+}
+
+.primaryBtn:hover {
+  background: #ff4d00;
+  box-shadow: 0px 0px 0px rgba(0, 0, 0, 0);
+  transform: translateY(4px);
+}
+
+.trustLabel {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* --- KEYFRAMES --- */
+@keyframes slideWords {
+  0%,
+  14% {
+    transform: translateY(0);
+  }
+  16%,
+  30% {
+    transform: translateY(-1.1em);
+  }
+  32%,
+  46% {
+    transform: translateY(-2.2em);
+  }
+  48%,
+  62% {
+    transform: translateY(-3.3em);
+  }
+  64%,
+  78% {
+    transform: translateY(-4.4em);
+  }
+  80%,
+  94% {
+    transform: translateY(-5.5em);
+  }
+  96%,
+  100% {
+    transform: translateY(-6.6em);
+  }
 }
 
 /* --- COLORS --- */
@@ -88,108 +174,32 @@
   color: #ffc900;
 }
 .green {
-  color: #05ac72;
+  color: #00f5a0;
 }
 .orange {
   color: #ff4d00;
 }
 .blue {
-  color: #0066ff;
+  color: #00d1ff;
 }
 
-@keyframes stepJump {
-  0% {
-    transform: translateY(0);
-  }
-  100% {
-    transform: translateY(-6.9em);
-  } /* 1.15em * 6 = 6.9em */
-}
-
-/* --- LAYOUT & SPACING --- */
-.topRow {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  margin-bottom: 2rem;
-}
-
-.statusDot {
-  width: 10px;
-  height: 10px;
-  background: #05ac72;
-  border-radius: 50%;
-  box-shadow: 0 0 10px #05ac72;
-}
-
-.pill {
-  background: #000;
-  color: #fff;
-  padding: 4px 10px;
-  font-size: 0.7rem;
-  font-weight: 900;
-}
-
-/* Increased vertical gap for the "We Build" box */
-.subtitleWrapper {
-  margin-top: 5rem; /* Large intentional gap added */
-}
-
-.subtitleEmphasis {
-  font-size: clamp(0.9rem, 2vw, 1.1rem);
-  font-weight: 1000;
-  border: 4px solid #000;
-  padding: 14px 28px;
-  box-shadow: 10px 10px 0 #000; /* Industrial shadow from Identity */
-  display: inline-block;
-  background: #fff;
-}
-
-.ctaWrapper {
-  margin-top: 3.5rem;
-}
-
-.magneticBtn {
-  background: #000;
-  color: #fff;
-  padding: 18px 45px;
-  border-radius: 50px;
-  font-weight: 1000;
-  text-decoration: none;
-  display: inline-flex;
-  transition: 0.3s;
-}
-
-.magneticBtn:hover {
-  background: #ff4d00;
-  transform: translateY(-3px);
-}
-
+/* --- MOBILE RESPONSIVENESS --- */
 @media (max-width: 768px) {
   .heroWrapper {
-    min-height: 70vh;
+    padding: 40px 16px;
   }
   .mainTitle {
-    font-size: clamp(2.2rem, 10vw, 4rem);
-    letter-spacing: -1.5px;
-    gap: 16px;
+    gap: 10px;
   }
-  .staggeredSuffix,
-  .row1,
-  .row2,
-  .row3 {
+  .slidingContainer {
+    transform: none;
+    width: 100%;
+  }
+  .word {
     transform: none;
   }
-  .subtitleWrapper {
-    margin-top: 3rem;
-  }
-  .subtitleEmphasis {
-    font-size: clamp(0.95rem, 2.5vw, 1.1rem);
-    padding: 14px 28px;
-  }
-  .subtitleDetail {
-    font-size: 0.8rem;
-    margin-top: 24px;
+  .primaryBtn {
+    width: 100%;
+    justify-content: center;
   }
 }

@@ -5,108 +5,94 @@ import {
   RiTelegramFill,
   RiDiscordFill,
   RiWhatsappFill,
-  RiShieldFlashLine,
-  RiSafe2Line,
-  RiRocket2Line,
-  RiDashboard3Line,
-  RiFingerprintLine,
-  RiGlobalLine,
+  RiUserFollowLine,
+  RiBarChart2Line,
+  RiMoneyDollarCircleLine,
+  RiLockPasswordLine,
 } from "react-icons/ri";
 
 export default function Features() {
   return (
     <section className={styles.wrapper}>
+      {/* Subtle Dot Grid Pattern */}
+      <div className={styles.dotPattern} />
+
       <div className={styles.container}>
         <div className={styles.header}>
-          <div className={styles.titleStack}>
-            <span className={styles.outlineText}>PLATFORM</span>
-            <span className={styles.solidText}>FEATURES</span>
-          </div>
-          <div className={styles.headerMetaData}>
-            <span>LOG_ID: SS_2026</span>
-            <div className={styles.divider}></div>
-            <span>TYPE: DIGITAL_ENGINE</span>
-          </div>
+          <h2 className={styles.mainTitle}>
+            Manage Your <span className={styles.purpleText}>Inner Circle.</span>
+          </h2>
+          <p className={styles.subText}>
+            Automated management for modern communities.
+          </p>
         </div>
 
-        <div className={styles.bentoGrid}>
-          {/* OMNI SYNC - Faded Pink */}
-          <div className={`${styles.card} ${styles.omni}`}>
-            <div className={styles.cardInfo}>
-              <div className={styles.id}>M_01</div>
-              <RiDashboard3Line className={styles.topIcon} />
-            </div>
-            <div className={styles.textBody}>
-              <h3 className={styles.title}>OMNI SYNC</h3>
-              <p className={styles.desc}>
-                Automated community management. Instant member sync across
-                social platforms.
-              </p>
-            </div>
-            <div className={styles.socialPills}>
-              <div className={styles.pill}>
-                <RiTelegramFill />
+        <div className={styles.compactGrid}>
+          {/* Card 1: Automation */}
+          <div className={`${styles.card} ${styles.purpleCard}`}>
+            <div className={styles.cardHeader}>
+              <div className={styles.iconBox}>
+                <RiUserFollowLine />
               </div>
-              <div className={styles.pill}>
-                <RiDiscordFill />
-              </div>
-              <div className={styles.pill}>
-                <RiWhatsappFill />
+              <div className={styles.platformIcons}>
+                <RiTelegramFill /> <RiWhatsappFill /> <RiDiscordFill />
               </div>
             </div>
-            <RiGlobalLine className={styles.watermark} />
+            <h3 className={styles.cardTitle}>Auto-Member Sync</h3>
+            <p className={styles.cardDesc}>
+              Instantly add or remove members based on their payment status.
+              Zero manual admin work required.
+            </p>
           </div>
 
-          {/* PRO VAULT - Faded Yellow */}
-          <div className={`${styles.card} ${styles.vault}`}>
-            <div className={styles.cardInfo}>
-              <div className={styles.id}>M_02</div>
-              <RiSafe2Line className={styles.topIcon} />
-            </div>
-            <div className={styles.textBody}>
-              <h3 className={styles.title}>PRO VAULT</h3>
-              <p className={styles.desc}>
-                Premium HD Videos hosting with global edge delivery and secure
-                storage.
-              </p>
-            </div>
-            <div className={styles.statusLine}>SECURE_PROTOCOL</div>
-            <RiSafe2Line className={styles.watermark} />
-          </div>
-
-          {/* ZERO LEAK SHIELD - Faded Green */}
-          <div className={`${styles.card} ${styles.shield}`}>
-            <div className={styles.cardInfo}>
-              <div className={styles.id}>M_03</div>
-              <RiShieldFlashLine className={styles.topIcon} />
-            </div>
-            <div className={styles.textBody}>
-              <h3 className={styles.title}>ZERO LEAK</h3>
-              <p className={styles.desc}>
-                Dynamic HLS encryption keeps content stream-only and
-                non-downloadable.
-              </p>
-            </div>
-            <div className={styles.statusLine}>ENCRYPTION_ACTIVE</div>
-            <RiFingerprintLine className={styles.watermark} />
-          </div>
-
-          {/* SCALE PARTNER - Faded Orange */}
-          <div className={`${styles.card} ${styles.scale}`}>
-            <div className={styles.cardInfo}>
-              <div className={styles.id}>M_04</div>
-              <RiRocket2Line className={styles.topIcon} />
-            </div>
-            <div className={styles.revenueLayout}>
-              <div className={styles.textBody}>
-                <h3 className={styles.title}>SCALE PARTNER</h3>
-                <p className={styles.desc}>
-                  $0 upfront. We only earn when you earn. Just 10% per sale.
-                </p>
+          {/* Card 2: 5% Commission */}
+          <div className={`${styles.card} ${styles.yellowCard}`}>
+            <div className={styles.cardHeader}>
+              <div className={styles.iconBox}>
+                <RiMoneyDollarCircleLine />
               </div>
-              <div className={styles.bigRev}>10%</div>
+              <span className={styles.feeBadge}>5% FLAT FEE</span>
             </div>
-            <RiRocket2Line className={styles.watermark} />
+            <h3 className={styles.cardTitle}>Global Revenue</h3>
+            <p className={styles.cardDesc}>
+              Keep 95% of your earnings. No monthly subscriptions or hidden
+              platform taxes.
+            </p>
+          </div>
+
+          {/* Card 3: Analytics */}
+          <div className={`${styles.card} ${styles.redCard}`}>
+            <div className={styles.cardHeader}>
+              <div className={styles.iconBox}>
+                <RiBarChart2Line />
+              </div>
+            </div>
+            <h3 className={styles.cardTitle}>Real-time Insights</h3>
+            <p className={styles.cardDesc}>
+              Track your community growth, churn rates, and daily revenue
+              through a simple dashboard.
+            </p>
+            <div className={styles.miniGraph}>
+              <div className={styles.bar} style={{ height: "40%" }} />
+              <div className={styles.bar} style={{ height: "70%" }} />
+              <div className={styles.bar} style={{ height: "50%" }} />
+              <div className={styles.bar} style={{ height: "90%" }} />
+            </div>
+          </div>
+
+          {/* Card 4: Security */}
+          <div className={`${styles.card} ${styles.darkCard}`}>
+            <div className={styles.cardHeader}>
+              <div className={styles.iconBox}>
+                <RiLockPasswordLine />
+              </div>
+            </div>
+            <h3 className={styles.cardTitle}>Access Shield</h3>
+            <p className={styles.cardDesc}>
+              Secure, non-sharable invite links and anti-leak technology to
+              protect your premium content.
+            </p>
+            <div className={styles.secureTag}>ENCRYPTION_ACTIVE</div>
           </div>
         </div>
       </div>

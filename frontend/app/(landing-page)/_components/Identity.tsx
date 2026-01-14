@@ -1,80 +1,65 @@
 "use client";
 import React from "react";
 import styles from "./Identity.module.css";
-import {
-  RiBaseStationLine,
-  RiShieldUserLine,
-  RiLineChartLine,
-} from "react-icons/ri";
+import { RiCheckLine, RiPieChart2Fill, RiUserStarLine } from "react-icons/ri";
 
 export default function Identity() {
-  const specs = [
-    {
-      code: "V_01",
-      label: "OUR_MISSION",
-      value: "90%_PROFIT",
-      color: "#ff90e8",
-    },
-    { code: "V_02", label: "THE_GOAL", value: "ZERO_FEES", color: "#ffc900" },
-    { code: "V_03", label: "STATUS", value: "BUILDING", color: "#05ac72" },
-  ];
-
   return (
-    <section className={styles.wrapper}>
-      <div className={styles.container}>
-        <div className={styles.blueprintHeader}>
-          <div className={styles.stamp}>U_OWN_PROFIT</div>
-          <div className={styles.serial}>[ REF_ID: 2026_PRE_BUILD ]</div>
-        </div>
+    <section className={styles.wrapper} id="identity">
+      {/* Modern background decorative elements */}
+      <div className={styles.meshGradient} />
 
-        <div className={styles.mainLayout}>
-          <div className={styles.textColumn}>
-            {/* COMPACT EDITORIAL WORDMAP */}
-            <h2 className={styles.wordMapTitle}>
-              WE&apos;RE <span className={styles.pillPink}>ENGINEERS</span> WHO
-              BELIEVE
+      <div className={styles.container}>
+        <div className={styles.contentGrid}>
+          <div className={styles.textContent}>
+            <h2 className={styles.title}>
+              Stop giving away{" "}
+              <span className={styles.markerHighlight}>30%</span> of your hard
+              work.
               <br />
-              <span className={styles.outline}>CREATORS</span> SHOULDN&apos;T
-              <br />
-              <span className={styles.yellowItalic}>SACRIFICE</span> 30% TO
-              <br />
-              ANY <span className={styles.blue}>PLATFORMS</span>.
+              <span className={styles.highlight}>We build. You grow.</span>
             </h2>
 
-            <div className={styles.subNarrative}>
-              We are building{" "}
-              <span className={styles.greenUnderline}>infrastructure</span>
-              where you <span className={styles.blue}>keep</span> everything you
-              <span className={styles.pinkHighlight}>earn</span>. Simple as
-              that.
+            <p className={styles.description}>
+              Most platforms act like a tax on your creativity. We flipped the
+              model. We provide the full professional setup you need to sell
+              your work under your <strong>own brand</strong>, not ours.
+            </p>
+
+            <div className={styles.benefitList}>
+              <div className={styles.benefitItem}>
+                <div className={styles.iconCircle}>
+                  <RiCheckLine />
+                </div>
+                <span>Custom design & high-performance tech included.</span>
+              </div>
+              <div className={styles.benefitItem}>
+                <div className={styles.iconCircle}>
+                  <RiCheckLine />
+                </div>
+                <span>You own 100% of your customer data and content.</span>
+              </div>
             </div>
           </div>
 
-          <div className={styles.specColumn}>
-            {specs.map((spec, i) => (
-              <div
-                key={i}
-                className={styles.vibrantCard}
-                style={{ "--accent": spec.color } as any}
-              >
-                <div className={styles.cardHeader}>
-                  <span className={styles.code}>{spec.code}</span>
-                  <div className={styles.iconCircle}>
-                    {i === 0 ? (
-                      <RiBaseStationLine />
-                    ) : i === 1 ? (
-                      <RiShieldUserLine />
-                    ) : (
-                      <RiLineChartLine />
-                    )}
-                  </div>
-                </div>
-                <div className={styles.cardInfo}>
-                  <span className={styles.specLabel}>{spec.label}</span>
-                  <h3 className={styles.specValue}>{spec.value}</h3>
-                </div>
-              </div>
-            ))}
+          <div className={styles.modernCard}>
+            <div className={styles.statValue}>
+              <span className={styles.number}>95</span>
+              <span className={styles.percent}>%</span>
+            </div>
+
+            <div className={styles.statLabel}>
+              <RiPieChart2Fill /> YOUR REVENUE SHARE
+            </div>
+
+            <p className={styles.statDetail}>
+              We only take a <strong>5% flat commission.</strong> No monthly
+              subscriptions, no hidden fees, and no tiered pricing traps.
+            </p>
+
+            <div className={styles.ownershipBadge}>
+              <RiUserStarLine /> FULL OWNERSHIP MODEL
+            </div>
           </div>
         </div>
       </div>

@@ -6,14 +6,17 @@
   --card-border: #000000;
   --neon-accent: #ccff00;
   --font-space: "Space Mono", monospace;
+  --font-outfit: "Outfit", sans-serif;
 
   --pattern-color: rgba(0, 0, 0, 0.1);
   --pattern-bg: radial-gradient(var(--pattern-color) 1px, transparent 1px);
 
-  --nav-bg: linear-gradient(180deg, #f0f9f4 0%, #d1eadd 50%, #e8f3ed 100%);
-  --nav-border: #000000;
-  --nav-shadow: #000000;
-  --glow-opacity: 0.05;
+  /* GLASSMORPHISM VARIABLES */
+  /* Premium frosted glass with enhanced blur effect */
+  --nav-bg: rgba(255, 255, 255, 0.25);
+  --nav-border: rgba(255, 255, 255, 0.5);
+  --nav-shadow: rgba(0, 0, 0, 0.1);
+  --glow-opacity: 0.08;
 }
 
 * {
@@ -24,20 +27,12 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 100px; /* Offset for fixed navbar */
-  /* Hide scrollbar for Chrome, Safari and Opera */
-  -webkit-scrollbar-width: none;
+  scroll-padding-top: 100px;
   scrollbar-width: none;
 }
 
-/* Hide scrollbar for Chrome, Safari and Opera */
 html::-webkit-scrollbar {
   display: none;
-}
-
-/* Hide scrollbar for Firefox */
-html {
-  -moz-appearance: none;
 }
 
 body {
@@ -47,9 +42,6 @@ body {
   min-height: 100vh;
   position: relative;
   overflow-x: clip;
-  /* Hide scrollbar but keep scrolling functional */
-  scrollbar-width: none;
-  -ms-overflow-style: none;
 
   background-image: var(--pattern-bg),
     linear-gradient(var(--pattern-color) 0.5px, transparent 0.5px),
@@ -72,15 +64,11 @@ body::before {
   z-index: -1;
 }
 
-/* --- UTILITY CLASSES --- */
-
-/* Use this on titles and tags for the technical look */
 .mono {
   font-family: var(--font-space);
   letter-spacing: 1px;
 }
 
-/* Global Transition Helper */
 section,
 div,
 h1,

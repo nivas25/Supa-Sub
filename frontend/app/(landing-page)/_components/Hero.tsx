@@ -1,80 +1,59 @@
 "use client";
+import React from "react";
 import styles from "./Hero.module.css";
 
 export default function Hero() {
   return (
     <section className={styles.heroWrapper}>
       <div className={styles.container}>
-        {/* Simplified Top Bar: Status Only */}
-        <div className={styles.topRow}>
-          <div className={styles.statusDot} />
-          <span className={styles.pill}>90/10_PROFIT_SPLIT</span>
+        {/* Modern Status Badge */}
+        <div className={styles.badge}>
+          <span className={styles.statusDot} />
+          <span className={styles.badgeText}>
+            PARTNER_PROGRAM: 95/5_REVENUE_SPLIT
+          </span>
         </div>
 
         <h1 className={styles.mainTitle}>
-          <div className={styles.titleLine}>
-            <span className={styles.boldText}>MONETIZE YOUR</span>
-            <div className={styles.revealContainer}>
-              <div className={styles.revealWrapper}>
-                <div className={styles.wordSlider}>
-                  {/* Staggered Wordmap Nodes */}
-                  <span
-                    className={`${styles.word} ${styles.pink} ${styles.row1}`}
-                  >
-                    MASTERCLASSES
-                  </span>
-                  <span
-                    className={`${styles.word} ${styles.yellow} ${styles.row2}`}
-                  >
-                    COURSES
-                  </span>
-                  <span
-                    className={`${styles.word} ${styles.green} ${styles.row3}`}
-                  >
-                    RESOURCES
-                  </span>
-                  <span
-                    className={`${styles.word} ${styles.orange} ${styles.row1}`}
-                  >
-                    EXPERTISE
-                  </span>
-                  <span
-                    className={`${styles.word} ${styles.blue} ${styles.row2}`}
-                  >
-                    SOLUTIONS
-                  </span>
-                  <span
-                    className={`${styles.word} ${styles.pink} ${styles.row3}`}
-                  >
-                    CONTENT
-                  </span>
-                  {/* Loop node for smooth transition */}
-                  <span
-                    className={`${styles.word} ${styles.pink} ${styles.row1}`}
-                  >
-                    MASTERCLASSES
-                  </span>
-                </div>
-              </div>
+          <span className={styles.lightText}>MONETIZE YOUR</span>
+          <div className={styles.slidingContainer}>
+            <div className={styles.wordSlider}>
+              <span className={`${styles.word} ${styles.pink}`}>
+                MASTERCLASSES
+              </span>
+              <span className={`${styles.word} ${styles.yellow}`}>COURSES</span>
+              <span className={`${styles.word} ${styles.green}`}>
+                RESOURCES
+              </span>
+              <span className={`${styles.word} ${styles.orange}`}>
+                EXPERTISE
+              </span>
+              <span className={`${styles.word} ${styles.blue}`}>SOLUTIONS</span>
+              <span className={`${styles.word} ${styles.pink}`}>CONTENT</span>
+              {/* Loop node */}
+              <span className={`${styles.word} ${styles.pink}`}>
+                MASTERCLASSES
+              </span>
             </div>
           </div>
-          {/* Static Suffix Line */}
-          <span className={`${styles.staticLine} ${styles.staggeredSuffix}`}>
-            IN <span className={styles.outline}>EASY</span> WAY.
-          </span>
+          <span className={styles.boldText}>IN EASY WAY.</span>
         </h1>
 
-        {/* Increased vertical gap for the emphasis box */}
-        <div className={styles.subtitleWrapper}>
-          <p className={styles.subtitleEmphasis}>
-            WE BUILD THE INFRASTRUCTURE. YOU OWN THE PROFIT.
+        <div className={styles.contentSection}>
+          <p className={styles.description}>
+            We deploy your full digital infrastructure.
+            <strong> You keep 95% of every sale.</strong>
           </p>
-        </div>
 
-        <div className={styles.ctaWrapper}>
-          <a href="#" className={styles.magneticBtn}>
-            INITIALIZE_MONETIZATION <span className={styles.arrow}>→</span>
-          </a>
+          <div className={styles.ctaGroup}>
+            <a href="#deploy" className={styles.primaryBtn}>
+              INITIALIZE DEPLOYMENT
+              <span className={styles.btnIcon}>→</span>
+            </a>
+            <span className={styles.trustLabel}>
+              No setup fees • Performance based
+            </span>
+          </div>
         </div>
       </div>
     </section>
