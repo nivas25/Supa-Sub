@@ -70,7 +70,7 @@ export default function LandingNavbar() {
     const onClickOutside = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
       const nav = document.querySelector("[aria-label='Primary']");
-      
+
       // Close menu if click is outside navbar (works for both mobile and desktop)
       if (nav && !nav.contains(target) && isMenuOpen) {
         setIsMenuOpen(false);
@@ -80,7 +80,7 @@ export default function LandingNavbar() {
     window.addEventListener("keydown", onKey);
     window.addEventListener("resize", onResize);
     document.addEventListener("click", onClickOutside, true); // Use capture phase
-    
+
     return () => {
       window.removeEventListener("keydown", onKey);
       window.removeEventListener("resize", onResize);
