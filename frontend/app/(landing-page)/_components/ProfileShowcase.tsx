@@ -3,124 +3,136 @@ import React from "react";
 import Image from "next/image";
 import styles from "./ProfileShowcase.module.css";
 import {
-  RiAddLine,
-  RiShieldCheckFill,
   RiFireFill,
-  RiGroupLine,
-  RiHeart3Fill,
   RiArrowRightLine,
+  RiVerifiedBadgeFill,
+  RiFlashlightFill,
+  RiUserHeartLine,
+  RiGroupLine,
 } from "react-icons/ri";
 
-const MEMBERS = [
+const CREATORS = [
   {
     id: "01",
-    name: "COACH_KYRA",
-    type: "FITNESS",
+    tag: "FITNESS",
+    headline: "Your Personal",
+    highlight: "Coach",
+    desc: "Daily workout plans and nutrition guides for a healthier you.",
     price: "19",
-    fans: "140K",
-    likes: "2M",
-    color: "#ff90e8",
-    shape: "circle",
     image: "/images/Profiles/1.jpg",
-    status: "LIVE",
+    color: "#ffc900", // Yellow
+    badge: "POPULAR 🔥",
+    btnText: "Join the Squad",
+    members: "140K",
   },
   {
     id: "02",
-    name: "ALEX_CODING",
-    type: "CODING",
+    tag: "CODING",
+    headline: "Zero to",
+    highlight: "Mastery",
+    desc: "Full-stack bootcamps and weekly code reviews.",
     price: "25",
-    fans: "42K",
-    likes: "500K",
-    color: "#0066ff",
-    shape: "hexagon",
     image: "/images/Profiles/2.jpg",
-    status: "ONLINE",
+    color: "#0066ff", // Blue
+    badge: "BEST SELLER 💎",
+    btnText: "Join the Devs",
+    members: "42K",
   },
   {
     id: "03",
-    name: "DR_SARA",
-    type: "HEALTH",
+    tag: "HEALTH",
+    headline: "Holistic",
+    highlight: "Living",
+    desc: "Mental health tips and guided meditation sessions.",
     price: "15",
-    fans: "89K",
-    likes: "1.5M",
-    color: "#05ac72",
-    shape: "diamond",
     image: "/images/Profiles/3.jpg",
-    status: "ONLINE",
+    color: "#05ac72", // Green
+    badge: "TRENDING 🌿",
+    btnText: "Join the Zen",
+    members: "89K",
   },
   {
     id: "04",
-    name: "ART_BY_VFX",
-    type: "VFX_ART",
+    tag: "VFX ART",
+    headline: "VFX Magic",
+    highlight: "School",
+    desc: "Learn 3D modeling and animation from industry pros.",
     price: "30",
-    fans: "256K",
-    likes: "8M",
-    color: "#ff4d00",
-    shape: "square",
     image: "/images/Profiles/4.jpg",
-    status: "LIVE",
+    color: "#ff4d00", // Orange
+    badge: "TOP RATED ⭐",
+    btnText: "Join the Art",
+    members: "256K",
   },
   {
     id: "05",
-    name: "CHEF_MARC",
-    type: "COOKING",
+    tag: "COOKING",
+    headline: "Chef Marc's",
+    highlight: "Kitchen",
+    desc: "Secret recipes and video tutorials for home cooks.",
     price: "12",
-    fans: "12K",
-    likes: "100K",
-    color: "#ffc900",
-    shape: "circle",
     image: "/images/Profiles/5.jpg",
-    status: "ONLINE",
+    color: "#ffc900", // Yellow
+    badge: "TASTY PICKS 🍳",
+    btnText: "Join the Feast",
+    members: "12K",
   },
   {
     id: "06",
-    name: "GUITAR_DAN",
-    type: "MUSIC",
+    tag: "MUSIC",
+    headline: "Guitar Pro",
+    highlight: "Tabs",
+    desc: "Learn to play your favorite songs in minutes.",
     price: "20",
-    fans: "35K",
-    likes: "400K",
-    color: "#ff90e8",
-    shape: "hexagon",
     image: "/images/Profiles/6.jpg",
-    status: "ONLINE",
+    color: "#ff90e8", // Pink
+    badge: "NEW DROP 🎸",
+    btnText: "Join the Jam",
+    members: "35K",
   },
   {
     id: "07",
-    name: "FINANCE_PRO",
-    type: "MONEY",
+    tag: "FINANCE",
+    headline: "Market",
+    highlight: "Movers",
+    desc: "Real-time stock signals and crypto analysis.",
     price: "49",
-    fans: "110K",
-    likes: "3M",
-    color: "#0066ff",
-    shape: "diamond",
     image: "/images/Profiles/7.jpg",
-    status: "LIVE",
+    color: "#0066ff", // Blue
+    badge: "HIGH VALUE 💸",
+    btnText: "Join the Club",
+    members: "110K",
   },
   {
     id: "08",
-    name: "TRAVEL_ZOE",
-    type: "TRAVEL",
+    tag: "TRAVEL",
+    headline: "Globetrotter",
+    highlight: "Guides",
+    desc: "Hidden gems and travel hacks for your next trip.",
     price: "10",
-    fans: "65K",
-    likes: "900K",
-    color: "#05ac72",
-    shape: "square",
     image: "/images/Profiles/8.jpg",
-    status: "ONLINE",
+    color: "#05ac72", // Green
+    badge: "ADVENTURE 🗺️",
+    btnText: "Join the Trip",
+    members: "65K",
   },
 ];
 
 export default function ProfileShowcase() {
   return (
     <section className={styles.wrapper}>
+      {/* High-End Texture */}
+      <div className={styles.dotPattern} />
+
       <div className={styles.container}>
+        {/* --- HEADER --- */}
         <div className={styles.header}>
           <div className={styles.topBadge}>
             <RiFireFill /> <span>NO LIMITS. JUST CREATING.</span>
           </div>
           <h2 className={styles.title}>
             ANY CONTENT. <br />
-            <span className={styles.highlight}>ANYONE CAN EARN.</span>
+            <span className={styles.headerHighlight}>ANYONE CAN EARN.</span>
           </h2>
           <p className={styles.description}>
             The platform built for the next generation of creators. <br />
@@ -128,76 +140,78 @@ export default function ProfileShowcase() {
           </p>
         </div>
 
-        <div className={styles.scrollWrapper}>
-          <div className={styles.scrollTrack}>
-            {MEMBERS.map((person) => (
+        {/* --- MARKETPLACE SCROLLER --- */}
+        <div className={styles.scrollContainer}>
+          <div className={styles.track}>
+            {CREATORS.map((item) => (
               <div
-                key={person.id}
-                className={styles.memberCard}
-                style={{ "--accent": person.color } as any}
+                key={item.id}
+                className={styles.productCard}
+                style={{ "--accent": item.color } as any}
               >
-                <div className={styles.cardTopRow}>
-                  <div className={styles.statusBadge}>
-                    <span className={styles.pulseDot}></span>
-                    {person.status}
+                {/* Image & Status Area */}
+                <div className={styles.imageArea}>
+                  <div className={styles.liveTag}>
+                    <span className={styles.pulseDot} /> LIVE
                   </div>
-                  <div className={styles.typeTag}>{person.type}</div>
+                  <span className={styles.categoryTag}>{item.tag}</span>
+                  <Image
+                    src={item.image}
+                    alt={item.headline}
+                    fill
+                    className={styles.bgImage}
+                  />
                 </div>
 
-                <div className={styles.photoArea}>
-                  <div className={`${styles.frame} ${styles[person.shape]}`}>
-                    <Image
-                      src={person.image}
-                      alt={person.name}
-                      fill
-                      className={styles.profileImage}
-                    />
-                  </div>
-                  {/* UPGRADED NAME STICKER STRUCTURE */}
-                  <div className={styles.nameSticker}>
-                    <span className={styles.stickerText}>{person.name}</span>
-                  </div>
-                  <div className={styles.verifyBadge}>
-                    <RiShieldCheckFill />
-                  </div>
-                </div>
-
-                <div className={styles.cardInfo}>
-                  <div className={styles.statsGrid}>
-                    <div className={styles.statItem}>
-                      <RiGroupLine /> <span>{person.fans}</span>
+                {/* Content Body */}
+                <div className={styles.cardContent}>
+                  <div className={styles.topMeta}>
+                    <div className={styles.creatorBadge}>
+                      <RiVerifiedBadgeFill className={styles.verifyIcon} />
+                      <span className={styles.badgeText}>{item.badge}</span>
                     </div>
-                    <div className={styles.statItem}>
-                      <RiHeart3Fill /> <span>{person.likes}</span>
+                    <div className={styles.memberCount}>
+                      <RiGroupLine /> {item.members}
                     </div>
                   </div>
-                </div>
 
-                <div className={styles.actionArea}>
-                  <div className={styles.priceContainer}>
-                    <span className={styles.amount}>
-                      ${person.price}
-                      <span style={{ fontSize: "0.6em", opacity: 0.7 }}>
-                        /mnth
-                      </span>
+                  <h3 className={styles.cardTitle}>
+                    {item.headline}{" "}
+                    <span className={styles.textHighlight}>
+                      {item.highlight}
                     </span>
+                  </h3>
+                  <p className={styles.cardDesc}>{item.desc}</p>
+                </div>
+
+                {/* Interactive Footer */}
+                <div className={styles.cardFooter}>
+                  <div className={styles.priceTag}>
+                    <span className={styles.currency}>$</span>
+                    {item.price}
                   </div>
-                  <button className={styles.joinBtn}>
-                    JOIN <RiAddLine />
+                  <button className={styles.accessBtn}>
+                    {item.btnText} <RiUserHeartLine />
                   </button>
                 </div>
               </div>
             ))}
 
-            <div className={`${styles.memberCard} ${styles.ctaCard}`}>
+            {/* "Create Yours" CTA Card */}
+            <div className={`${styles.productCard} ${styles.ctaCard}`}>
               <div className={styles.ctaContent}>
-                <div className={styles.ctaIcon}>
-                  <RiAddLine />
+                <div className={styles.iconBox}>
+                  <RiFlashlightFill />
                 </div>
-                <h3 className={styles.ctaTitle}>YOU'RE NEXT.</h3>
-                <p>Start selling your content in 5 minutes.</p>
-                <button className={styles.setupBtn}>
-                  SETUP PROFILE <RiArrowRightLine />
+                <h3 className={styles.ctaHeading}>
+                  YOUR EMPIRE <br />
+                  <span className={styles.whiteHighlight}>STARTS HERE.</span>
+                </h3>
+                <p className={styles.ctaText}>
+                  Join 10,000+ creators earning on their own terms.
+                </p>
+                <button className={styles.startBtn}>
+                  Create My Page <RiArrowRightLine />
                 </button>
               </div>
             </div>

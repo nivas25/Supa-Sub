@@ -1,122 +1,159 @@
-/* --- BASE WRAPPER --- */
-.navWrapper {
-  position: fixed;
-  top: 15px;
-  left: 0;
-  width: 100%;
-  padding: 0 15px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  z-index: 9999;
+/* Navbar.module.css */
+
+:root {
+  --foreground: #0f1724;
+  --accent: #6c5ce7;
+  --font-outfit: "Outfit", system-ui, -apple-system, sans-serif;
+  --font-space: "Space Grotesk", system-ui, -apple-system, sans-serif;
 }
 
-/* --- THE MAIN GLASS BAR --- */
+/* Wrapper keeps navbar fixed and centered */
+.navWrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 12px 15px;
+  display: flex;
+  justify-content: center;
+  z-index: 9999;
+  pointer-events: none; /* Let clicks pass through the empty sides */
+}
+
+/* When collapsed, position to the right */
+.navWrapper.collapsedWrapper {
+  justify-content: flex-end;
+  padding-right: 20px;
+}
+
+/* Main glass panel - FIXED FROSTED GLASS */
 .navMain {
+  pointer-events: auto;
   width: 100%;
   max-width: 1100px;
-  height: 64px;
+  height: 56px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 20px;
-  border-radius: 100px;
-
-  /* PREMIUM FROSTED GLASS EFFECT */
-  background: rgba(255, 255, 255, 0.35);
-  backdrop-filter: blur(40px) saturate(220%) brightness(1.2);
-  -webkit-backdrop-filter: blur(40px) saturate(220%) brightness(1.2);
-
-  /* STRONG GLASS BORDER */
-  border: 2px solid rgba(255, 255, 255, 0.95);
-
-  /* LAYERED GLASS SHADOWS */
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08),
-    0 0 0 1px rgba(255, 255, 255, 0.4) inset,
-    0 1px 0 rgba(255, 255, 255, 0.8) inset;
-
+  padding: 0 24px;
+  border-radius: 100px; /* Rounder looks more "pill-like" and modern */
   position: relative;
   overflow: hidden;
-  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-  transform: translateZ(0);
-  backface-visibility: hidden;
+
+  /* --- CRITICAL GLASS FIXES --- */
+  /* 1. Make background nearly transparent so blur works */
+  background: rgba(255, 255, 255, 0.01);
+
+  /* 2. Heavy blur + Saturation to pop colors behind it */
+  backdrop-filter: blur(25px) saturate(180%);
+  -webkit-backdrop-filter: blur(25px) saturate(180%);
+  -moz-backdrop-filter: blur(25px) saturate(180%);
+
+  /* 3. Subtle border */
+  border: 1px solid rgba(255, 255, 255, 0.3);
+
+  /* 4. Glass reflection shadow */
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03),
+    inset 0 0 20px rgba(255, 255, 255, 0.2);
+
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, backdrop-filter, width;
 }
 
-/* Specular highlight on top edge */
-.navMain::before {
+/* Glossy reflection on top half */
+.navMain::after {
   content: "";
   position: absolute;
-  left: 10%;
-  right: 10%;
-  top: 2px;
-  height: 1px;
+  left: 0;
+  top: 0;
+  right: 0;
+  height: 40%;
   background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.8),
-    transparent
+    180deg,
+    rgba(255, 255, 255, 0.15),
+    rgba(255, 255, 255, 0)
   );
   pointer-events: none;
-  z-index: 1;
+  border-radius: 100px 100px 0 0;
 }
 
-.navMain:hover {
-  transform: translateY(-2px) translateZ(0);
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.12),
-    0 0 0 1px rgba(255, 255, 255, 0.3) inset,
-    0 1px 0 rgba(255, 255, 255, 0.7) inset;
+/* Collapsed compact state */
+.collapsed {
+  height: 48px;
+  width: 60px;
+  max-width: 60px;
+  padding: 0;
+  border-radius: 50%; /* Perfect circle when collapsed */
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.6); /* Slightly more opaque when small */
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
-/* --- LOGO --- */
+@media (max-width: 850px) {
+  .collapsed {
+    height: 44px;
+    width: 44px;
+    max-width: 44px;
+  }
+}
+
+/* Logo */
 .logo {
   font-family: var(--font-outfit), sans-serif;
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   font-weight: 900;
   color: var(--foreground);
   text-decoration: none;
-  letter-spacing: -1px;
   text-transform: uppercase;
-  position: relative;
   z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: opacity 0.2s ease;
 }
 
 .logo span {
   color: var(--accent);
 }
 
-/* --- DESKTOP LINKS --- */
+.collapsed .logo {
+  opacity: 0;
+  width: 0;
+  pointer-events: none;
+  display: none;
+}
+
+/* Desktop links */
 .desktopLinks {
   display: none;
-  gap: 15px;
+  gap: 8px;
   z-index: 2;
+  align-items: center;
 }
 
 .desktopLinks a {
   text-decoration: none;
-  color: var(--foreground);
-  font-family: var(--font-space), sans-serif;
-  font-weight: 700;
-  font-size: 0.75rem;
+  color: #333;
+  font-family: var(--font-space);
+  font-weight: 600;
+  font-size: 0.8rem;
   text-transform: uppercase;
   padding: 8px 16px;
   border-radius: 50px;
-  transition: 0.3s;
-  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .desktopLinks a:hover {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(0, 0, 0, 0.05);
   color: var(--accent);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
 }
 
-.desktopLinks a.active {
-  background: var(--accent);
-  color: #fff;
+.active {
+  background: rgba(0, 0, 0, 0.05);
+  color: var(--accent) !important;
 }
 
-/* --- ACTIONS --- */
+/* Action buttons */
 .actions {
   display: flex;
   align-items: center;
@@ -126,166 +163,233 @@
 
 .desktopButtons {
   display: none;
+  gap: 12px;
   align-items: center;
-  gap: 15px;
 }
 
 .dashboardLink {
   text-decoration: none;
   color: var(--foreground);
-  font-family: var(--font-space), sans-serif;
+  font-family: var(--font-space);
   font-weight: 700;
   font-size: 0.75rem;
   text-transform: uppercase;
   padding: 8px 16px;
   border-radius: 50px;
   transition: 0.3s;
-  cursor: pointer;
-}
-
-.dashboardLink:hover {
-  background: rgba(255, 255, 255, 0.15);
-  color: var(--accent);
 }
 
 .cta {
-  background: var(--foreground);
-  color: #fff !important;
-  padding: 10px 24px;
-  border-radius: 40px;
-  text-decoration: none;
-  font-family: var(--font-space), sans-serif;
+  background: #0f1724;
+  color: white;
+  padding: 8px 20px;
+  border-radius: 100px;
   font-weight: 700;
-  font-size: 0.8rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  font-size: 0.75rem;
   text-transform: uppercase;
-  transition: 0.3s;
   cursor: pointer;
+  border: none;
+  transition: transform 0.2s ease;
 }
 
 .cta:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  transform: scale(1.05);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
-/* --- MOBILE STYLES --- */
+/* Mobile Toggle */
 .mobileToggle {
-  display: flex;
+  display: none;
   flex-direction: column;
-  gap: 5px;
+  gap: 4px;
   background: none;
   border: none;
   cursor: pointer;
-  z-index: 2;
+  z-index: 10;
+  padding: 6px 8px;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 200ms ease;
+}
+
+.mobileToggle:hover {
+  opacity: 0.7;
 }
 
 .bar {
-  width: 22px;
+  width: 18px;
   height: 2px;
   background: var(--foreground);
   border-radius: 10px;
-  transition: 0.3s;
+  transition: all 220ms cubic-bezier(0.2, 0.9, 0.3, 1);
+  transform-origin: center;
 }
 
+/* Initial bar states - visible as hamburger */
+.bar1 {
+  transform: translateY(0) rotate(0deg);
+  opacity: 1;
+}
+.bar2 {
+  transform: translateY(0) rotate(0deg);
+  opacity: 1;
+}
+.bar3 {
+  transform: translateY(0) rotate(0deg);
+  opacity: 1;
+}
+
+.mobileToggle.desktopCollapsed {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Menu States - Open/Close Animation - Only apply when menu is open */
+.openBar1 {
+  transform: translateY(5px) rotate(45deg) !important;
+  opacity: 1 !important;
+}
+.openBar2 {
+  opacity: 0 !important;
+  transform: scaleX(0.2) !important;
+}
+.openBar3 {
+  transform: translateY(-5px) rotate(-45deg) !important;
+  opacity: 1 !important;
+}
+
+/* Mobile Menu Sheet */
 .mobileMenu {
-  display: none;
-  position: absolute;
-  top: 80px;
-  width: calc(100% - 30px);
-  max-width: 400px;
-  background: rgba(255, 255, 255, 0.42);
-  backdrop-filter: blur(12px) saturate(170%);
-  -webkit-backdrop-filter: blur(12px) saturate(170%);
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  border-radius: 24px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08),
-    0 0 0 1px rgba(255, 255, 255, 0.25) inset,
-    0 1px 0 rgba(255, 255, 255, 0.6) inset;
+  display: flex;
+  position: fixed;
+  top: 70px;
+  right: 15px;
+  width: 280px;
+  padding: 20px;
   flex-direction: column;
-  padding: 25px;
-  gap: 10px;
-  transform: translateZ(0);
-  backface-visibility: hidden;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  transform: translateY(-10px) scale(0.95);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.2s ease;
+  z-index: 9998;
+}
+
+.menuActive {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .mobileMenu a {
-  text-decoration: none;
-  color: var(--foreground);
-  font-family: var(--font-space), sans-serif;
   font-weight: 700;
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  padding: 12px 16px;
+  font-size: 0.9rem;
+  padding: 12px;
   border-radius: 12px;
-  transition: 0.3s;
-  cursor: pointer;
+  text-transform: uppercase;
+  color: #333;
+  text-decoration: none;
 }
 
-.mobileMenu a:hover,
-.mobileMenu a.active {
-  background: rgba(255, 255, 255, 0.15);
-  color: var(--accent);
+.mobileMenu a:hover {
+  background: rgba(0, 0, 0, 0.05);
 }
 
 .divider {
   border: none;
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
-  margin: 8px 0;
+  height: 1px;
+  background: rgba(0, 0, 0, 0.1);
+  margin: 10px 0;
 }
 
 .mobileCta {
-  background: var(--foreground);
-  color: #fff;
-  padding: 12px 24px;
-  border-radius: 40px;
-  font-family: var(--font-space), sans-serif;
-  font-weight: 700;
-  font-size: 0.85rem;
-  border: none;
-  text-transform: uppercase;
-  cursor: pointer;
   width: 100%;
-  transition: 0.3s;
-}
-
-.mobileCta:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-}
-
-.mobileDashboard {
-  text-decoration: none;
-  color: var(--foreground);
-  font-family: var(--font-space), sans-serif;
-  font-weight: 700;
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  padding: 12px 16px;
+  background: #000;
+  color: white;
+  padding: 12px;
   border-radius: 12px;
-  transition: 0.3s;
-  cursor: pointer;
-  text-align: center;
+  font-weight: 800;
+  text-transform: uppercase;
 }
 
-.mobileDashboard:hover {
-  background: rgba(255, 255, 255, 0.15);
-  color: var(--accent);
-}
+/* Responsive */
+@media (max-width: 850px) {
+  /* Mobile navbar adjustments */
+  .navWrapper {
+    padding: 10px 12px;
+  }
 
-.menuActive {
-  display: flex;
+  .navMain {
+    height: 50px;
+    padding: 0 16px;
+    border-radius: 80px;
+    max-width: 100%;
+  }
+
+  .logo {
+    font-size: 1rem;
+  }
+
+  .logo span {
+    display: none; /* Hide dot on mobile */
+  }
+
+  /* Mobile menu positioning */
+  .mobileMenu {
+    position: fixed;
+    top: 66px;
+    left: 12px;
+    right: 12px;
+    width: auto;
+    max-width: none;
+    padding: 12px;
+    border-radius: 14px;
+  }
+
+  .mobileMenu a {
+    padding: 10px;
+    font-size: 0.85rem;
+  }
+
+  .mobileCta {
+    padding: 10px;
+    font-size: 0.8rem;
+  }
+
+  .mobileToggle {
+    display: flex;
+  }
+
+  .desktopLinks,
+  .desktopButtons {
+    display: none;
+  }
 }
 
 @media (min-width: 850px) {
-  .mobileToggle,
-  .mobileMenu {
-    display: none !important;
-  }
   .desktopLinks,
   .desktopButtons {
     display: flex;
   }
-  .navMain {
-    height: 72px;
+
+  .mobileToggle {
+    display: none;
+  }
+
+  /* Collapsed Logic */
+  .collapsed .desktopLinks,
+  .collapsed .desktopButtons {
+    display: none;
+  }
+
+  .collapsed .mobileToggle {
+    display: flex;
   }
 }

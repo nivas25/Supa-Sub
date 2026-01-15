@@ -8,11 +8,7 @@ export default function LandingLayout({
   return (
     <>
       <LandingNavbar />
-      <main style={{ paddingTop: "130px" }}>
-        {" "}
-        {/* Pushes content down past navbar */}
-        {children}
-      </main>
+      <main>{children}</main>
     </>
   );
 }

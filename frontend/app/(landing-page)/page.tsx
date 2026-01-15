@@ -1,6 +1,7 @@
 import Navbar from "./_components/Navbar";
 import Hero from "./_components/Hero";
 import Features from "./_components/Features";
+import Analytics from "./_components/Analytics"; // Import the new section
 import Steps from "./_components/Steps";
 import ProfileShowcase from "./_components/ProfileShowcase";
 import Identity from "./_components/Identity";
@@ -10,13 +11,7 @@ import Footer from "./_components/Footer";
 
 export default function LandingPage() {
   return (
-    <main
-      style={{
-        overflow: "clip",
-        scrollBehavior: "smooth",
-        background: "#ffffff00", // Pure white base for the industrial look
-      }}
-    >
+    <main>
       <Navbar />
 
       <Hero />
@@ -29,11 +24,15 @@ export default function LandingPage() {
         <Features />
       </section>
 
+      {/* NEW: ANALYTICS "SPECTRUM COMMAND CENTER" */}
+      <section id="analytics">
+        <Analytics />
+      </section>
+
       <section id="blueprint">
         <Steps />
       </section>
 
-      {/* NEW SECTION: SHOWCASE THE CREATORS */}
       <section id="showcase">
         <ProfileShowcase />
       </section>

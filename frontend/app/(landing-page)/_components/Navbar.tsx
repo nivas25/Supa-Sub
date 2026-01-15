@@ -7,14 +7,14 @@ import styles from "./Navbar.module.css";
 export default function LandingNavbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   useEffect(() => {
     let ticking = false;
     const sections = ["features", "blueprint", "showcase", "pricing", "faq"];
 
     const runMeasurement = () => {
-      const scrollPosition = window.scrollY + 150; // Offset for navbar
-
+      const scrollPosition = window.scrollY + 150; // offset for navbar
       let foundSection = "";
       for (const section of sections) {
         const element = document.getElementById(section);
@@ -29,7 +29,6 @@ export default function LandingNavbar() {
           }
         }
       }
-
       setActiveSection((prev) => (prev === foundSection ? prev : foundSection));
       ticking = false;
     };
@@ -41,9 +40,53 @@ export default function LandingNavbar() {
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
-    runMeasurement(); // Initial check
+    runMeasurement(); // initial
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Collapse navbar when scrolled past threshold
+  useEffect(() => {
+    const onScroll = () => {
+      const shouldCollapse = window.scrollY > 80;
+      setIsCollapsed(shouldCollapse);
+      // Close menu when scrolling back to top
+      if (!shouldCollapse) {
+        setIsMenuOpen(false);
+      }
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Close menu on Escape, when resizing to desktop, and when clicking outside
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setIsMenuOpen(false);
+    };
+    const onResize = () => {
+      setIsMenuOpen(false);
+    };
+    const onClickOutside = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      const nav = document.querySelector("[aria-label='Primary']");
+      
+      // Close menu if click is outside navbar (works for both mobile and desktop)
+      if (nav && !nav.contains(target) && isMenuOpen) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    window.addEventListener("keydown", onKey);
+    window.addEventListener("resize", onResize);
+    document.addEventListener("click", onClickOutside, true); // Use capture phase
+    
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      window.removeEventListener("resize", onResize);
+      document.removeEventListener("click", onClickOutside, true);
+    };
+  }, [isMenuOpen]);
 
   const handleNavClick = (sectionId: string) => {
     setIsMenuOpen(false);
@@ -59,14 +102,25 @@ export default function LandingNavbar() {
   };
 
   return (
-    <nav className={styles.navWrapper}>
-      <div className={styles.navMain}>
+    <nav
+      className={`${styles.navWrapper} ${
+        isCollapsed ? styles.collapsedWrapper : ""
+      }`}
+      aria-label="Primary"
+    >
+      <div
+        className={`${styles.navMain} ${isCollapsed ? styles.collapsed : ""}`}
+      >
         <Link href="/" className={styles.logo}>
           SubStarter<span>.</span>
         </Link>
 
-        {/* Desktop Links - Hidden on Mobile */}
-        <div className={styles.desktopLinks}>
+        {/* Desktop Links */}
+        <div
+          className={styles.desktopLinks}
+          role="navigation"
+          aria-label="Section links"
+        >
           <a
             href="#features"
             onClick={(e) => {
@@ -120,7 +174,6 @@ export default function LandingNavbar() {
         </div>
 
         <div className={styles.actions}>
-          {/* These will stay styled as buttons on desktop */}
           <div className={styles.desktopButtons}>
             <SignedOut>
               <SignInButton mode="modal" forceRedirectUrl="/dashboard">
@@ -135,28 +188,41 @@ export default function LandingNavbar() {
             </SignedIn>
           </div>
 
+          {/* Mobile Toggle */}
           <button
             className={styles.mobileToggle}
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            onClick={() => setIsMenuOpen((s) => !s)}
+            aria-expanded={isMenuOpen}
+            aria-controls="mobile-menu"
+            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
           >
             <div
-              className={`${styles.bar} ${isMenuOpen ? styles.bar1 : ""}`}
-            ></div>
+              className={`${styles.bar} ${
+                isMenuOpen ? styles.openBar1 : styles.bar1
+              }`}
+            />
             <div
-              className={`${styles.bar} ${isMenuOpen ? styles.bar2 : ""}`}
-            ></div>
+              className={`${styles.bar} ${
+                isMenuOpen ? styles.openBar2 : styles.bar2
+              }`}
+            />
             <div
-              className={`${styles.bar} ${isMenuOpen ? styles.bar3 : ""}`}
-            ></div>
+              className={`${styles.bar} ${
+                isMenuOpen ? styles.openBar3 : styles.bar3
+              }`}
+            />
           </button>
         </div>
       </div>
 
       {/* Mobile Overlay */}
       <div
+        id="mobile-menu"
         className={`${styles.mobileMenu} ${
           isMenuOpen ? styles.menuActive : ""
         }`}
+        role="menu"
+        aria-hidden={!isMenuOpen}
       >
         <a
           href="#features"
@@ -165,6 +231,7 @@ export default function LandingNavbar() {
             handleNavClick("features");
           }}
           className={activeSection === "features" ? styles.active : ""}
+          role="menuitem"
         >
           Features
         </a>
@@ -175,6 +242,7 @@ export default function LandingNavbar() {
             handleNavClick("blueprint");
           }}
           className={activeSection === "blueprint" ? styles.active : ""}
+          role="menuitem"
         >
           Blueprint
         </a>
@@ -185,6 +253,7 @@ export default function LandingNavbar() {
             handleNavClick("showcase");
           }}
           className={activeSection === "showcase" ? styles.active : ""}
+          role="menuitem"
         >
           Showcase
         </a>
@@ -195,6 +264,7 @@ export default function LandingNavbar() {
             handleNavClick("pricing");
           }}
           className={activeSection === "pricing" ? styles.active : ""}
+          role="menuitem"
         >
           Pricing
         </a>
@@ -205,15 +275,19 @@ export default function LandingNavbar() {
             handleNavClick("faq");
           }}
           className={activeSection === "faq" ? styles.active : ""}
+          role="menuitem"
         >
           FAQ
         </a>
+
         <hr className={styles.divider} />
+
         <SignedOut>
           <SignInButton mode="modal" forceRedirectUrl="/dashboard">
             <button className={styles.mobileCta}>Login</button>
           </SignInButton>
         </SignedOut>
+
         <SignedIn>
           <Link href="/dashboard" className={styles.mobileDashboard}>
             Dashboard

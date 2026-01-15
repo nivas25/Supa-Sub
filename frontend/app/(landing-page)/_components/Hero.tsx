@@ -1,58 +1,78 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import styles from "./Hero.module.css";
+import { RiArrowRightLine, RiFlashlightFill } from "react-icons/ri";
 
 export default function Hero() {
+  const [slug, setSlug] = useState("");
+
   return (
     <section className={styles.heroWrapper}>
       <div className={styles.container}>
-        {/* Modern Status Badge */}
+        {/* Status Badge */}
         <div className={styles.badge}>
           <span className={styles.statusDot} />
           <span className={styles.badgeText}>
-            PARTNER_PROGRAM: 95/5_REVENUE_SPLIT
+            PARTNER PROGRAM: 95/5 REVENUE SPLIT
           </span>
         </div>
 
+        {/* Title with Multi-Colored Slider */}
         <h1 className={styles.mainTitle}>
           <span className={styles.lightText}>MONETIZE YOUR</span>
-          <div className={styles.slidingContainer}>
+
+          <div className={styles.sliderContainer}>
             <div className={styles.wordSlider}>
-              <span className={`${styles.word} ${styles.pink}`}>
+              <div className={`${styles.word} ${styles.pink}`}>
                 MASTERCLASSES
-              </span>
-              <span className={`${styles.word} ${styles.yellow}`}>COURSES</span>
-              <span className={`${styles.word} ${styles.green}`}>
-                RESOURCES
-              </span>
-              <span className={`${styles.word} ${styles.orange}`}>
-                EXPERTISE
-              </span>
-              <span className={`${styles.word} ${styles.blue}`}>SOLUTIONS</span>
-              <span className={`${styles.word} ${styles.pink}`}>CONTENT</span>
-              {/* Loop node */}
-              <span className={`${styles.word} ${styles.pink}`}>
+              </div>
+              <div className={`${styles.word} ${styles.yellow}`}>COURSES</div>
+              <div className={`${styles.word} ${styles.green}`}>RESOURCES</div>
+              <div className={`${styles.word} ${styles.orange}`}>EXPERTISE</div>
+              <div className={`${styles.word} ${styles.blue}`}>SOLUTIONS</div>
+              <div className={`${styles.word} ${styles.red}`}>CONTENT</div>
+              {/* Duplicate first word for seamless loop */}
+              <div className={`${styles.word} ${styles.pink}`}>
                 MASTERCLASSES
-              </span>
+              </div>
             </div>
           </div>
+
           <span className={styles.boldText}>IN EASY WAY.</span>
         </h1>
 
-        <div className={styles.contentSection}>
-          <p className={styles.description}>
-            We deploy your full digital infrastructure.
-            <strong> You keep 95% of every sale.</strong>
-          </p>
+        <p className={styles.description}>
+          We deploy your full digital infrastructure.
+          <span className={styles.highlight}> You keep 95% of every sale.</span>
+        </p>
 
-          <div className={styles.ctaGroup}>
-            <a href="#deploy" className={styles.primaryBtn}>
-              INITIALIZE DEPLOYMENT
-              <span className={styles.btnIcon}>→</span>
-            </a>
-            <span className={styles.trustLabel}>
-              No setup fees • Performance based
+        {/* Unique Split-Design Input Bar */}
+        <div className={styles.uniqueInputWrapper}>
+          <div className={styles.liquidBar}>
+            <div className={styles.inputSection}>
+              <span className={styles.brandPrefix}>substarter.com/</span>
+              <input
+                type="text"
+                placeholder="username"
+                className={styles.cleanInput}
+                value={slug}
+                onChange={(e) => setSlug(e.target.value)}
+              />
+            </div>
+            <button className={styles.actionButton}>
+              <span className={styles.btnText}>Get started for free</span>
+              <div className={styles.btnIcon}>
+                <RiArrowRightLine />
+              </div>
+            </button>
+          </div>
+
+          <div className={styles.trustTags}>
+            <span>
+              <RiFlashlightFill /> No setup fees
             </span>
+            <span className={styles.dot}>•</span>
+            <span>Performance based</span>
           </div>
         </div>
       </div>

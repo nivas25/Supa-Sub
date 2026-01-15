@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { CSSProperties } from "react";
 import styles from "./Steps.module.css";
 import {
   RiSettings4Line,
@@ -7,6 +7,12 @@ import {
   RiRefreshLine,
   RiMoneyDollarCircleLine,
 } from "react-icons/ri";
+
+// Helper type to allow custom CSS variables in TypeScript
+interface CustomStyle extends CSSProperties {
+  "--index"?: number;
+  "--accent"?: string;
+}
 
 export default function Steps() {
   const journey = [
@@ -70,11 +76,13 @@ export default function Steps() {
             <div
               key={i}
               className={styles.stepBlock}
-              style={{ "--index": i } as any}
+              // CLEANER FIX: Use the custom interface instead of 'as any'
+              style={{ "--index": i } as CustomStyle}
             >
               <div
                 className={styles.card}
-                style={{ "--accent": step.color } as any}
+                // CLEANER FIX: Use the custom interface instead of 'as any'
+                style={{ "--accent": step.color } as CustomStyle}
               >
                 <div className={styles.cardTop}>
                   <div className={styles.numberArea}>

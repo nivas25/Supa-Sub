@@ -1,22 +1,35 @@
 .wrapper {
   background: #ffffff;
-  padding: 120px 0;
-  border-top: 4px solid #000;
-  background-image: radial-gradient(#000 1.2px, transparent 1.2px);
-  background-size: 35px 35px;
+  padding: 140px 0;
+  position: relative;
   overflow: hidden;
 }
 
+/* --- HIGH-VISIBILITY DOT GRID --- */
+.dotPattern {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: radial-gradient(#bbb 1.8px, transparent 1.8px);
+  background-size: 26px 26px;
+  z-index: 0;
+  opacity: 0.8;
+}
+
 .container {
-  max-width: 1000px;
+  max-width: 1100px;
   margin: 0 auto;
   padding: 0 25px;
+  position: relative;
+  z-index: 1;
 }
 
 /* --- HEADER --- */
 .header {
   text-align: center;
-  margin-bottom: 60px;
+  margin-bottom: 70px;
 }
 
 .statusLabel {
@@ -25,48 +38,67 @@
   gap: 10px;
   background: #000;
   color: #fff;
-  padding: 6px 15px;
+  padding: 8px 16px;
   font-family: monospace;
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   font-weight: 900;
-  margin-bottom: 20px;
+  border-radius: 4px;
+  margin-bottom: 25px;
 }
 
 .pulse {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
   background: #05ac72;
   border-radius: 50%;
+  box-shadow: 0 0 10px #05ac72;
   animation: blink 1s infinite;
 }
 
 .title {
   font-size: clamp(2.5rem, 8vw, 4.5rem);
-  font-weight: 1000;
-  letter-spacing: -3px;
-  line-height: 0.9;
+  font-weight: 900;
+  letter-spacing: -2px;
+  line-height: 1;
+  text-transform: uppercase;
 }
 
-.outline {
-  color: transparent;
-  -webkit-text-stroke: 1.5px #000;
+.stylishText {
+  color: #6366f1; /* Stylish Purple */
+  text-decoration: underline;
+  text-decoration-color: #000;
+  text-underline-offset: 10px;
+  text-decoration-thickness: 6px;
 }
 
-/* --- THE CARD --- */
+.subTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #444;
+  margin-top: 30px;
+}
+
+/* --- THE PRICING CARD --- */
 .pricingCard {
   background: #fff;
-  border: 4px solid #000;
-  box-shadow: 15px 15px 0 #000;
+  border: 3px solid #000;
+  border-radius: 32px;
+  box-shadow: 12px 12px 0 #000;
   display: grid;
-  grid-template-columns: 1fr 1fr; /* Desktop default */
-  position: relative;
-  transition: 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+  grid-template-columns: 1fr 1fr;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.pricingCard:hover {
+  transform: translate(-4px, -4px);
+  box-shadow: 18px 18px 0 #6366f1;
 }
 
 .revenueHero {
-  background: #f8f8f8;
+  background: #f8f7ff; /* Match Purple Tone */
   padding: 60px;
-  border-right: 4px solid #000;
+  border-right: 3px solid #000;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -76,11 +108,11 @@
 .splitWrapper {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 20px;
 }
 
 .bigNumber {
-  font-size: 8rem;
+  font-size: clamp(6rem, 10vw, 9rem);
   font-weight: 1000;
   line-height: 1;
   color: #000;
@@ -97,145 +129,123 @@
   font-weight: 1000;
   color: #000;
 }
+
 .verticalLine {
   width: 4px;
-  height: 40px;
+  height: 50px;
   background: #000;
-  margin: 5px 0;
+  margin: 8px 0;
 }
-.ten {
+
+.fee {
   font-size: 2.5rem;
   font-weight: 1000;
-  color: #05ac72;
+  color: #ff3344; /* Changed to stylish Red */
 }
 
 .heroText {
-  font-family: monospace;
-  font-weight: 1000;
-  font-size: 0.8rem;
-  margin-top: 20px;
-  opacity: 0.4;
+  font-weight: 900;
+  font-size: 0.9rem;
+  margin-top: 25px;
+  letter-spacing: 1px;
+  color: #000;
+  opacity: 0.6;
 }
 
 /* --- DETAILS AREA --- */
 .detailsArea {
   padding: 60px;
+  background: #fff;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
 .featureList {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 15px;
-  margin-bottom: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-bottom: 45px;
 }
 
 .featureItem {
   display: flex;
   align-items: center;
-  gap: 12px;
-  font-weight: 800;
-  font-size: 1.05rem;
+  gap: 14px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #111;
 }
 
 .check {
   color: #05ac72;
-  font-size: 1.4rem;
+  font-size: 1.6rem;
 }
 
 .ctaButton {
   background: #000;
   color: #fff;
   border: none;
-  padding: 22px;
-  font-size: 1.1rem;
-  font-weight: 1000;
+  padding: 24px;
+  border-radius: 12px;
+  font-size: 1.2rem;
+  font-weight: 900;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 12px;
   cursor: pointer;
-  transition: 0.3s;
+  transition: all 0.2s ease;
 }
 
 .ctaButton:hover {
-  background: #05ac72;
+  background: #6366f1;
   transform: scale(1.02);
 }
 
 .securityTag {
-  margin-top: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  font-family: monospace;
-  font-size: 0.65rem;
-  font-weight: 900;
-  opacity: 0.3;
-}
-
-/* HARDWARE CORNERS */
-.cornerTL {
-  position: absolute;
-  top: -8px;
-  left: -8px;
-  width: 25px;
-  height: 25px;
-  border-top: 6px solid #05ac72;
-  border-left: 6px solid #05ac72;
-}
-.cornerBR {
-  position: absolute;
-  bottom: -8px;
-  right: -8px;
-  width: 25px;
-  height: 25px;
-  border-bottom: 6px solid #05ac72;
-  border-right: 6px solid #05ac72;
-}
-
-.footerNote {
-  margin-top: 50px;
+  margin-top: 25px;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
-  font-family: monospace;
-  font-size: 0.7rem;
-  font-weight: 900;
-  opacity: 0.3;
+  font-weight: 800;
+  font-size: 0.8rem;
+  color: #666;
 }
 
-/* --- MOBILE OPTIMIZATION --- */
+.footerNote {
+  margin-top: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-family: monospace;
+  font-size: 0.8rem;
+  font-weight: 900;
+  color: #000;
+}
+
+/* --- MOBILE --- */
 @media (max-width: 900px) {
   .pricingCard {
-    grid-template-columns: 1fr; /* Stacks vertically */
-    box-shadow: 10px 10px 0 #000;
+    grid-template-columns: 1fr;
+    border-radius: 24px;
   }
 
   .revenueHero {
-    padding: 40px 20px;
+    padding: 50px 20px;
     border-right: none;
-    border-bottom: 4px solid #000;
-  }
-
-  .bigNumber {
-    font-size: 6rem;
+    border-bottom: 3px solid #000;
   }
 
   .detailsArea {
-    padding: 40px 25px;
+    padding: 40px 24px;
   }
 
-  .featureList {
-    grid-template-columns: 1fr; /* Kept clean for mobile */
-  }
-
-  .title {
-    font-size: 3rem;
+  .stylishText {
+    text-underline-offset: 6px;
+    text-decoration-thickness: 4px;
   }
 }
 

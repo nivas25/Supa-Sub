@@ -1,0 +1,414 @@
+/* Analytics.module.css */
+
+.wrapper {
+  padding: 120px 0;
+  background: #ffffff; /* Plain White Background */
+  overflow: hidden;
+  position: relative;
+}
+
+.container {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* --- GRID LAYOUT --- */
+.splitGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+
+/* --- LEFT SIDE: TYPOGRAPHY --- */
+.leftContent {
+  text-align: left;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #f5f5f5;
+  color: #000;
+  padding: 6px 12px;
+  border-radius: 100px;
+  font-weight: 800;
+  font-size: 0.75rem;
+  margin-bottom: 25px;
+  border: 1px solid #eee;
+}
+
+.pulseDot {
+  width: 8px;
+  height: 8px;
+  background: #ff0055;
+  border-radius: 50%;
+  animation: pulse 1.5s infinite;
+}
+
+/* Wordmap Slider Styles */
+.mainTitle {
+  font-size: clamp(3rem, 5vw, 4.5rem);
+  font-weight: 900;
+  line-height: 1.1;
+  color: #000;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.1em;
+  margin-bottom: 25px;
+}
+
+.sliderContainer {
+  height: 1.1em;
+  overflow: hidden;
+  display: inline-block;
+  background: #000;
+  padding: 0 0.2em;
+  border-radius: 8px;
+  transform: rotate(-1.5deg); /* Stylish Tilt */
+}
+
+.wordSlider {
+  display: flex;
+  flex-direction: column;
+  animation: slideWords 10s cubic-bezier(0.85, 0, 0.15, 1) infinite;
+}
+
+.word {
+  height: 1.1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  white-space: nowrap;
+}
+
+/* Word Colors */
+.blue {
+  color: #00e0ff;
+}
+.pink {
+  color: #ff0055;
+}
+.green {
+  color: #00ff66;
+}
+.yellow {
+  color: #ffd600;
+}
+.purple {
+  color: #b026ff;
+}
+
+.description {
+  font-size: 1.1rem;
+  color: #555;
+  line-height: 1.6;
+  max-width: 450px;
+  margin-bottom: 40px;
+}
+
+.exploreBtn {
+  background: #000;
+  color: #fff;
+  border: none;
+  padding: 16px 32px;
+  border-radius: 100px;
+  font-weight: 800;
+  font-size: 1rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  transition: transform 0.2s;
+}
+
+.exploreBtn:hover {
+  transform: translateY(-2px);
+  background: #333;
+}
+
+/* --- RIGHT SIDE: STORIES ENGINE --- */
+.rightContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+}
+
+/* 1. Story Tray */
+.storyTray {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+
+.storyCircleWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: transform 0.2s;
+  opacity: 0.6; /* Inactive state */
+}
+
+.storyCircleWrapper:hover {
+  transform: scale(1.1);
+  opacity: 1;
+}
+
+.activeRing {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.rainbowRing {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  padding: 3px;
+  background: linear-gradient(45deg, #00e0ff, #ff0055, #ffd600, #00ff66);
+  position: relative;
+  animation: spin 4s linear infinite;
+}
+
+.innerCircle {
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  border: 3px solid #fff;
+}
+
+.storyLabel {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: #000;
+}
+
+/* 2. Story Viewer (Phone) */
+.viewerContainer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.storyCard {
+  width: 340px;
+  height: 560px;
+  border-radius: 32px;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15); /* Soft premium shadow */
+  padding: 24px;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: background 0.5s ease;
+  border: 6px solid #fff; /* Phone bezel feel */
+}
+
+/* Progress Bars */
+.progressRow {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 25px;
+}
+
+.progressBarBg {
+  flex: 1;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progressBarFill {
+  height: 100%;
+  background: #fff;
+  width: 0%;
+}
+
+.filled {
+  width: 100%;
+}
+.animating {
+  animation: fillBar 4s linear forwards;
+}
+
+/* Header */
+.storyHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 40px;
+}
+
+.userAvatar {
+  width: 36px;
+  height: 36px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(5px);
+}
+
+.userName {
+  font-weight: 700;
+  font-size: 0.9rem;
+  display: block;
+}
+.timeAgo {
+  font-size: 0.75rem;
+  opacity: 0.8;
+}
+
+/* Content */
+.storyContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.iconBig {
+  font-size: 5rem;
+  margin-bottom: 20px;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.2));
+}
+
+.storyValue {
+  font-size: 3.5rem;
+  font-weight: 1000;
+  margin-bottom: 15px;
+  line-height: 1;
+}
+
+.storyBadge {
+  background: rgba(0, 0, 0, 0.2);
+  padding: 8px 16px;
+  border-radius: 100px;
+  font-weight: 700;
+  font-size: 1rem;
+  backdrop-filter: blur(5px);
+}
+
+/* Footer */
+.storyFooter {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.replyBox {
+  flex: 1;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 100px;
+  padding: 14px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: center;
+  color: #fff;
+}
+
+.heartBtn {
+  font-size: 1.8rem;
+  padding: 5px;
+}
+
+/* --- ANIMATIONS --- */
+@keyframes slideWords {
+  0%,
+  15% {
+    transform: translateY(0);
+  }
+  20%,
+  35% {
+    transform: translateY(-1.1em);
+  }
+  40%,
+  55% {
+    transform: translateY(-2.2em);
+  }
+  60%,
+  75% {
+    transform: translateY(-3.3em);
+  }
+  80%,
+  95% {
+    transform: translateY(-4.4em);
+  }
+  100% {
+    transform: translateY(-5.5em);
+  }
+}
+
+@keyframes fillBar {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* --- MOBILE --- */
+@media (max-width: 900px) {
+  .splitGrid {
+    grid-template-columns: 1fr;
+    gap: 60px;
+  }
+
+  .leftContent {
+    text-align: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .mainTitle {
+    align-items: center;
+  }
+
+  .description {
+    margin: 0 auto 30px;
+  }
+
+  .storyCard {
+    width: 100%;
+    max-width: 360px;
+  }
+}

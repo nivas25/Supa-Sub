@@ -1,20 +1,37 @@
-/* Base wrapper & layout remains identical to previous version */
+/* ProfileShowcase.module.css */
+
 .wrapper {
   background: #ffffff;
-  padding: 100px 0;
+  padding: 120px 0;
   overflow: hidden;
-  border-top: 5px solid #000;
-  background-image: radial-gradient(#00000015 1.5px, transparent 1.5px);
-  background-size: 30px 30px;
+  position: relative;
+  border-top: 1px solid #eee;
+}
+
+/* High-Visibility Dot Pattern */
+.dotPattern {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: radial-gradient(#ccc 1.5px, transparent 1.5px);
+  background-size: 24px 24px;
+  z-index: 0;
+  opacity: 0.6;
 }
 
 .container {
   max-width: 1400px;
   margin: 0 auto;
+  position: relative;
+  z-index: 1;
 }
+
+/* --- HEADER --- */
 .header {
   text-align: center;
-  margin-bottom: 50px;
+  margin-bottom: 70px;
   padding: 0 20px;
 }
 
@@ -27,8 +44,9 @@
   padding: 8px 16px;
   font-weight: 900;
   font-size: 0.75rem;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
   text-transform: uppercase;
+  border-radius: 4px;
 }
 
 .title {
@@ -36,83 +54,108 @@
   font-weight: 1000;
   line-height: 0.95;
   letter-spacing: -3px;
+  color: #000;
 }
 
-.highlight {
+.headerHighlight {
   color: #fff;
   background: #000;
   padding: 0 12px;
   display: inline-block;
-  transform: rotate(-1deg);
-  box-shadow: 6px 6px 0 #ff90e8;
+  transform: rotate(-1.5deg);
+  box-shadow: 8px 8px 0 #ff90e8;
 }
 
 .description {
   max-width: 600px;
-  margin: 25px auto 0;
+  margin: 30px auto 0;
   font-size: 1.1rem;
-  font-weight: 700;
-  line-height: 1.5;
-  color: #333;
+  font-weight: 600;
+  line-height: 1.6;
+  color: #444;
 }
 
-.scrollWrapper {
+/* --- MARKETPLACE SCROLLER --- */
+.scrollContainer {
+  width: 100%;
   overflow-x: auto;
-  padding: 40px 0 80px;
+  padding-bottom: 50px;
+  padding-left: max(20px, calc((100vw - 1350px) / 2));
+  padding-right: 20px;
   scrollbar-width: none;
   cursor: grab;
 }
 
-.scrollWrapper::-webkit-scrollbar {
+.scrollContainer::-webkit-scrollbar {
   display: none;
 }
 
-.scrollTrack {
+.track {
   display: flex;
-  gap: 35px;
-  padding: 0 5vw;
+  gap: 32px;
   width: max-content;
 }
 
-/* Card Improvements */
-.memberCard {
-  width: 330px;
+/* --- PRODUCT CARD --- */
+.productCard {
+  width: 320px;
+  height: 520px;
   background: #fff;
-  border: 4px solid #000;
-  padding: 20px;
-  box-shadow: 10px 10px 0 #000;
+  border: 3px solid #000;
+  border-radius: 28px;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
   position: relative;
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 10px 10px 0 #000;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  flex-shrink: 0;
 }
 
-.memberCard:hover {
-  transform: scale(1.02) rotate(1deg);
-  box-shadow: 15px 15px 0 var(--accent);
+.productCard:hover {
+  transform: translateY(-10px);
+  box-shadow: 18px 18px 0 var(--accent);
 }
 
-.cardTopRow {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 25px;
+/* Image Area */
+.imageArea {
+  height: 220px;
+  position: relative;
+  background: #f0f0f0;
+  border-bottom: 3px solid #000;
 }
 
-.statusBadge {
-  font-size: 0.65rem;
+.bgImage {
+  object-fit: cover;
+  z-index: 1;
+  transition: transform 0.5s ease;
+}
+
+.productCard:hover .bgImage {
+  transform: scale(1.05);
+}
+
+.liveTag {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  font-size: 0.7rem;
   font-weight: 900;
+  padding: 4px 10px;
+  border-radius: 100px;
+  z-index: 2;
   display: flex;
   align-items: center;
   gap: 6px;
-  border: 2px solid #000;
-  padding: 3px 10px;
+  backdrop-filter: blur(4px);
 }
 
 .pulseDot {
-  width: 8px;
-  height: 8px;
-  background: #ff0000;
+  width: 6px;
+  height: 6px;
+  background: #ff0044;
   border-radius: 50%;
   animation: pulse 1.5s infinite;
 }
@@ -123,7 +166,7 @@
     transform: scale(1);
   }
   50% {
-    opacity: 0.4;
+    opacity: 0.5;
     transform: scale(1.2);
   }
   100% {
@@ -132,158 +175,200 @@
   }
 }
 
-.typeTag {
-  font-family: monospace;
-  font-weight: 900;
-  font-size: 0.7rem;
-  color: #777;
-}
-
-/* PHOTO AREA */
-.photoArea {
-  position: relative;
-  margin-bottom: 40px;
-}
-
-.frame {
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  border: 4px solid #000;
-  position: relative;
-  overflow: hidden;
-  background: #f0f0f0;
-}
-
-.circle {
-  border-radius: 50%;
-}
-.hexagon {
-  clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
-}
-.diamond {
-  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-}
-
-/* UPGRADED NAME STICKER */
-.nameSticker {
+.categoryTag {
   position: absolute;
-  bottom: -20px;
-  left: 50%;
-  transform: translateX(-50%) rotate(-3deg);
-  z-index: 10;
-  filter: drop-shadow(4px 4px 0px rgba(0, 0, 0, 1));
-}
-
-.stickerText {
+  bottom: 15px;
+  left: 15px;
   background: #fff;
   color: #000;
-  padding: 6px 20px;
-  font-weight: 1000;
-  font-size: 1.3rem;
-  white-space: nowrap;
-  border: 3px solid #000;
-  display: block;
+  font-size: 0.7rem;
+  font-weight: 900;
+  padding: 4px 12px;
+  border: 2px solid #000;
+  z-index: 2;
   text-transform: uppercase;
-  letter-spacing: -1px;
-  /* Gives it that slightly "bumpy" sticker edge look */
-  border-radius: 2px;
 }
 
-/* Add a hover effect specific to the name */
-.memberCard:hover .nameSticker {
-  transform: translateX(-50%) rotate(2deg) scale(1.1);
-  transition: 0.2s ease-out;
-}
-
-.verifyBadge {
-  position: absolute;
-  top: -10px;
-  right: -10px;
-  background: #fff;
-  color: #0066ff;
-  border: 3px solid #000;
-  border-radius: 50%;
-  width: 38px;
-  height: 38px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.3rem;
-  z-index: 5;
-}
-
-.statsGrid {
-  display: flex;
-  justify-content: space-around;
-  padding: 15px 0;
-  margin-bottom: 20px;
-  border-bottom: 2px dashed #ddd;
-}
-
-.statItem {
+/* Content Body */
+.cardContent {
+  padding: 24px;
+  flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  font-size: 0.75rem;
-  font-weight: 900;
 }
 
-.actionArea {
+.topMeta {
   display: flex;
-  border: 3px solid #000;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.creatorBadge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.verifyIcon {
+  color: #0066ff;
+  font-size: 1.1rem;
+}
+
+.badgeText {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: #888;
+}
+
+.memberCount {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #555;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.cardTitle {
+  font-size: 1.7rem;
+  font-weight: 900;
+  line-height: 1.1;
+  color: #000;
+  margin-bottom: 10px;
+}
+
+.textHighlight {
+  background: var(--accent);
+  padding: 0 4px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+.cardDesc {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #555;
+  font-weight: 500;
+}
+
+/* Footer Action */
+.cardFooter {
   margin-top: auto;
+  padding: 16px 24px;
+  border-top: 3px solid #000;
+  background: #fdfdfd;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
 }
 
-.priceContainer {
-  background: #f9f9f9;
-  padding: 10px 15px;
-  border-right: 3px solid #000;
+.priceTag {
   font-weight: 1000;
-  font-size: 1.4rem;
+  font-size: 1.6rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 2px;
 }
 
-.joinBtn {
-  flex: 1;
+.currency {
+  font-size: 1rem;
+  margin-top: 2px;
+}
+
+.accessBtn {
   background: #000;
   color: #fff;
   border: none;
-  font-weight: 1000;
+  padding: 12px 18px;
+  font-size: 0.85rem;
+  font-weight: 800;
+  border-radius: 8px;
   cursor: pointer;
+  transition: all 0.2s;
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 8px;
 }
 
-.joinBtn:hover {
+.accessBtn:hover {
   background: var(--accent);
   color: #000;
+  transform: scale(1.05);
 }
 
+/* --- CTA CARD --- */
 .ctaCard {
   background: #000;
   color: #fff;
+  border-color: #000;
   justify-content: center;
   align-items: center;
   text-align: center;
-  box-shadow: 10px 10px 0 #ff90e8;
 }
-.ctaTitle {
-  font-weight: 1000;
-  font-size: 2.2rem;
-  margin: 10px 0;
-  letter-spacing: -1px;
+
+.ctaContent {
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
 }
-.ctaIcon {
-  font-size: 3.5rem;
+
+.iconBox {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: #222;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
   color: #ff90e8;
+  margin-bottom: 25px;
+  border: 2px solid #333;
 }
-.setupBtn {
-  margin-top: 30px;
+
+.ctaHeading {
+  font-size: 2.2rem;
+  font-weight: 900;
+  line-height: 1;
+  margin-bottom: 15px;
+}
+
+.whiteHighlight {
+  background: #fff;
+  color: #000;
+  padding: 0 6px;
+}
+
+.ctaText {
+  font-size: 1rem;
+  color: #aaa;
+  margin-bottom: 30px;
+  line-height: 1.4;
+  font-weight: 500;
+}
+
+.startBtn {
   background: #ff90e8;
   color: #000;
   border: 3px solid #fff;
-  padding: 14px 24px;
-  font-weight: 1000;
+  padding: 16px 30px;
+  font-size: 1rem;
+  font-weight: 900;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.2s;
+  border-radius: 100px;
+}
+
+.startBtn:hover {
+  background: #fff;
+  transform: translateY(-4px);
+  box-shadow: 0 5px 20px rgba(255, 144, 232, 0.4);
 }
