@@ -1,260 +1,333 @@
+/* Pricing.module.css */
+
 .wrapper {
-  background: #ffffff;
-  padding: 140px 0;
+  padding: 120px 24px;
+  background: #fdfdfd;
   position: relative;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+}
+
+/* --- ENHANCED FLOATING SHAPES --- */
+.bgShapes {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
   overflow: hidden;
 }
 
-/* --- HIGH-VISIBILITY DOT GRID --- */
-.dotPattern {
+.shape {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: radial-gradient(#bbb 1.8px, transparent 1.8px);
-  background-size: 26px 26px;
+  opacity: 0.08; /* Subtle watermark look */
+  filter: blur(1px);
+  animation: floatShape 10s ease-in-out infinite;
+}
+
+/* Original Shapes */
+.shapeDollar {
+  top: 5%;
+  left: 5%;
+  color: #05ac72;
+  font-size: 8rem;
+  animation-delay: 0s;
+  transform: rotate(-15deg);
+}
+.shapeCoin {
+  bottom: 15%;
+  left: 15%;
+  color: #ffeb3b;
+  font-size: 7rem;
+  animation-delay: 2s;
+  opacity: 0.15;
+}
+.shapeChart {
+  top: 12%;
+  right: 8%;
+  color: #0066ff;
+  font-size: 6rem;
+  animation-delay: 4s;
+}
+.shapeWallet {
+  bottom: 10%;
+  right: 20%;
+  color: #6366f1;
+  font-size: 5rem;
+  animation-delay: 1s;
+  transform: rotate(10deg);
+}
+
+/* NEW Desktop Shapes */
+.shapePercent {
+  top: 40%;
+  left: -5%;
+  color: #ff3344;
+  font-size: 10rem;
+  animation-delay: 3s;
+  opacity: 0.05;
+}
+.shapeBank {
+  top: 30%;
+  right: -2%;
+  color: #000;
+  font-size: 9rem;
+  animation-delay: 5s;
+  opacity: 0.04;
+  transform: rotate(-10deg);
+}
+.shapeSafe {
+  bottom: 5%;
+  left: 40%;
+  color: #333;
+  font-size: 4rem;
+  animation-delay: 2.5s;
+  opacity: 0.06;
+}
+.shapeGlobal {
+  top: 2%;
+  left: 45%;
+  color: #0066ff;
+  font-size: 3rem;
+  animation-delay: 1.5s;
+  opacity: 0.1;
+}
+
+@keyframes floatShape {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-15px) rotate(3deg);
+  }
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+}
+
+/* --- AMBIENT GLOW --- */
+.ambientGlow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(
+    circle,
+    rgba(5, 172, 114, 0.06) 0%,
+    rgba(255, 255, 255, 0) 70%
+  );
   z-index: 0;
-  opacity: 0.8;
+  pointer-events: none;
 }
 
 .container {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 0 25px;
+  max-width: 480px;
+  width: 100%;
   position: relative;
   z-index: 1;
 }
 
-/* --- HEADER --- */
 .header {
   text-align: center;
-  margin-bottom: 70px;
+  margin-bottom: 35px;
 }
 
-.statusLabel {
+.pill {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 6px;
   background: #000;
   color: #fff;
-  padding: 8px 16px;
-  font-family: monospace;
-  font-size: 0.75rem;
-  font-weight: 900;
-  border-radius: 4px;
-  margin-bottom: 25px;
-}
-
-.pulse {
-  width: 10px;
-  height: 10px;
-  background: #05ac72;
-  border-radius: 50%;
-  box-shadow: 0 0 10px #05ac72;
-  animation: blink 1s infinite;
+  padding: 5px 14px;
+  border-radius: 100px;
+  font-size: 0.65rem;
+  font-weight: 800;
+  font-family: var(--font-space);
+  margin-bottom: 15px;
 }
 
 .title {
-  font-size: clamp(2.5rem, 8vw, 4.5rem);
+  font-size: 2.8rem;
   font-weight: 900;
-  letter-spacing: -2px;
   line-height: 1;
-  text-transform: uppercase;
+  font-family: var(--font-outfit);
+  color: #000;
 }
 
-.stylishText {
-  color: #6366f1; /* Stylish Purple */
-  text-decoration: underline;
-  text-decoration-color: #000;
-  text-underline-offset: 10px;
-  text-decoration-thickness: 6px;
+.gradientText {
+  background: linear-gradient(135deg, #05ac72 0%, #0066ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-.subTitle {
-  font-size: 1.25rem;
-  font-weight: 700;
+/* --- THE "LITTLE BIT GUMROAD" CARD --- */
+.glassCard {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px);
+  border: 2px solid #000; /* Sharp Gumroad Border */
+  border-radius: 36px;
+  overflow: hidden;
+  /* Hard Shadow, but transparent = Subtle Gumroad Effect */
+  box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease;
+}
+
+.glassCard:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 14px 14px 0 rgba(0, 0, 0, 0.12); /* Slightly deeper on hover */
+}
+
+.splitHeader {
+  padding: 35px 30px;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.9),
+    rgba(255, 255, 255, 0.5)
+  );
+}
+
+.splitLeft {
+  display: flex;
+  flex-direction: column;
+}
+.bigPercent {
+  font-size: 3.5rem;
+  font-weight: 900;
+  line-height: 0.9;
+  font-family: var(--font-outfit);
+  letter-spacing: -1px;
+}
+.splitLabel {
+  font-size: 0.6rem;
+  font-weight: 800;
+  color: #999;
+  letter-spacing: 1px;
+  margin-top: 6px;
+}
+
+.splitRight {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.feeBadge {
+  background: #ff3344;
+  color: #fff;
+  font-weight: 900;
+  font-size: 0.85rem;
+  padding: 6px 12px;
+  border-radius: 8px;
+  margin-bottom: 4px;
+}
+
+.divider {
+  width: 1px;
+  height: 40px;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.bodyContent {
+  padding: 30px;
+  text-align: center;
+}
+
+.mainText {
+  font-size: 1rem;
+  line-height: 1.6;
   color: #444;
-  margin-top: 30px;
+  margin-bottom: 30px;
+}
+.mainText strong {
+  color: #000;
+  font-weight: 800;
+  background: rgba(5, 172, 114, 0.1);
+  padding: 0 4px;
+  border-radius: 4px;
 }
 
-/* --- THE PRICING CARD --- */
-.pricingCard {
-  background: #fff;
-  border: 3px solid #000;
-  border-radius: 32px;
-  box-shadow: 12px 12px 0 #000;
+.featureStack {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  overflow: hidden;
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  gap: 15px;
+  margin-bottom: 30px;
+  text-align: left;
 }
-
-.pricingCard:hover {
-  transform: translate(-4px, -4px);
-  box-shadow: 18px 18px 0 #6366f1;
-}
-
-.revenueHero {
-  background: #f8f7ff; /* Match Purple Tone */
-  padding: 60px;
-  border-right: 3px solid #000;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.splitWrapper {
+.featItem {
   display: flex;
   align-items: center;
-  gap: 20px;
-}
-
-.bigNumber {
-  font-size: clamp(6rem, 10vw, 9rem);
-  font-weight: 1000;
-  line-height: 1;
-  color: #000;
-}
-
-.splitDivider {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.percent {
-  font-size: 2.5rem;
-  font-weight: 1000;
-  color: #000;
-}
-
-.verticalLine {
-  width: 4px;
-  height: 50px;
-  background: #000;
-  margin: 8px 0;
-}
-
-.fee {
-  font-size: 2.5rem;
-  font-weight: 1000;
-  color: #ff3344; /* Changed to stylish Red */
-}
-
-.heroText {
-  font-weight: 900;
-  font-size: 0.9rem;
-  margin-top: 25px;
-  letter-spacing: 1px;
-  color: #000;
-  opacity: 0.6;
-}
-
-/* --- DETAILS AREA --- */
-.detailsArea {
-  padding: 60px;
-  background: #fff;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.featureList {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  margin-bottom: 45px;
-}
-
-.featureItem {
-  display: flex;
-  align-items: center;
-  gap: 14px;
+  gap: 10px;
+  font-size: 0.8rem;
   font-weight: 700;
-  font-size: 1.1rem;
-  color: #111;
+  color: #333;
+}
+.checkCircle {
+  width: 20px;
+  height: 20px;
+  background: #000;
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
 }
 
-.check {
-  color: #05ac72;
-  font-size: 1.6rem;
-}
-
-.ctaButton {
+.glowButton {
+  width: 100%;
   background: #000;
   color: #fff;
   border: none;
-  padding: 24px;
-  border-radius: 12px;
-  font-size: 1.2rem;
-  font-weight: 900;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.ctaButton:hover {
-  background: #6366f1;
-  transform: scale(1.02);
-}
-
-.securityTag {
-  margin-top: 25px;
+  padding: 18px;
+  border-radius: 14px;
+  font-size: 1rem;
+  font-weight: 800;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
-  font-weight: 800;
-  font-size: 0.8rem;
-  color: #666;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.glowButton:hover {
+  background: #05ac72;
+  transform: scale(1.02);
+  box-shadow: 4px 4px 0 #000; /* Gumroad hover effect on button */
 }
 
 .footerNote {
-  margin-top: 60px;
+  margin-top: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  font-family: monospace;
-  font-size: 0.8rem;
-  font-weight: 900;
-  color: #000;
+  gap: 6px;
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: #bbb;
+  font-family: var(--font-space);
 }
 
-/* --- MOBILE --- */
-@media (max-width: 900px) {
-  .pricingCard {
+@media (max-width: 500px) {
+  .featureStack {
     grid-template-columns: 1fr;
-    border-radius: 24px;
+    padding-left: 20px;
   }
-
-  .revenueHero {
-    padding: 50px 20px;
-    border-right: none;
-    border-bottom: 3px solid #000;
+  .splitHeader {
+    padding: 25px 20px;
   }
-
-  .detailsArea {
-    padding: 40px 24px;
+  .bigPercent {
+    font-size: 3rem;
   }
-
-  .stylishText {
-    text-underline-offset: 6px;
-    text-decoration-thickness: 4px;
-  }
-}
-
-@keyframes blink {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.3;
+  /* Reduce shape clutter on mobile */
+  .shapePercent,
+  .shapeBank,
+  .shapeSafe,
+  .shapeGlobal {
+    display: none;
   }
 }

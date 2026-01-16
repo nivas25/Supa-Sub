@@ -140,17 +140,39 @@
   text-transform: uppercase;
   padding: 8px 16px;
   border-radius: 50px;
-  transition: all 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+
+.desktopLinks a::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: var(--accent);
+  transform: translateX(-50%);
+  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .desktopLinks a:hover {
-  background: rgba(0, 0, 0, 0.05);
+  background: rgba(0, 0, 0, 0.08);
   color: var(--accent);
 }
 
+.desktopLinks a:hover::after {
+  width: calc(100% - 32px);
+}
+
 .active {
-  background: rgba(0, 0, 0, 0.05);
+  background: rgba(108, 92, 231, 0.1);
   color: var(--accent) !important;
+  box-shadow: 0 0 20px rgba(108, 92, 231, 0.15);
+}
+
+.active::after {
+  width: calc(100% - 32px) !important;
 }
 
 /* Action buttons */

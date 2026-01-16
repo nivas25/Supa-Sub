@@ -1,5 +1,4 @@
 "use client";
-import { useEffect, useState } from "react";
 import styles from "./Footer.module.css";
 import {
   RiTelegramFill,
@@ -7,111 +6,169 @@ import {
   RiGithubFill,
   RiPulseLine,
   RiArrowUpLine,
-  RiMailSendLine,
+  RiArrowRightUpLine,
+  RiMailLine,
+  RiDiscordFill,
+  RiFlashlightFill,
 } from "react-icons/ri";
 
 export default function Footer() {
-  const [time, setTime] = useState("");
-
-  useEffect(() => {
-    // Ensuring time is only set on client to avoid hydration mismatch
-    setTime(new Date().toLocaleTimeString("en-GB", { hour12: false }));
-    const timer = setInterval(() => {
-      setTime(new Date().toLocaleTimeString("en-GB", { hour12: false }));
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
+  // Define content with specific vibrant colors for the marquee
+  const marqueeItems = [
+    { text: "KEEP 95% REVENUE", color: "#00f5a0" }, // Neon Green
+    { text: "INSTANT PAYOUTS", color: "#00e5ff" }, // Cyan
+    { text: "OWN YOUR DATA", color: "#ff0055" }, // Neon Red
+    { text: "GLOBAL SCALE", color: "#ffeb3b" }, // Yellow
+    { text: "ZERO LATENCY", color: "#bd00ff" }, // Purple
+  ];
 
   return (
     <footer className={styles.wrapper}>
+      {/* --- MULTI-COLOR HIGH-SPEED MARQUEE --- */}
+      <div className={styles.marqueeContainer}>
+        <div className={styles.marqueeTrack}>
+          {/* Loop enough times to fill screen */}
+          {[...Array(6)].map((_, trackIndex) => (
+            <div key={trackIndex} className={styles.marqueeGroup}>
+              {marqueeItems.map((item, i) => (
+                <span
+                  key={i}
+                  className={styles.marqueeItem}
+                  style={{ color: item.color }}
+                >
+                  {item.text} <span className={styles.dot}>•</span>
+                </span>
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
+
       <div className={styles.container}>
-        {/* TOP STATUS BAR: SENSE OF REAL-TIME ACTIVITY */}
-        <div className={styles.statusRow}>
-          <div className={styles.statusItem}>
-            <RiPulseLine className={styles.pulse} />
-            <span>
-              SYSTEM_STATUS: <span className={styles.green}>OPERATIONAL</span>
-            </span>
+        {/* HERO CTA */}
+        <div className={styles.preFooter}>
+          <div className={styles.preHeader}>
+            <RiFlashlightFill className={styles.flashIcon} />
+            <span>READY TO LAUNCH?</span>
           </div>
-          <div className={styles.statusItem}>
-            <span className={styles.dot}></span>
-            <span>{time} UTC_ZONE</span>
-          </div>
+          <h2 className={styles.megaTitle}>
+            Start your <span className={styles.outlineText}>Empire.</span>
+          </h2>
+          <button className={styles.mainCta}>
+            Get Started Free <RiArrowRightUpLine />
+          </button>
         </div>
 
-        {/* MAIN FOOTER ENGINE */}
-        <div className={styles.mainGrid}>
-          <div className={styles.brandSide}>
-            <h2 className={styles.logo}>
-              Sub<span className={styles.outline}>Starter</span>
-              <span className={styles.tm}>®</span>
-            </h2>
-            <p className={styles.tagline}>
-              THE FAIR-TRADE PROTOCOL FOR <br /> DIGITAL ARCHITECTS.
-            </p>
-            <div className={styles.profitTag}>90/10_REVENUE_SPLIT</div>
+        {/* USEFUL BENTO GRID */}
+        <div className={styles.bentoGrid}>
+          {/* 1. Brand & Mission */}
+          <div className={`${styles.card} ${styles.brandCard}`}>
+            <div>
+              <h2 className={styles.logo}>
+                Sub<span className={styles.logoHighlight}>Launch.</span>
+              </h2>
+              <p className={styles.missionText}>
+                The infrastructure layer for the next generation of digital
+                communities. Built for scale, security, and ownership.
+              </p>
+            </div>
+            <div className={styles.socialRow}>
+              <a href="#" className={styles.socialIcon} aria-label="X">
+                <RiTwitterXFill />
+              </a>
+              <a href="#" className={styles.socialIcon} aria-label="Telegram">
+                <RiTelegramFill />
+              </a>
+              <a href="#" className={styles.socialIcon} aria-label="Discord">
+                <RiDiscordFill />
+              </a>
+              <a href="#" className={styles.socialIcon} aria-label="Github">
+                <RiGithubFill />
+              </a>
+            </div>
           </div>
 
-          <div className={styles.navGroups}>
-            <div className={styles.linkCol}>
-              <h4>FOR_CREATORS</h4>
-              <a href="#">DASHBOARD</a>
-              <a href="#">REVENUE_CALC</a>
-              <a href="#">API_KEYS</a>
-              <a href="#">BRAND_KIT</a>
-            </div>
-            <div className={styles.linkCol}>
-              <h4>RESOURCES</h4>
-              <a href="#">NETWORK_STATUS</a>
-              <a href="#">HELP_CENTER</a>
-              <a href="#">WHITE_PAPER</a>
-              <a href="#">SECURITY</a>
-            </div>
-            <div className={styles.linkCol}>
-              <h4>NEWSLETTER</h4>
-              <div className={styles.newsletterBox}>
-                <input
-                  type="email"
-                  placeholder="ENTER_EMAIL"
-                  className={styles.input}
-                />
-                <button className={styles.sendBtn} aria-label="Subscribe">
-                  <RiMailSendLine />
+          {/* 2. Useful Links - Product */}
+          <div className={`${styles.card} ${styles.linksCard}`}>
+            <h4 className={styles.colTitle}>Product</h4>
+            <ul className={styles.linkList}>
+              <li>
+                <a href="#">Features</a>
+              </li>
+              <li>
+                <a href="#">Pricing</a>
+              </li>
+              <li>
+                <a href="#">Integrations</a>
+              </li>
+              <li>
+                <a href="#">Changelog</a>
+              </li>
+              <li>
+                <a href="#">API Docs</a>
+              </li>
+            </ul>
+          </div>
+
+          {/* 3. Useful Links - Company */}
+          <div className={`${styles.card} ${styles.linksCard}`}>
+            <h4 className={styles.colTitle}>Company</h4>
+            <ul className={styles.linkList}>
+              <li>
+                <a href="#">About</a>
+              </li>
+              <li>
+                <a href="#">Careers</a>{" "}
+                <span className={styles.hiringBadge}>HIRING</span>
+              </li>
+              <li>
+                <a href="#">Blog</a>
+              </li>
+              <li>
+                <a href="#">Legal</a>
+              </li>
+              <li>
+                <a href="#">Contact</a>
+              </li>
+            </ul>
+          </div>
+
+          {/* 4. Utility & Status */}
+          <div className={`${styles.card} ${styles.utilityCard}`}>
+            <div className={styles.newsletterBox}>
+              <h4 className={styles.colTitle}>Dev Updates</h4>
+              <div className={styles.inputGroup}>
+                <input type="email" placeholder="email@domain.com" />
+                <button aria-label="Subscribe">
+                  <RiMailLine />
                 </button>
               </div>
-              <div className={styles.socialIcons}>
-                <a href="#" aria-label="Telegram">
-                  <RiTelegramFill />
-                </a>
-                <a href="#" aria-label="Twitter">
-                  <RiTwitterXFill />
-                </a>
-                <a href="#" aria-label="GitHub">
-                  <RiGithubFill />
-                </a>
+            </div>
+
+            <div className={styles.statusRow}>
+              <div className={styles.statusItem}>
+                <RiPulseLine className={styles.greenPulse} />
+                <span>All Systems Operational</span>
               </div>
             </div>
           </div>
         </div>
 
-        {/* LEGAL COMPLIANCE BAR */}
+        {/* BOTTOM BAR */}
         <div className={styles.bottomBar}>
-          <div className={styles.legal}>
-            <span className={styles.copyright}>
-              © {new Date().getFullYear()} SUBSTARTER_NETWORK. ALL RIGHTS
-              RESERVED.
-            </span>
-            <div className={styles.legalLinks}>
-              <a href="#">TERMS_OF_SERVICE</a>
-              <a href="#">PRIVACY_POLICY</a>
-              <a href="#">COOKIE_SETTINGS</a>
-            </div>
+          <div className={styles.copyright}>
+            <span>© {new Date().getFullYear()} SubLaunch Inc.</span>
+            <span className={styles.divider}>|</span>
+            <a href="#">Privacy</a>
+            <span className={styles.divider}>|</span>
+            <a href="#">Terms</a>
           </div>
+
           <button
-            className={styles.backToTop}
+            className={styles.topBtn}
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           >
-            BACK_TO_TOP <RiArrowUpLine />
+            BACK TO TOP <RiArrowUpLine />
           </button>
         </div>
       </div>

@@ -4,6 +4,8 @@ import Link from "next/link";
 import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import styles from "./Navbar.module.css";
 
+const SECTION_IDS = ["features", "steps", "showcase", "pricing", "faq"];
+
 export default function LandingNavbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
@@ -11,15 +13,16 @@ export default function LandingNavbar() {
 
   useEffect(() => {
     let ticking = false;
-    const sections = ["features", "blueprint", "showcase", "pricing", "faq"];
-
     const runMeasurement = () => {
-      const scrollPosition = window.scrollY + 150; // offset for navbar
+      const scrollPosition = window.scrollY + 120; // offset for detection
       let foundSection = "";
-      for (const section of sections) {
+
+      // Check each section from top to bottom
+      for (const section of SECTION_IDS) {
         const element = document.getElementById(section);
         if (element) {
           const { offsetTop, offsetHeight } = element;
+          // Check if scrollPosition is within this section
           if (
             scrollPosition >= offsetTop &&
             scrollPosition < offsetTop + offsetHeight
@@ -44,16 +47,28 @@ export default function LandingNavbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Collapse navbar when scrolled past threshold
+  // Collapse navbar when scrolled past threshold (rAF throttled)
   useEffect(() => {
+    let ticking = false;
+
     const onScroll = () => {
-      const shouldCollapse = window.scrollY > 80;
-      setIsCollapsed(shouldCollapse);
-      // Close menu when scrolling back to top
-      if (!shouldCollapse) {
-        setIsMenuOpen(false);
-      }
+      if (ticking) return;
+      ticking = true;
+
+      requestAnimationFrame(() => {
+        const shouldCollapse = window.scrollY > 200;
+        setIsCollapsed((prev) =>
+          prev === shouldCollapse ? prev : shouldCollapse
+        );
+
+        // Close menu when scrolling back to top
+        if (!shouldCollapse) {
+          setIsMenuOpen(false);
+        }
+        ticking = false;
+      });
     };
+
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
     return () => window.removeEventListener("scroll", onScroll);
@@ -132,14 +147,14 @@ export default function LandingNavbar() {
             Features
           </a>
           <a
-            href="#blueprint"
+            href="#steps"
             onClick={(e) => {
               e.preventDefault();
-              handleNavClick("blueprint");
+              handleNavClick("steps");
             }}
-            className={activeSection === "blueprint" ? styles.active : ""}
+            className={activeSection === "steps" ? styles.active : ""}
           >
-            Blueprint
+            Steps
           </a>
           <a
             href="#showcase"
@@ -169,7 +184,7 @@ export default function LandingNavbar() {
             }}
             className={activeSection === "faq" ? styles.active : ""}
           >
-            FAQ
+            FAQ's
           </a>
         </div>
 

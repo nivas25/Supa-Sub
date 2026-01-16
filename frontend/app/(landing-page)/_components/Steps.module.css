@@ -2,24 +2,18 @@
 
 .wrapper {
   background: #fff;
-  padding: 120px 0;
+  padding: 100px 0;
   position: relative;
-  /* CHANGE THIS: overflow must be visible for sticky to work */
-  overflow: visible;
+  overflow: visible; /* Essential for sticky to work */
 }
 
-/* --- HIGH-VISIBILITY DOT GRID --- */
 .dotPattern {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: radial-gradient(#aaa 2px, transparent 2px);
-  background-size: 30px 30px;
+  inset: 0;
+  background-image: radial-gradient(#ddd 1.5px, transparent 1.5px);
+  background-size: 40px 40px;
   z-index: 0;
-  opacity: 0.8;
-  /* ADD THIS: Since wrapper is visible, we need to hide dots if they spill over */
+  opacity: 0.5;
   pointer-events: none;
 }
 
@@ -27,208 +21,259 @@
   max-width: 1300px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 1fr 1.2fr;
+  grid-template-columns: 1fr 1.3fr;
   padding: 0 40px;
   gap: 80px;
   position: relative;
   z-index: 1;
 }
 
-/* --- LEFT SIDE BRANDING --- */
-.leftSide {
-  position: relative;
-  /* Optional: prevents left side from running into footer */
-  height: 100%;
-}
-
+/* --- LEFT SIDE: FIXED TRACKER --- */
 .stickyContent {
   position: sticky;
-  top: 20vh;
+  top: 10vh;
+}
+
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #000;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  margin-bottom: 25px;
+  font-family: var(--font-space); /* */
 }
 
 .giantTitle {
-  font-size: clamp(3.5rem, 10vw, 7rem);
-  font-weight: 1000;
+  font-size: clamp(3rem, 8vw, 6rem);
+  font-weight: 900;
   line-height: 0.85;
   letter-spacing: -4px;
   color: #000;
-  text-transform: uppercase;
+  font-family: var(--font-outfit); /* */
 }
 
-.redHeading {
-  color: #ff3344;
+.highlight {
+  color: #0066ff;
   text-decoration: underline;
-  text-decoration-color: #000;
-  text-underline-offset: 10px;
-  text-decoration-thickness: 6px;
-  display: block;
-  margin-top: 10px;
+  text-decoration-color: #ffeb3b;
+  text-underline-offset: 8px;
 }
 
-.subtext {
-  margin-top: 40px;
+/* Scroll-Synced Tracker */
+.progressTracker {
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  border-left: 2px solid #eee;
+  padding-left: 25px;
+}
+
+.trackerNode {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  filter: grayscale(1);
+  opacity: 0.2; /* Dims when inactive */
+}
+
+.nodeActive {
+  filter: grayscale(0);
+  opacity: 1;
+  transform: translateX(10px); /* Visual feedback on active */
+}
+
+.nodeCircle {
+  width: 34px;
+  height: 34px;
+  border: 3px solid #eee;
+  border-radius: 50%;
+  font-size: 0.75rem;
   font-weight: 900;
-  font-size: 1rem;
-  letter-spacing: 1px;
-  color: #222;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
 }
 
-/* --- STICKY STEP CARDS --- */
+.nodeText {
+  display: flex;
+  flex-direction: column;
+}
+.nodePhase {
+  font-size: 0.6rem;
+  font-weight: 900;
+  letter-spacing: 1px;
+  color: #aaa;
+}
+.nodeTitle {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #ddd;
+}
+
+.nodeActive .nodeTitle {
+  color: #000;
+}
+
+/* --- RIGHT SIDE: STEP CARDS --- */
 .rightSide {
   display: flex;
   flex-direction: column;
-  /* IMPORTANT: Ensure this container has height for children to stick to */
-  min-height: 100vh;
 }
 
 .stepBlock {
-  /* This creates the scroll distance. 
-     If it's too tall, change to 80vh or 70vh */
-  height: 90vh;
+  min-height: 95vh; /* Enough space to scroll */
   display: flex;
   align-items: flex-start;
   position: sticky;
-  top: 15vh;
-  padding-bottom: 50px;
+  top: 10vh;
+  padding-bottom: 100px;
 }
 
-/* Stacking logic */
+/* Sticky Stack Logic */
 .stepBlock:nth-child(1) {
-  top: 15vh;
+  top: 10vh;
 }
 .stepBlock:nth-child(2) {
-  top: 18vh;
+  top: 13vh;
 }
 .stepBlock:nth-child(3) {
-  top: 21vh;
+  top: 16vh;
 }
 .stepBlock:nth-child(4) {
-  top: 24vh;
+  top: 19vh;
+}
+.stepBlock:nth-child(5) {
+  top: 22vh;
+}
+.stepBlock:nth-child(6) {
+  top: 25vh;
 }
 
 .card {
   background: #fff;
   border: 3px solid #000;
   width: 100%;
-  border-radius: 24px;
-  box-shadow: 10px 10px 0 #000;
-  display: flex;
-  flex-direction: column;
-  transition: all 0.3s ease;
+  border-radius: 40px; /* iOS Fusion Squircle */
   overflow: hidden;
-  position: relative;
-  z-index: 2; /* Ensures card sits above patterns */
+  box-shadow: 10px 10px 0 #000;
+  transition: transform 0.3s ease;
 }
 
 .card:hover {
-  transform: translate(-5px, -5px);
-  box-shadow: 15px 15px 0 var(--accent);
+  transform: translate(-4px, -4px);
+  box-shadow: 16px 16px 0 var(--accent);
 }
 
-/* CARD UI ELEMENTS */
 .cardTop {
   display: flex;
   border-bottom: 3px solid #000;
 }
-
 .numberArea {
   background: #000;
   color: #fff;
-  padding: 15px 25px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.num {
+  padding: 20px 30px;
   font-size: 2.2rem;
-  font-weight: 1000;
+  font-weight: 900;
 }
-
 .phaseArea {
   flex: 1;
-  background: var(--accent);
-  padding: 0 25px;
+  padding: 0 30px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  font-weight: 800;
 }
-
-.phase {
-  font-weight: 900;
-  font-size: 1rem;
-  color: #000;
-}
-
 .iconWrapper {
-  font-size: 1.8rem;
+  font-size: 2rem;
   display: flex;
-  color: #000;
 }
 
 .cardBody {
-  padding: 40px;
+  padding: 50px 40px;
 }
-
 .title {
-  font-size: 2rem;
-  font-weight: 1000;
-  line-height: 1;
+  font-size: 2.4rem;
+  font-weight: 900;
   margin-bottom: 20px;
-  letter-spacing: -1px;
+  letter-spacing: -2px;
 }
-
 .description {
-  font-size: 1.05rem;
-  font-weight: 700;
-  line-height: 1.5;
-  color: #444;
+  font-size: 1.15rem;
+  font-weight: 600;
+  line-height: 1.6;
+  color: #333;
 }
 
 .cardBottom {
-  margin-top: auto;
-  padding: 20px 40px;
-  background: rgba(0, 0, 0, 0.02);
-  border-top: 2px dashed #000;
+  padding: 25px 40px;
+  background: #fafafa;
+  border-top: 3px solid #000;
 }
-
-.profitBadge {
-  font-size: 0.85rem;
-  font-weight: 800;
+.outcomeBadge {
+  display: flex;
+  align-items: center;
+  gap: 15px;
 }
-
-.profitBadge strong {
+.outcomeLabel {
+  font-size: 0.6rem;
+  font-weight: 900;
   background: #000;
   color: #fff;
-  padding: 2px 8px;
-  margin-right: 8px;
+  padding: 4px 10px;
   border-radius: 4px;
+}
+.outcomeValue {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #000;
+  flex: 1;
+}
+.arrowIcon {
+  font-size: 1.4rem;
+  color: #ccc;
 }
 
 /* --- MOBILE --- */
-@media (max-width: 1000px) {
+@media (max-width: 1024px) {
   .container {
     grid-template-columns: 1fr;
     padding: 0 20px;
   }
-  .leftSide {
-    height: auto;
-    margin-bottom: 40px;
-  }
-
-  /* On mobile we DISABLE sticky because screen is too small */
   .stickyContent {
     position: relative;
     top: 0;
+    text-align: center;
+  }
+  .progressTracker {
+    display: none;
+  } /* Focus on cards for mobile */
+
+  .rightSide {
+    scroll-snap-type: y mandatory;
+    height: 70vh;
+    overflow-y: scroll;
+    border: 3px solid #000;
+    border-radius: 35px;
+    padding: 0 10px;
+    background: #fdfdfd;
   }
   .stepBlock {
-    height: auto;
-    position: relative;
+    min-height: 60vh;
+    position: relative !important;
     top: 0 !important;
-    padding-bottom: 30px;
-    margin-bottom: 20px;
+    scroll-snap-align: center;
   }
   .card {
+    border-radius: 30px;
     box-shadow: 8px 8px 0 #000;
   }
 }

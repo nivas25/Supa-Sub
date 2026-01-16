@@ -1,93 +1,147 @@
-/* Analytics.module.css */
+/**
+ * Analytics.module.css
+ * Fixed: Title Line-Height Overlap
+ * Feature: Multi-color Word Slider
+ */
 
 .wrapper {
-  padding: 120px 0;
-  background: #ffffff; /* Plain White Background */
+  padding: clamp(60px, 10vw, 120px) 0;
+  background: var(--background);
   overflow: hidden;
   position: relative;
 }
 
+/* --- ANIMATED LIQUID MESH --- */
+.meshGradient {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 150%;
+  height: 150%;
+  background: radial-gradient(
+      circle at 30% 30%,
+      rgba(0, 102, 255, 0.08) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 70% 70%,
+      rgba(255, 0, 85, 0.08) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 50% 10%,
+      rgba(0, 255, 102, 0.05) 0%,
+      transparent 40%
+    );
+  filter: blur(100px);
+  z-index: 0;
+  animation: liquidRotate 30s linear infinite;
+  will-change: transform;
+}
+
+@keyframes liquidRotate {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
 .container {
   max-width: 1200px;
-  width: 100%;
   margin: 0 auto;
   padding: 0 24px;
+  position: relative;
+  z-index: 2;
+}
+
+/* --- TICKER / MARQUEE --- */
+.marqueeWrapper {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  background: rgba(0, 0, 0, 0.02);
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  padding: 16px 0;
+  margin-bottom: clamp(40px, 8vw, 80px);
+}
+
+.marqueeTrack {
+  display: flex;
+  width: max-content;
+  animation: marquee 40s linear infinite;
+}
+
+.marqueeTrack span {
+  font-family: var(--font-space);
+  color: var(--foreground);
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+  padding-right: 80px;
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
 }
 
 /* --- GRID LAYOUT --- */
 .splitGrid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 80px;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: clamp(40px, 5vw, 80px);
   align-items: center;
 }
 
-/* --- LEFT SIDE: TYPOGRAPHY --- */
-.leftContent {
-  text-align: left;
-}
-
-.badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: #f5f5f5;
-  color: #000;
-  padding: 6px 12px;
-  border-radius: 100px;
-  font-weight: 800;
-  font-size: 0.75rem;
-  margin-bottom: 25px;
-  border: 1px solid #eee;
-}
-
-.pulseDot {
-  width: 8px;
-  height: 8px;
-  background: #ff0055;
-  border-radius: 50%;
-  animation: pulse 1.5s infinite;
-}
-
-/* Wordmap Slider Styles */
+/* --- TITLE & SLIDER (THE OVERLAP FIX) --- */
 .mainTitle {
-  font-size: clamp(3rem, 5vw, 4.5rem);
+  font-size: clamp(2.2rem, 5.5vw, 4.2rem);
   font-weight: 900;
-  line-height: 1.1;
-  color: #000;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.1em;
-  margin-bottom: 25px;
+  /* Increased line-height (1.4) to ensure the slider box doesn't touch text above/below */
+  line-height: 1.4;
+  letter-spacing: -2px;
+  margin-bottom: 24px;
+  color: var(--foreground);
 }
 
 .sliderContainer {
-  height: 1.1em;
+  display: inline-flex;
+  /* Height set to 1.2em to fit inside the 1.4 line-height comfortably */
+  height: 1.2em;
   overflow: hidden;
-  display: inline-block;
-  background: #000;
-  padding: 0 0.2em;
-  border-radius: 8px;
-  transform: rotate(-1.5deg); /* Stylish Tilt */
+  background: #000; /* Contrast background for the sliding words */
+  padding: 0 0.4em;
+  border-radius: 12px;
+  vertical-align: middle;
+  margin: 0 0.1em;
+  position: relative;
+  top: -0.05em;
 }
 
 .wordSlider {
   display: flex;
   flex-direction: column;
-  animation: slideWords 10s cubic-bezier(0.85, 0, 0.15, 1) infinite;
+  animation: slideWords 10s cubic-bezier(0.8, 0, 0.2, 1) infinite;
 }
 
 .word {
-  height: 1.1em;
+  height: 1.2em; /* Matches the slider container exactly */
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
   white-space: nowrap;
+  font-weight: 900;
 }
 
-/* Word Colors */
+/* --- WORD COLORS --- */
 .blue {
   color: #00e0ff;
 }
@@ -105,138 +159,127 @@
 }
 
 .description {
-  font-size: 1.1rem;
-  color: #555;
+  font-size: clamp(1rem, 2vw, 1.15rem);
   line-height: 1.6;
-  max-width: 450px;
-  margin-bottom: 40px;
+  opacity: 0.6;
+  max-width: 480px;
 }
 
-.exploreBtn {
-  background: #000;
-  color: #fff;
-  border: none;
-  padding: 16px 32px;
-  border-radius: 100px;
-  font-weight: 800;
-  font-size: 1rem;
-  cursor: pointer;
+.premiumBadge {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  transition: transform 0.2s;
+  gap: 8px;
+  font-family: var(--font-space);
+  font-weight: 800;
+  font-size: 0.7rem;
+  color: var(--accent);
+  margin-bottom: 12px;
+  letter-spacing: 2px;
 }
 
-.exploreBtn:hover {
-  transform: translateY(-2px);
-  background: #333;
+.spinIcon {
+  animation: spin 4s linear infinite;
 }
 
-/* --- RIGHT SIDE: STORIES ENGINE --- */
-.rightContent {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 30px;
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
-/* 1. Story Tray */
+/* --- STORY NAVIGATION TRAY --- */
 .storyTray {
   display: flex;
-  gap: 20px;
   justify-content: center;
+  gap: 12px;
+  margin-bottom: 30px;
 }
 
 .storyCircleWrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
+  background: none;
+  border: none;
   cursor: pointer;
-  transition: transform 0.2s;
-  opacity: 0.6; /* Inactive state */
+  padding: 0;
+  outline: none;
 }
 
-.storyCircleWrapper:hover {
-  transform: scale(1.1);
-  opacity: 1;
+.iosRing {
+  width: clamp(44px, 6vw, 52px);
+  height: clamp(44px, 6vw, 52px);
+  border-radius: 16px;
+  background: rgba(120, 120, 120, 0.1);
+  padding: 2px;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.activeRing {
-  opacity: 1;
-  transform: scale(1.1);
-}
-
-.rainbowRing {
-  width: 68px;
-  height: 68px;
-  border-radius: 50%;
-  padding: 3px;
-  background: linear-gradient(45deg, #00e0ff, #ff0055, #ffd600, #00ff66);
-  position: relative;
-  animation: spin 4s linear infinite;
+.activeStory .iosRing {
+  background: var(--foreground);
+  transform: scale(1.15);
 }
 
 .innerCircle {
   width: 100%;
   height: 100%;
-  background: #fff;
-  border-radius: 50%;
+  background: var(--background);
+  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.6rem;
-  border: 3px solid #fff;
+  font-size: 1.2rem;
 }
 
-.storyLabel {
-  font-size: 0.7rem;
-  font-weight: 800;
-  color: #000;
-}
-
-/* 2. Story Viewer (Phone) */
-.viewerContainer {
+/* --- PHONE VISUALS --- */
+.phoneContainer {
+  position: relative;
   width: 100%;
-  display: flex;
-  justify-content: center;
+  max-width: 320px;
+  margin: 0 auto;
+}
+
+.phoneFrame {
+  position: relative;
+  background: #000;
+  padding: 10px;
+  border-radius: clamp(40px, 6vw, 52px);
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.4);
+  z-index: 1;
 }
 
 .storyCard {
-  width: 340px;
-  height: 560px;
-  border-radius: 32px;
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15); /* Soft premium shadow */
-  padding: 24px;
-  color: #fff;
+  width: 100%;
+  aspect-ratio: 9 / 16;
+  background: #000;
+  border-radius: clamp(32px, 5vw, 42px);
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  position: relative;
-  transition: background 0.5s ease;
-  border: 6px solid #fff; /* Phone bezel feel */
-}
-
-/* Progress Bars */
-.progressRow {
-  display: flex;
-  gap: 6px;
-  margin-bottom: 25px;
-}
-
-.progressBarBg {
-  flex: 1;
-  height: 3px;
-  background: rgba(255, 255, 255, 0.4);
-  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: border-color 0.4s ease;
   overflow: hidden;
 }
 
+/* Status Bar & Progress Indicators */
+.statusBar {
+  margin-bottom: 20px;
+}
+.progressRow {
+  display: flex;
+  gap: 4px;
+}
+.progressBarBg {
+  flex: 1;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
 .progressBarFill {
   height: 100%;
   background: #fff;
   width: 0%;
 }
-
 .filled {
   width: 100%;
 }
@@ -244,91 +287,86 @@
   animation: fillBar 4s linear forwards;
 }
 
-/* Header */
+/* Story Content Styling */
 .storyHeader {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 40px;
+  margin-bottom: 24px;
 }
-
-.userAvatar {
-  width: 36px;
-  height: 36px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 50%;
+.brandIcon {
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
   display: flex;
   align-items: center;
   justify-content: center;
-  backdrop-filter: blur(5px);
+  color: #fff;
+  font-size: 1.1rem;
 }
-
 .userName {
+  color: #fff;
   font-weight: 700;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   display: block;
 }
 .timeAgo {
-  font-size: 0.75rem;
-  opacity: 0.8;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.7rem;
 }
 
-/* Content */
 .storyContent {
   flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  text-align: center;
+  position: relative;
 }
 
-.iconBig {
-  font-size: 5rem;
-  margin-bottom: 20px;
-  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.2));
+.valueGlow {
+  position: absolute;
+  font-size: 6rem;
+  font-weight: 900;
+  filter: blur(50px);
+  opacity: 0.3;
+  pointer-events: none;
 }
 
 .storyValue {
-  font-size: 3.5rem;
-  font-weight: 1000;
-  margin-bottom: 15px;
-  line-height: 1;
-}
-
-.storyBadge {
-  background: rgba(0, 0, 0, 0.2);
-  padding: 8px 16px;
-  border-radius: 100px;
-  font-weight: 700;
-  font-size: 1rem;
-  backdrop-filter: blur(5px);
-}
-
-/* Footer */
-.storyFooter {
-  display: flex;
-  gap: 15px;
-  margin-top: 20px;
-}
-
-.replyBox {
-  flex: 1;
-  border: 2px solid rgba(255, 255, 255, 0.5);
-  border-radius: 100px;
-  padding: 14px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  text-align: center;
+  font-size: clamp(2.4rem, 8vw, 3.4rem);
+  font-weight: 900;
   color: #fff;
+  letter-spacing: -2px;
+  z-index: 2;
+  text-align: center;
 }
 
-.heartBtn {
-  font-size: 1.8rem;
-  padding: 5px;
+.premiumPill {
+  background: rgba(255, 255, 255, 0.08);
+  padding: 6px 16px;
+  border-radius: 100px;
+  color: #fff;
+  font-size: 0.8rem;
+  margin-top: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
-/* --- ANIMATIONS --- */
+.fullReportBtn {
+  background: #fff;
+  color: #000;
+  padding: 14px;
+  border-radius: 20px;
+  text-align: center;
+  font-weight: 800;
+  font-size: 0.85rem;
+  width: 100%;
+  border: none;
+  cursor: pointer;
+  margin-top: auto;
+}
+
+/* --- KEYFRAMES --- */
 @keyframes slideWords {
   0%,
   15% {
@@ -336,22 +374,22 @@
   }
   20%,
   35% {
-    transform: translateY(-1.1em);
+    transform: translateY(-1.2em);
   }
   40%,
   55% {
-    transform: translateY(-2.2em);
+    transform: translateY(-2.4em);
   }
   60%,
   75% {
-    transform: translateY(-3.3em);
+    transform: translateY(-3.6em);
   }
   80%,
   95% {
-    transform: translateY(-4.4em);
+    transform: translateY(-4.8em);
   }
   100% {
-    transform: translateY(-5.5em);
+    transform: translateY(-6em);
   }
 }
 
@@ -364,51 +402,37 @@
   }
 }
 
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes pulse {
-  0% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.4;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
-/* --- MOBILE --- */
+/* --- RESPONSIVE MEDIA QUERIES --- */
 @media (max-width: 900px) {
   .splitGrid {
     grid-template-columns: 1fr;
-    gap: 60px;
-  }
-
-  .leftContent {
+    gap: 40px;
     text-align: center;
-    align-items: center;
-    display: flex;
-    flex-direction: column;
   }
-
-  .mainTitle {
+  .leftContent {
     align-items: center;
   }
-
   .description {
-    margin: 0 auto 30px;
+    margin: 0 auto;
   }
+  .mainTitle {
+    line-height: 1.5;
+  } /* Slightly more space for mobile titles */
+}
 
-  .storyCard {
-    width: 100%;
-    max-width: 360px;
+@media (max-width: 480px) {
+  .container {
+    padding: 0 20px;
+  }
+  .iosRing {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+  }
+  .mainTitle {
+    font-size: 2.1rem;
+  }
+  .storyValue {
+    font-size: 2.2rem;
   }
 }

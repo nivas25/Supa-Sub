@@ -1,153 +1,176 @@
+/* Identity.module.css */
+
 .wrapper {
-  padding: 120px 0;
-  background: #ffffff;
+  padding: 100px 0;
+  background: transparent; /* Use globals.css continuity */
   position: relative;
-  overflow: hidden;
   display: flex;
   align-items: center;
-}
-
-/* --- MODERN MESH BACKGROUND --- */
-.meshGradient {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-  background-color: #ffffff;
-  background-image: radial-gradient(
-      at 0% 0%,
-      hsla(253, 16%, 7%, 0.03) 0,
-      transparent 50%
-    ),
-    radial-gradient(at 50% 0%, hsla(225, 39%, 30%, 0.02) 0, transparent 50%),
-    radial-gradient(at 100% 0%, hsla(339, 49%, 30%, 0.03) 0, transparent 50%),
-    radial-gradient(at 0% 100%, hsla(339, 49%, 30%, 0.02) 0, transparent 50%),
-    radial-gradient(at 100% 100%, hsla(253, 16%, 7%, 0.03) 0, transparent 50%);
-  opacity: 0.8;
 }
 
 .container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 24px;
-  position: relative;
-  z-index: 1;
+  width: 100%;
 }
 
 .contentGrid {
   display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
-  gap: 100px;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 80px;
   align-items: center;
 }
 
-/* --- TEXT CONTENT --- */
+/* --- LIGHTER FONTS --- */
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #000;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 700; /* Reduced from 900 */
+  margin-bottom: 25px;
+  font-family: var(--font-space); /* Space Mono from globals.css */
+}
+
 .title {
-  font-size: clamp(2.4rem, 5vw, 4rem);
-  font-weight: 1000;
+  font-size: clamp(2.5rem, 6vw, 4.2rem);
+  font-weight: 800; /* Reduced from 1000 */
   line-height: 1.1;
-  letter-spacing: -2px;
-  margin-bottom: 24px;
   color: #000;
+  letter-spacing: -2px;
+  font-family: var(--font-outfit); /* Outfit from globals.css */
 }
 
-.markerHighlight {
-  position: relative;
-  z-index: 1;
-  padding: 0 8px;
+/* --- PERFECT SLIDER FIX --- */
+.sliderWindow {
+  height: 75px; /* Consistent height to prevent 2-word glitch */
+  overflow: hidden;
+  margin: 12px 0;
+  display: block;
 }
 
-.markerHighlight::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: 8px;
-  width: 100%;
-  height: 35%;
-  background: #ffc900; /* Subtle Gumroad yellow highlight */
-  z-index: -1;
-  transform: rotate(-1.5deg);
-  border-radius: 2px;
+.wordSlider {
+  display: flex;
+  flex-direction: column;
+  animation: slideFix 9s cubic-bezier(0.85, 0, 0.15, 1) infinite;
 }
 
-.highlight {
-  color: #ff4d00;
+.slideBox {
+  height: 75px; /* Match window exactly */
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 24px;
+  color: #fff;
+  border: 3px solid #000;
+  width: fit-content;
+  font-weight: 800; /* Reduced weight */
+  font-size: 0.75em;
+  box-sizing: border-box;
+}
+
+.whatsapp {
+  background-color: #25d366;
+}
+.telegram {
+  background-color: #0088cc;
+}
+.discord {
+  background-color: #5865f2;
+}
+
+@keyframes slideFix {
+  0%,
+  28% {
+    transform: translateY(0);
+  }
+  33%,
+  61% {
+    transform: translateY(-75px);
+  } /* Precise 1-box increment */
+  66%,
+  94% {
+    transform: translateY(-150px);
+  }
+  100% {
+    transform: translateY(-225px);
+  }
 }
 
 .description {
-  font-size: 1.25rem;
+  font-size: 1.15rem;
   line-height: 1.6;
   color: #444;
-  margin-bottom: 44px;
+  margin: 30px 0;
   max-width: 580px;
+  font-weight: 500;
 }
 
 .benefitList {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 18px;
 }
 
 .benefitItem {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
   font-weight: 700;
-  color: #111;
-  font-size: 1.1rem;
+  color: #000;
 }
 
 .iconCircle {
-  width: 32px;
-  height: 32px;
-  background: #05ac72;
-  color: #fff;
+  width: 28px;
+  height: 28px;
+  background: #000;
+  color: #00f5a0;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.2rem;
-  flex-shrink: 0;
 }
 
-/* --- THE MODERN CARD (Glassmorphism + Gumroad Shadow) --- */
+/* --- CARD STYLES --- */
 .modernCard {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(10px); /* Modern blur effect */
-  padding: 60px 40px;
-  border-radius: 32px;
-  border: 3px solid #000; /* Bold Gumroad border */
-  text-align: center;
-  /* Flat offset shadow */
+  background: #fff;
+  padding: 50px 40px;
+  border: 3px solid #000;
+  border-radius: 24px;
   box-shadow: 12px 12px 0px #000;
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  text-align: center;
+  position: relative;
 }
 
-.modernCard:hover {
-  transform: translate(-4px, -4px);
-  box-shadow: 16px 16px 0px #ff4d00; /* Changes color on hover */
-}
-
-.statValue {
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  color: #000;
-  margin-bottom: 10px;
+.cardRibbon {
+  position: absolute;
+  top: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #ffeb3b;
+  border: 2px solid #000;
+  padding: 4px 20px;
+  font-weight: 800;
+  font-size: 0.8rem;
 }
 
 .number {
-  font-size: 9rem;
-  font-weight: 1000;
-  line-height: 0.9;
+  font-size: 8rem;
+  font-weight: 800;
+  line-height: 1;
+  font-family: var(--font-outfit);
 }
-
 .percent {
   font-size: 3rem;
-  font-weight: 900;
+  font-weight: 700;
+  vertical-align: top;
   margin-top: 10px;
+  display: inline-block;
 }
 
 .statLabel {
@@ -155,57 +178,76 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  font-weight: 900;
-  letter-spacing: 1px;
-  font-size: 0.9rem;
-  color: #000;
-  margin-bottom: 24px;
-}
-
-.statDetail {
-  font-size: 1.1rem;
-  line-height: 1.5;
-  color: #555;
-  margin-bottom: 32px;
+  font-weight: 700;
+  margin: 20px 0;
+  font-family: var(--font-space);
 }
 
 .ownershipBadge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
   background: #000;
   color: #fff;
-  padding: 12px 28px;
-  border-radius: 12px;
-  font-size: 0.85rem;
-  font-weight: 900;
-  letter-spacing: 0.5px;
+  padding: 16px;
+  border-radius: 8px;
+  font-weight: 800;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 35px; /* Added gap */
 }
 
-/* --- RESPONSIVE --- */
+/* --- MOBILE OPTIMIZATION --- */
 @media (max-width: 1024px) {
   .contentGrid {
     grid-template-columns: 1fr;
-    gap: 80px;
-  }
-  .textContent {
     text-align: center;
-    display: flex;
-    flex-direction: column;
+  }
+  .sliderWindow {
+    justify-content: center;
+  }
+  .slideBox {
+    margin: 0 auto;
+  }
+  .benefitList {
     align-items: center;
   }
   .modernCard {
-    max-width: 480px;
-    margin: 0 auto;
+    margin: 40px auto 0;
   }
 }
 
-@media (max-width: 480px) {
-  .number {
-    font-size: 7rem;
+@media (max-width: 600px) {
+  .wrapper {
+    padding: 35px 0; /* Reduced mobile top padding */
   }
-  .modernCard {
-    padding: 40px 20px;
-    box-shadow: 8px 8px 0px #000;
+  .title {
+    font-size: 2rem;
+  }
+  .sliderWindow,
+  .slideBox {
+    height: 55px;
+  }
+  .slideBox {
+    font-size: 0.6em;
+    border-width: 2px;
+  }
+
+  @keyframes slideFix {
+    0%,
+    28% {
+      transform: translateY(0);
+    }
+    33%,
+    61% {
+      transform: translateY(-55px);
+    }
+    66%,
+    94% {
+      transform: translateY(-110px);
+    }
+    100% {
+      transform: translateY(-165px);
+    }
   }
 }

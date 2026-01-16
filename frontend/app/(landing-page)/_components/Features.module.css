@@ -1,194 +1,165 @@
+/* Features.module.css */
+
 .wrapper {
   padding: 100px 24px;
-  background-color: #ffffff;
+  background-color: transparent; /* Maintains globals.css continuity */
   position: relative;
-  overflow: hidden;
-}
-
-/* --- MODERN DOT PATTERN --- */
-.dotPattern {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: radial-gradient(#e0e0e0 1px, transparent 1px);
-  background-size: 24px 24px;
-  z-index: 0;
-  opacity: 0.7;
 }
 
 .container {
-  max-width: 1100px;
+  max-width: 1200px;
   margin: 0 auto;
-  position: relative;
-  z-index: 1;
 }
 
 /* --- HEADER --- */
 .header {
   text-align: center;
-  margin-bottom: 60px;
+  margin-bottom: 70px;
 }
 
-.mainTitle {
-  font-size: clamp(3rem, 8vw, 5.5rem);
-  font-weight: 900;
-  letter-spacing: -2px;
-  color: #000;
-  line-height: 1.1;
-  text-transform: uppercase;
-  background: linear-gradient(135deg, #000 0%, #333 50%, #000 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  position: relative;
-  display: inline-block;
-  text-shadow: none;
-}
-
-.mainTitle::after {
-  content: attr(data-text);
-  position: absolute;
-  left: 3px;
-  top: 3px;
-  z-index: -1;
-  color: rgba(0, 0, 0, 0.1);
-}
-
-.purpleText {
-  color: #6366f1;
-  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  font-style: italic;
-  display: inline-block;
-}
-
-.subText {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #666;
-  margin-top: 10px;
-}
-
-/* --- COMPACT GRID --- */
-.compactGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 20px;
-}
-
-.card {
-  background: #fff;
-  border: 2.5px solid #000; /* Thinner Gumroad border */
-  padding: 30px;
-  border-radius: 20px;
-  box-shadow: 6px 6px 0px #000; /* Smaller flat shadow */
-  transition: all 0.2s ease;
-  display: flex;
-  flex-direction: column;
-  min-height: 280px; /* Reduced height */
-}
-
-.card:hover {
-  transform: translate(-3px, -3px);
-  box-shadow: 10px 10px 0px #000;
-}
-
-/* --- COLOR VARIANTS --- */
-.purpleCard {
-  background: #f8f7ff;
-}
-.yellowCard {
-  background: #fffdf0;
-}
-.redCard {
-  background: #fff5f5;
-}
-.darkCard {
-  background: #fafafa;
-}
-
-/* --- CARD INTERNALS --- */
-.cardHeader {
-  display: flex;
-  justify-content: space-between;
+.badge {
+  display: inline-flex;
   align-items: center;
+  gap: 8px;
+  background: #000;
+  color: #fff;
+  padding: 6px 14px;
+  border-radius: 100px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  font-family: var(--font-space); /* */
   margin-bottom: 20px;
 }
 
+.mainTitle {
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -2px;
+  font-family: var(--font-outfit); /* */
+}
+
+.highlight {
+  color: #0066ff; /* Accent color from globals */
+  text-decoration: underline;
+  text-decoration-color: #ffeb3b; /* Gumroad Yellow accent */
+  text-underline-offset: 6px;
+}
+
+/* --- THE FUSION GRID --- */
+.fusionGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+
+.fusionCard {
+  background: #ffffff;
+  border: 3.5px solid #000; /* Bold Gumroad Border */
+  border-radius: 45px; /* iOS-Style Squircle */
+  padding: 40px;
+  box-shadow: 10px 10px 0px #000; /* Gumroad Hard Shadow */
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+.fusionCard:hover {
+  transform: translateY(-6px);
+  box-shadow: 14px 14px 0px #000;
+}
+
+/* --- CARD INTERNALS --- */
+.cardTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 30px;
+}
+
 .iconBox {
-  font-size: 1.6rem;
+  font-size: 2.2rem;
   color: #000;
 }
 
 .platformIcons {
   display: flex;
-  gap: 8px;
-  font-size: 1.3rem;
-  color: #888;
+  gap: 10px;
+  font-size: 1.4rem;
+}
+
+.wa {
+  color: #25d366;
+}
+.tg {
+  color: #0088cc;
+}
+.ds {
+  color: #5865f2;
 }
 
 .cardTitle {
-  font-size: 1.5rem;
-  font-weight: 900;
-  margin-bottom: 12px;
-  color: #000;
-  letter-spacing: -0.5px;
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin-bottom: 15px;
+  letter-spacing: -1px;
 }
 
 .cardDesc {
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   line-height: 1.5;
   color: #444;
-  font-weight: 600;
+  font-weight: 500;
 }
 
-/* --- ACCENTS --- */
-.feeBadge {
-  background: #000;
-  color: #fff;
+/* Accents */
+.splitBadge {
+  background: #ffeb3b;
+  border: 2px solid #000;
+  padding: 4px 12px;
+  font-weight: 900;
+  font-size: 0.8rem;
+  border-radius: 100px;
+}
+
+.statusLight {
+  background: #00f5a0;
+  border: 2px solid #000;
+  padding: 4px 12px;
+  font-weight: 900;
   font-size: 0.7rem;
-  font-weight: 900;
-  padding: 4px 10px;
-  border-radius: 4px;
-}
-
-.miniGraph {
+  border-radius: 100px;
   display: flex;
-  align-items: flex-end;
-  gap: 4px;
-  height: 30px;
-  margin-top: auto;
+  align-items: center;
+  gap: 6px;
 }
 
-.bar {
-  flex: 1;
-  background: #ff4d4d;
-  border: 1.5px solid #000;
-  border-radius: 2px;
+.statusLight::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  background: #000;
+  border-radius: 50%;
 }
 
-.secureTag {
-  margin-top: auto;
-  font-family: monospace;
-  font-size: 0.65rem;
-  font-weight: 900;
-  color: #05ac72;
-}
-
-/* --- MOBILE --- */
-@media (max-width: 768px) {
-  .compactGrid {
+/* --- MOBILE LAYOUT --- */
+@media (max-width: 1024px) {
+  .fusionGrid {
     grid-template-columns: 1fr;
+    max-width: 500px;
+    margin: 0 auto;
   }
-  .card {
-    min-height: auto;
-    padding: 25px;
+}
+
+@media (max-width: 600px) {
+  .wrapper {
+    padding: 60px 20px;
   }
   .mainTitle {
-    font-size: 2.2rem;
+    font-size: 2.5rem;
+  }
+  .fusionCard {
+    padding: 30px;
+    border-radius: 35px;
   }
 }

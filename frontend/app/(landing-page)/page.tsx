@@ -7,6 +7,7 @@ import ProfileShowcase from "./_components/ProfileShowcase";
 import Identity from "./_components/Identity";
 import FAQ from "./_components/FAQ";
 import Pricing from "./_components/Pricing";
+import ProfitCalculator from "./_components/ProfitCalculator";
 import Footer from "./_components/Footer";
 
 export default function LandingPage() {
@@ -29,7 +30,7 @@ export default function LandingPage() {
         <Analytics />
       </section>
 
-      <section id="blueprint">
+      <section id="steps">
         <Steps />
       </section>
 
@@ -39,6 +40,10 @@ export default function LandingPage() {
 
       <section id="pricing">
         <Pricing />
+      </section>
+
+      <section id="profitCalculator">
+        <ProfitCalculator />
       </section>
 
       <section id="faq">

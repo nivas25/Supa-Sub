@@ -5,94 +5,75 @@ import {
   RiTelegramFill,
   RiDiscordFill,
   RiWhatsappFill,
-  RiUserFollowLine,
-  RiBarChart2Line,
   RiMoneyDollarCircleLine,
-  RiLockPasswordLine,
+  RiShieldFlashLine,
+  RiUserFollowLine,
+  RiFlashlightLine,
 } from "react-icons/ri";
 
 export default function Features() {
   return (
     <section className={styles.wrapper}>
-      {/* Subtle Dot Grid Pattern */}
-      <div className={styles.dotPattern} />
-
       <div className={styles.container}>
+        {/* iOS-Style Minimal Header */}
         <div className={styles.header}>
+          <div className={styles.badge}>
+            <RiFlashlightLine /> <span>CAPABILITIES</span>
+          </div>
           <h2 className={styles.mainTitle}>
-            Manage Your <span className={styles.purpleText}>Inner Circle.</span>
+            Designed for the <br />
+            <span className={styles.highlight}>Modern Creator.</span>
           </h2>
-          <p className={styles.subText}>
-            Automated management for modern communities.
-          </p>
         </div>
 
-        <div className={styles.compactGrid}>
-          {/* Card 1: Automation */}
-          <div className={`${styles.card} ${styles.purpleCard}`}>
-            <div className={styles.cardHeader}>
+        <div className={styles.fusionGrid}>
+          {/* FEATURE 1: SYNC */}
+          <div className={styles.fusionCard}>
+            <div className={styles.cardTop}>
               <div className={styles.iconBox}>
                 <RiUserFollowLine />
               </div>
               <div className={styles.platformIcons}>
-                <RiTelegramFill /> <RiWhatsappFill /> <RiDiscordFill />
+                <RiWhatsappFill className={styles.wa} />
+                <RiTelegramFill className={styles.tg} />
+                <RiDiscordFill className={styles.ds} />
               </div>
             </div>
-            <h3 className={styles.cardTitle}>Auto-Member Sync</h3>
+            <h3 className={styles.cardTitle}>Autonomous Sync</h3>
             <p className={styles.cardDesc}>
-              Instantly add or remove members based on their payment status.
-              Zero manual admin work required.
+              Instantly manage member access across all major platforms with
+              zero manual effort.
             </p>
           </div>
 
-          {/* Card 2: 5% Commission */}
-          <div className={`${styles.card} ${styles.yellowCard}`}>
-            <div className={styles.cardHeader}>
+          {/* FEATURE 2: REVENUE */}
+          <div className={styles.fusionCard}>
+            <div className={styles.cardTop}>
               <div className={styles.iconBox}>
                 <RiMoneyDollarCircleLine />
               </div>
-              <span className={styles.feeBadge}>5% FLAT FEE</span>
+              <div className={styles.splitBadge}>95/5</div>
             </div>
-            <h3 className={styles.cardTitle}>Global Revenue</h3>
+            <h3 className={styles.cardTitle}>Revenue Engine</h3>
             <p className={styles.cardDesc}>
-              Keep 95% of your earnings. No monthly subscriptions or hidden
-              platform taxes.
+              Keep 95% of every transaction. High-performance payments with no
+              hidden monthly taxes.
             </p>
           </div>
 
-          {/* Card 3: Analytics */}
-          <div className={`${styles.card} ${styles.redCard}`}>
-            <div className={styles.cardHeader}>
+          {/* FEATURE 3: SECURITY */}
+          <div className={styles.fusionCard}>
+            <div className={styles.cardTop}>
               <div className={styles.iconBox}>
-                <RiBarChart2Line />
+                <RiShieldFlashLine />
               </div>
+              <div className={styles.statusLight}>LIVE</div>
             </div>
-            <h3 className={styles.cardTitle}>Real-time Insights</h3>
+            <h3 className={styles.cardTitle}>Content Shield</h3>
             <p className={styles.cardDesc}>
-              Track your community growth, churn rates, and daily revenue
-              through a simple dashboard.
+              Anti-leak technology and secure links to protect your premium
+              community content.
             </p>
-            <div className={styles.miniGraph}>
-              <div className={styles.bar} style={{ height: "40%" }} />
-              <div className={styles.bar} style={{ height: "70%" }} />
-              <div className={styles.bar} style={{ height: "50%" }} />
-              <div className={styles.bar} style={{ height: "90%" }} />
-            </div>
-          </div>
-
-          {/* Card 4: Security */}
-          <div className={`${styles.card} ${styles.darkCard}`}>
-            <div className={styles.cardHeader}>
-              <div className={styles.iconBox}>
-                <RiLockPasswordLine />
-              </div>
-            </div>
-            <h3 className={styles.cardTitle}>Access Shield</h3>
-            <p className={styles.cardDesc}>
-              Secure, non-sharable invite links and anti-leak technology to
-              protect your premium content.
-            </p>
-            <div className={styles.secureTag}>ENCRYPTION_ACTIVE</div>
           </div>
         </div>
       </div>

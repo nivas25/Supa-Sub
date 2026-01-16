@@ -1,0 +1,385 @@
+/* ProfitCalculator.module.css */
+
+.wrapper {
+  background: transparent;
+  padding: 120px 20px;
+  font-family: var(--font-space, monospace);
+  display: flex;
+  justify-content: center;
+}
+
+.container {
+  max-width: 1100px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+  align-items: center;
+}
+
+/* --- HEADER SECTION --- */
+.header {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #f4f4f5;
+  color: #555;
+  padding: 6px 14px;
+  border-radius: 100px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.title {
+  font-size: clamp(2.5rem, 6vw, 3.8rem);
+  font-weight: 900;
+  line-height: 1;
+  color: #111;
+  font-family: var(--font-outfit, sans-serif);
+  margin-bottom: 15px;
+}
+
+.highlight {
+  color: #000;
+  text-decoration: underline;
+  text-decoration-color: #ffc900;
+  text-decoration-thickness: 6px;
+  text-underline-offset: 4px;
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  color: #666;
+  font-family: var(--font-inter, sans-serif);
+  line-height: 1.5;
+}
+
+/* --- DESKTOP GRID LAYOUT --- */
+.contentGrid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 50px;
+  width: 100%;
+  align-items: center;
+}
+
+/* --- THE SLOT MACHINE --- */
+.slotMachine {
+  background: #ffc900;
+  border: 4px solid #000;
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 16px 16px 0 #000;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  background-image: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0.2) 0%,
+    rgba(255, 255, 255, 0) 40%
+  );
+  transform: rotate(-1deg);
+  transition: transform 0.3s;
+}
+
+.slotMachine:hover {
+  transform: rotate(0deg) scale(1.01);
+}
+
+.bolt {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  background: #000;
+  border-radius: 50%;
+  box-shadow: inset 3px 3px 0 rgba(255, 255, 255, 0.3);
+}
+.boltTL {
+  top: 12px;
+  left: 12px;
+}
+.boltTR {
+  top: 12px;
+  right: 12px;
+}
+.boltBL {
+  bottom: 12px;
+  left: 12px;
+}
+.boltBR {
+  bottom: 12px;
+  right: 12px;
+}
+
+.machineHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 25px;
+}
+
+.label {
+  font-weight: 900;
+  font-size: 0.9rem;
+  letter-spacing: 2px;
+  color: #000;
+}
+
+.indicator {
+  width: 10px;
+  height: 10px;
+  background: #000;
+  border-radius: 50%;
+  opacity: 0.4;
+}
+
+/* Glass Window */
+.windowFrame {
+  background: #fff;
+  border: 4px solid #000;
+  border-radius: 12px;
+  padding: 25px 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  box-shadow: inset 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.currency {
+  font-size: 3.5rem;
+  font-weight: 900;
+  color: #000;
+  font-family: var(--font-outfit, sans-serif);
+  margin-right: 5px;
+}
+
+.reelsWrapper {
+  display: flex;
+  gap: 6px;
+  overflow: hidden;
+  height: 65px;
+  align-items: center;
+}
+
+/* REEL ANIMATION */
+.reelContainer {
+  width: 45px;
+  height: 65px;
+  overflow: hidden;
+  position: relative;
+  background: #f8f8f8;
+  border-radius: 6px;
+  border: 2px solid #000;
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.reelTrack {
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.reelNumber {
+  height: 65px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  font-weight: 900;
+  color: #000;
+  font-family: var(--font-outfit, sans-serif);
+  flex-shrink: 0;
+}
+
+.perMo {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #ccc;
+  align-self: flex-end;
+  margin-bottom: 8px;
+  margin-left: 5px;
+  font-family: var(--font-outfit);
+}
+
+.machineFooter {
+  margin-top: 25px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #000;
+  opacity: 0.7;
+}
+
+/* --- CONTROLS PANEL --- */
+.controlsPanel {
+  background: #fff;
+  border: 4px solid #000;
+  padding: 40px;
+  width: 100%;
+  height: 100%;
+  box-shadow: 16px 16px 0 rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 40px;
+}
+
+.controlGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.labelRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.labelText {
+  font-weight: 800;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+}
+
+.valueBadge {
+  background: #000;
+  color: #fff;
+  padding: 4px 12px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  font-family: var(--font-outfit);
+}
+
+.infoRow {
+  margin-top: 10px;
+  font-size: 0.9rem;
+  color: #666;
+  font-family: var(--font-inter);
+  line-height: 1.5;
+}
+
+/* --- GUMROAD SLIDER --- */
+.gumroadSlider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 18px;
+  background: #f0f0f0;
+  border: 3px solid #000;
+  border-radius: 100px;
+  outline: none;
+  cursor: pointer;
+  box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.gumroadSlider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 36px;
+  height: 36px;
+  background: #ff90e8;
+  border: 3px solid #000;
+  border-radius: 50%;
+  box-shadow: 3px 3px 0 #000;
+  cursor: grab;
+  transition: transform 0.1s;
+  margin-top: -12px;
+}
+
+.gumroadSlider::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+  background: #00f5a0;
+}
+
+/* --- MOBILE OPTIMIZATION --- */
+@media (max-width: 900px) {
+  .wrapper {
+    padding: 80px 20px;
+  }
+
+  .contentGrid {
+    grid-template-columns: 1fr; /* Stack vertically */
+    gap: 40px;
+  }
+
+  .slotMachine {
+    width: 100%;
+    transform: rotate(0deg); /* Remove tilt on mobile for cleaner lines */
+    padding: 30px 20px;
+    box-shadow: 10px 10px 0 #000;
+  }
+
+  /* Scale down the big slot text */
+  .currency {
+    font-size: 2.5rem;
+  }
+  .reelContainer {
+    width: 35px;
+    height: 50px;
+  }
+  .reelNumber {
+    height: 50px;
+    font-size: 2.2rem;
+  }
+  .perMo {
+    font-size: 1.2rem;
+  }
+
+  .controlsPanel {
+    padding: 30px 20px;
+    box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.1);
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 2.2rem;
+  }
+  .machineHeader {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .indicator {
+    display: none;
+  }
+
+  /* Even smaller slot reels for very small screens */
+  .windowFrame {
+    padding: 15px 10px;
+    gap: 4px;
+  }
+  .currency {
+    font-size: 2rem;
+    margin-right: 2px;
+  }
+  .reelContainer {
+    width: 28px;
+    height: 40px;
+    border-width: 1.5px;
+  }
+  .reelNumber {
+    height: 40px;
+    font-size: 1.5rem;
+  }
+  .perMo {
+    font-size: 1rem;
+    margin-bottom: 5px;
+  }
+}
