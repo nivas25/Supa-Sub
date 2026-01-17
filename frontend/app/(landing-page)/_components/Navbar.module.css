@@ -184,14 +184,14 @@
 .dashboardLink {
   text-decoration: none;
 
-.mobileLink:focus {
-  outline: none;
-}
+  .mobileLink:focus {
+    outline: none;
+  }
 
-.mobileLink:active {
-  color: #000;
-  background: #f0f2f5;
-}
+  .mobileLink:active {
+    color: #000;
+    background: #f0f2f5;
+  }
   color: #000;
   font-weight: 600;
   font-size: 0.9rem;
