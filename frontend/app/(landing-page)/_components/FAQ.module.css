@@ -69,6 +69,9 @@
   background: transparent;
   border: 2px solid transparent;
   border-bottom-color: #e5e5e5;
+
+  /* FIXED: Removes blue tap highlight on mobile */
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* ACTIVE STATE */

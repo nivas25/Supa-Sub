@@ -325,8 +325,6 @@
   position: relative;
 }
 
-/* Track Fill Logic would need JS or complex CSS, keeping simple bold track */
-
 .gumroadSlider::-webkit-slider-thumb {
   -webkit-appearance: none;
   width: 32px;
@@ -337,13 +335,13 @@
   box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.2);
   cursor: grab;
   transition: transform 0.1s, background 0.2s;
-  margin-top: -12px; /* Center thumb on track */
+  margin-top: -12px;
   transform: translateY(2px);
 }
 
 .gumroadSlider::-webkit-slider-thumb:hover {
   transform: scale(1.1) translateY(2px);
-  background: #25d366; /* Interactive Green */
+  background: #25d366;
 }
 
 /* --- INFO FOOTER --- */
@@ -363,35 +361,121 @@
   font-size: 1.2rem;
 }
 
-/* --- MOBILE --- */
+/* --- MOBILE OPTIMIZATION (Up to 900px) --- */
 @media (max-width: 900px) {
   .wrapper {
-    padding: 80px 20px;
-  }
-  .contentGrid {
-    grid-template-columns: 1fr;
-    gap: 50px;
+    padding: 60px 16px; /* Reduced vertical and horizontal padding */
   }
 
+  .container {
+    gap: 40px;
+  }
+
+  .title {
+    font-size: 2.2rem; /* Scaled down title */
+    line-height: 1.1;
+  }
+  .subtitle {
+    font-size: 1rem;
+  }
+
+  /* Stack Grid Vertically */
+  .contentGrid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  /* Compact Slot Machine */
   .slotMachine {
     transform: rotate(0deg);
     width: 100%;
-    padding: 30px 20px;
+    padding: 24px 16px; /* Tighter padding */
+    border-width: 3px;
+    box-shadow: 8px 8px 0 #000; /* Smaller shadow */
   }
 
+  .vents {
+    top: 16px;
+    right: 16px;
+    gap: 4px;
+  }
+  .ventSlot {
+    width: 4px;
+    height: 16px;
+  }
+
+  /* Compact Screen */
+  .windowFrame {
+    padding: 20px 10px;
+    border-width: 3px;
+    border-radius: 12px;
+    gap: 4px;
+  }
+
+  /* Resize Reels for Mobile */
   .currency {
-    font-size: 2rem;
+    font-size: 1.8rem;
+    margin-right: 4px;
+  }
+  .reelsWrapper {
+    height: 48px;
+    gap: 4px;
   }
   .reelContainer {
-    width: 36px;
-    height: 50px;
+    width: 30px;
+    height: 48px;
+    border-width: 2px;
+    border-radius: 4px;
   }
   .reelNumber {
-    height: 50px;
-    font-size: 2rem;
+    height: 48px;
+    font-size: 1.8rem;
+  }
+  .perMo {
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+    margin-left: 4px;
   }
 
+  /* Compact Breakdown Panel */
+  .breakdownPanel {
+    flex-direction: column;
+    gap: 6px;
+    text-align: center;
+    margin-top: 16px;
+    font-size: 0.8rem;
+  }
+
+  /* Compact Controls Panel */
   .controlsPanel {
-    padding: 30px 20px;
+    padding: 24px 16px;
+    border-width: 3px;
+    box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.1);
+    gap: 30px;
+  }
+
+  .labelRow {
+    margin-bottom: 8px;
+  }
+
+  .labelText {
+    font-size: 0.75rem;
+  }
+
+  .valueBadge {
+    padding: 4px 10px;
+    font-size: 0.9rem;
+    min-width: 60px;
+  }
+
+  /* Slider Tweak */
+  .gumroadSlider {
+    height: 10px;
+  }
+  .gumroadSlider::-webkit-slider-thumb {
+    width: 24px;
+    height: 24px;
+    margin-top: -9px;
+    border-width: 3px;
   }
 }

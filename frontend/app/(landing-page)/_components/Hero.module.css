@@ -1,175 +1,185 @@
 /* Hero.module.css */
 
+/* --- MAIN SECTION --- */
 .heroWrapper {
-  background-color: #fcfcfc;
-  /* Multi-colored professional grid pattern */
-  background-image: linear-gradient(
-      90deg,
-      rgba(255, 144, 232, 0.08) 1px,
-      transparent 1px
-    ),
-    linear-gradient(rgba(255, 201, 0, 0.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 245, 160, 0.06) 1px, transparent 1px),
-    linear-gradient(rgba(0, 209, 255, 0.06) 1px, transparent 1px),
-    radial-gradient(
-      circle at 50% 50%,
-      rgba(255, 107, 53, 0.05) 2px,
-      transparent 2px
-    );
-  background-size: 60px 60px, 60px 60px, 120px 120px, 120px 120px, 40px 40px;
-  background-position: 0 0, 0 0, 30px 30px, 30px 30px, 0 0;
-  min-height: 100vh;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  padding: 160px 24px 80px;
   position: relative;
-  overflow: hidden;
-}
-
-/* --- DESKTOP: FULL WIDTH SCATTER --- */
-.floatingElements {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 1;
-}
-
-.iconWrapper {
-  position: absolute;
+  width: 100%;
+  min-height: 90vh;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  background-color: #fff;
+  background-image: radial-gradient(#e5e5e5 1px, transparent 1px);
+  background-size: 20px 20px;
+  overflow: hidden;
+  padding: 120px 24px 80px;
+  z-index: 0;
+}
+
+/* --- COIN WRAPPER (Movement) --- */
+.coinWrapper {
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+  transition: transform 0.1s linear;
+  will-change: transform;
+}
+
+/* --- THE COIN VISUAL (Base 3D Style) --- */
+.coinVisual {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   pointer-events: auto;
+  border: 3px solid #000;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.coinVisual svg {
+  color: #000;
+  width: 50%;
+  height: 50%;
+  filter: drop-shadow(1px 1px 0 rgba(255, 255, 255, 0.3));
+}
+
+.coinVisual:hover {
+  transform: scale(1.1) translateY(-10px) rotate(0deg) !important;
+  z-index: 10;
   cursor: pointer;
-  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.iconWrapper:hover {
-  transform: scale(1.15) rotate(5deg);
-  z-index: 50;
+/* --- COIN COLOR VARIANTS (Background + 3D Shadow Layers) --- */
+
+/* 1. GREEN (Brand) */
+.coinGreen {
+  background: #25d366;
+  box-shadow: 1px 1px 0 #15803d, 2px 2px 0 #15803d, 3px 3px 0 #15803d,
+    4px 4px 0 #15803d, 5px 5px 0 #15803d, 6px 6px 0 #15803d, 8px 8px 0 #000;
 }
 
-/* Original four icons */
+/* 2. PINK (Gumroad Style) */
+.coinPink {
+  background: #ff90e8;
+  box-shadow: 1px 1px 0 #c75c9e, 2px 2px 0 #c75c9e, 3px 3px 0 #c75c9e,
+    4px 4px 0 #c75c9e, 5px 5px 0 #c75c9e, 6px 6px 0 #c75c9e, 8px 8px 0 #000;
+}
+
+/* 3. YELLOW */
+.coinYellow {
+  background: #ffc900;
+  box-shadow: 1px 1px 0 #cc9a00, 2px 2px 0 #cc9a00, 3px 3px 0 #cc9a00,
+    4px 4px 0 #cc9a00, 5px 5px 0 #cc9a00, 6px 6px 0 #cc9a00, 8px 8px 0 #000;
+}
+
+/* 4. CYAN/BLUE */
+.coinBlue {
+  background: #00d1ff;
+  box-shadow: 1px 1px 0 #0099bd, 2px 2px 0 #0099bd, 3px 3px 0 #0099bd,
+    4px 4px 0 #0099bd, 5px 5px 0 #0099bd, 6px 6px 0 #0099bd, 8px 8px 0 #000;
+}
+
+/* 5. ORANGE */
+.coinOrange {
+  background: #ff6b35;
+  box-shadow: 1px 1px 0 #cc4e22, 2px 2px 0 #cc4e22, 3px 3px 0 #cc4e22,
+    4px 4px 0 #cc4e22, 5px 5px 0 #cc4e22, 6px 6px 0 #cc4e22, 8px 8px 0 #000;
+}
+
+/* --- POSITIONS & ANGLES --- */
 .pos1 {
-  top: 15%;
-  left: 8%;
-}
-.pos2 {
-  bottom: 15%;
-  left: 12%;
-}
-.pos3 {
-  top: 18%;
-  right: 10%;
-}
-.pos4 {
-  bottom: 12%;
-  right: 6%;
-}
-
-/* Middle side icons and bottom-center icon */
-.pos5 {
-  top: 50%;
+  width: 110px;
+  height: 110px;
+  top: 12%;
   left: 5%;
 }
-.pos6 {
-  top: 52%;
-  right: 4%;
+.angle1 {
+  transform: rotate(-25deg);
 }
-.pos7 {
+
+.pos2 {
+  width: 180px;
+  height: 180px;
   bottom: 5%;
-  left: 50%;
-  transform: translateX(-50%);
+  left: -2%;
+}
+.angle2 {
+  transform: rotate(15deg);
 }
 
-.hoverMessage {
-  position: absolute;
-  top: -45px;
-  background: #000;
-  color: #fff;
-  font-family: monospace;
-  font-size: 0.75rem;
-  font-weight: 900;
-  padding: 6px 14px;
-  border-radius: 6px;
-  white-space: nowrap;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(10px);
-  transition: all 0.3s ease;
+.pos3 {
+  width: 90px;
+  height: 90px;
+  top: 15%;
+  right: 8%;
+}
+.angle3 {
+  transform: rotate(30deg);
 }
 
-.iconWrapper:hover .hoverMessage {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
+.pos4 {
+  width: 220px;
+  height: 220px;
+  bottom: -5%;
+  right: -5%;
+}
+.angle4 {
+  transform: rotate(-15deg);
 }
 
-/* --- CONTAINER --- */
+.pos5 {
+  width: 70px;
+  height: 70px;
+  top: 50%;
+  right: 15%;
+}
+.angle5 {
+  transform: rotate(45deg);
+}
+
+/* --- CENTERED CONTENT --- */
 .container {
+  position: relative;
+  z-index: 10;
   max-width: 900px;
   width: 100%;
-  margin: 0 auto;
+  text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: center;
-  position: relative;
-  z-index: 10;
-}
-
-.statusBadge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: #fff;
-  border: 2px solid #000;
-  padding: 8px 16px;
-  border-radius: 4px;
-  margin-bottom: 40px;
-  box-shadow: 4px 4px 0px #000;
-}
-
-.statusDot {
-  width: 8px;
-  height: 8px;
-  background: #00ca82;
-  border-radius: 50%;
-  border: 1px solid #000;
-}
-.statusText {
-  font-family: monospace;
-  font-weight: 900;
-  font-size: 0.8rem;
-  letter-spacing: 1px;
 }
 
 .headline {
-  font-size: clamp(2.5rem, 6vw, 4.2rem);
+  font-family: inherit;
   font-weight: 900;
+  font-size: clamp(2.5rem, 6vw, 4.2rem);
   line-height: 1.2;
   color: #000;
   letter-spacing: -2px;
   margin-bottom: 24px;
 }
 
-/* --- WORD SLIDER (STRICT 70px) --- */
+/* --- ROTATOR --- */
 .rotatingBadgeWrapper {
   display: inline-block;
   background: #000;
   color: #fff;
   padding: 0 16px;
-  margin: 0 10px;
+  margin: 0 0 0 12px;
   border-radius: 6px;
   height: 70px;
   overflow: hidden;
-  vertical-align: middle;
+  vertical-align: bottom;
+  transform: translateY(8px);
 }
 
 .wordSlider {
   animation: slideVertical 12s cubic-bezier(0.85, 0, 0.15, 1) infinite;
 }
+
 .word {
   height: 70px;
   display: flex;
@@ -177,7 +187,7 @@
   justify-content: center;
   text-transform: uppercase;
   font-weight: 900;
-  font-size: 0.8em;
+  font-size: 0.6em;
   line-height: 70px;
 }
 
@@ -195,75 +205,6 @@
 }
 .blue {
   color: #00d1ff;
-}
-
-.subheadline {
-  font-size: clamp(1.1rem, 2vw, 1.3rem);
-  color: #444;
-  line-height: 1.6;
-  max-width: 600px;
-  font-weight: 500;
-  margin-bottom: 50px;
-}
-
-/* --- INPUT & HINT --- */
-.ctaContainer {
-  width: 100%;
-  max-width: 600px;
-  margin-bottom: 40px;
-}
-.pillInputContainer {
-  display: flex;
-  background: #fff;
-  border: 3px solid #000;
-  border-radius: 12px;
-  padding: 8px;
-  box-shadow: 8px 8px 0px #000;
-}
-.inputInternal {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  padding-left: 20px;
-}
-.prefix {
-  font-family: monospace;
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: #888;
-}
-.inputField {
-  width: 100%;
-  border: none;
-  background: transparent;
-  outline: none;
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: #000;
-  padding: 12px 6px;
-}
-
-.pillButton {
-  background: #000;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  padding: 0 32px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-.claimButton {
-  font-family: "Space Mono", "Courier New", monospace;
-  font-size: 1rem;
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.inputHint {
-  font-size: 0.85rem;
-  color: #666;
-  margin-top: 16px;
 }
 
 @keyframes slideVertical {
@@ -292,86 +233,115 @@
   }
 }
 
+.subheadline {
+  font-family: inherit;
+  font-size: clamp(1.1rem, 2vw, 1.3rem);
+  line-height: 1.6;
+  color: #444;
+  max-width: 600px;
+  font-weight: 500;
+  margin-bottom: 50px;
+}
+
+/* --- INPUT CONTAINER --- */
+.ctaContainer {
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 40px;
+}
+
+.pillInputContainer {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border: 3px solid #000;
+  border-radius: 100px;
+  padding: 6px;
+  box-shadow: 8px 8px 0px #000;
+  transition: transform 0.2s;
+}
+
+.pillInputContainer:hover {
+  transform: translateY(-2px);
+  box-shadow: 10px 10px 0px #000;
+}
+
+.inputInternal {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+}
+
+.prefix {
+  font-family: monospace;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #000;
+  white-space: nowrap;
+}
+
+.inputField {
+  width: 100%;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #000;
+  padding: 12px 6px;
+}
+
+.pillButton {
+  background: #000;
+  color: #fff;
+  border: none;
+  border-radius: 100px;
+  padding: 16px 32px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.pillButton:hover {
+  background: #25d366;
+  color: #000;
+}
+
+.inputHint {
+  font-size: 0.85rem;
+  color: #666;
+  margin-top: 16px;
+}
+
 /* --- MOBILE OPTIMIZATION --- */
-@media (max-width: 1000px) {
+@media (max-width: 900px) {
   .heroWrapper {
-    flex-direction: column;
-    padding-top: 90px;
-    margin-top: 16px;
-  }
-
-  .floatingElements {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-bottom: 32px;
-    width: 100%;
-    inset: auto;
-  }
-
-  .iconWrapper {
-    position: relative;
-    top: auto !important;
-    left: auto !important;
-    right: auto !important;
-    bottom: auto !important;
-    transform: scale(0.65);
-  }
-
-  /* Hide the 3 extra icons on mobile only */
-  .pos5,
-  .pos6,
-  .pos7 {
-    display: none;
-  }
-
-  .hoverMessage {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-    font-size: 0.6rem;
-    top: -25px;
+    padding-top: 100px;
+    min-height: auto;
   }
 
   .headline {
     font-size: 2.6rem;
   }
+
+  /* Adjust Rotator for Mobile */
   .rotatingBadgeWrapper {
-    height: 50px;
     display: block;
     margin: 10px auto;
     width: fit-content;
+    height: 50px;
+    transform: none;
   }
   .word {
     height: 50px;
     line-height: 50px;
     font-size: 0.7em;
-  }
-
-  .pillInputContainer {
-    flex-direction: column;
-    padding: 10px;
-    gap: 8px;
-    max-width: 90%;
-    margin: 0 auto;
-    box-shadow: 6px 6px 0px #000;
-  }
-  .inputInternal {
-    padding-left: 0;
-    justify-content: center;
-    border-bottom: 2px solid #eee;
-    padding-bottom: 10px;
-  }
-  .pillButton {
-    width: 100%;
-    padding: 14px;
-  }
-
-  .inputHint {
-    margin-top: 32px;
-    font-size: 0.8rem;
-    display: block;
   }
 
   @keyframes slideVertical {
@@ -398,5 +368,76 @@
     100% {
       transform: translateY(-250px);
     }
+  }
+
+  /* --- COMPACT INPUT FOR MOBILE --- */
+  .pillInputContainer {
+    flex-direction: column;
+    border-radius: 16px; /* Tighter radius */
+    padding: 12px; /* Less padding */
+    gap: 10px;
+    box-shadow: 4px 4px 0px #000; /* Smaller shadow */
+    max-width: 90%; /* Prevent hitting edges */
+    margin: 0 auto;
+  }
+
+  .inputInternal {
+    width: 100%;
+    padding-left: 0;
+    justify-content: center;
+    border-bottom: 1px solid #ddd; /* Thinner separator */
+    padding-bottom: 8px;
+    margin-bottom: 4px;
+    display: flex;
+    flex-direction: column; /* Stack prefix and input */
+    gap: 4px;
+  }
+
+  .prefix {
+    font-size: 0.9rem;
+    color: #666;
+  }
+
+  .inputField {
+    text-align: center;
+    width: 100%;
+    font-size: 1rem;
+    padding: 4px 0;
+  }
+
+  .pillButton {
+    width: 100%;
+    padding: 12px 0; /* Slimmer button */
+    font-size: 0.95rem;
+  }
+
+  /* --- MOBILE COIN SIZES --- */
+  /* Top Left (Pink) */
+  .pos1 {
+    width: 80px;
+    height: 80px;
+    top: 5%;
+    left: -5%;
+  }
+
+  /* Bottom Left (Green) */
+  .pos2 {
+    width: 110px;
+    height: 110px;
+    bottom: 0%;
+    left: -10%;
+  }
+
+  /* Bottom Right (Blue) */
+  .pos4 {
+    width: 130px;
+    height: 130px;
+    bottom: -2%;
+    right: -10%;
+  }
+
+  .pos3,
+  .pos5 {
+    display: none;
   }
 }

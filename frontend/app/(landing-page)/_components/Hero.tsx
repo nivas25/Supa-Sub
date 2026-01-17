@@ -1,103 +1,93 @@
 "use client";
 import React, { useState } from "react";
-import Image from "next/image";
 import styles from "./Hero.module.css";
+import { RiFlashlightFill } from "react-icons/ri";
 
 export default function Hero() {
   const [slug, setSlug] = useState("");
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+
+  // Handle Mouse Move for Parallax
+  const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
+    const x = e.clientX - window.innerWidth / 2;
+    const y = e.clientY - window.innerHeight / 2;
+    setMousePos({ x, y });
+  };
+
+  const getTransform = (factor: number) => {
+    const xMove = mousePos.x * factor;
+    const yMove = mousePos.y * factor;
+    return {
+      transform: `translate(${xMove}px, ${yMove}px)`,
+    };
+  };
 
   return (
-    <section className={styles.heroWrapper}>
-      <div className={styles.floatingElements}>
-        {/* Existing Icons */}
-        <div className={`${styles.iconWrapper} ${styles.pos1}`}>
-          <Image
-            src="/images/Landing_page/marketing-megaphone.png"
-            alt="Marketing"
-            width={100}
-            height={100}
-            priority
-            quality={75}
-          />
-          <span className={styles.hoverMessage}>Blast your reach</span>
-        </div>
-        <div className={`${styles.iconWrapper} ${styles.pos2}`}>
-          <Image
-            src="/images/Landing_page/likee.png"
-            alt="Engagement"
-            width={80}
-            height={80}
-            priority
-            quality={75}
-          />
-          <span className={styles.hoverMessage}>Fans love it</span>
-        </div>
-        <div className={`${styles.iconWrapper} ${styles.pos3}`}>
-          <Image
-            src="/images/Landing_page/reels-video.png"
-            alt="Content"
-            width={90}
-            height={90}
-            priority
-            quality={75}
-          />
-          <span className={styles.hoverMessage}>Content that pays</span>
-        </div>
-        <div className={`${styles.iconWrapper} ${styles.pos4}`}>
-          <Image
-            src="/images/Landing_page/money-treasure.png"
-            alt="Revenue"
-            width={110}
-            height={110}
-            priority
-            quality={75}
-          />
-          <span className={styles.hoverMessage}>Keep 95% Profit</span>
-        </div>
+    <section className={styles.heroWrapper} onMouseMove={handleMouseMove}>
+      {/* --- MULTI-COLORED COINS --- */}
 
-        {/* New Middle Icons */}
-        <div className={`${styles.iconWrapper} ${styles.pos5}`}>
-          <Image
-            src="/images/Landing_page/lightning.jpg"
-            alt="Speed"
-            width={85}
-            height={85}
-            priority
-            quality={75}
-          />
-          <span className={styles.hoverMessage}>Instant Deploy</span>
-        </div>
-        <div className={`${styles.iconWrapper} ${styles.pos6}`}>
-          <Image
-            src="/images/Landing_page/chart.png"
-            alt="Analytics"
-            width={95}
-            height={95}
-            priority
-            quality={75}
-          />
-          <span className={styles.hoverMessage}>Real-time Growth</span>
-        </div>
-        <div className={`${styles.iconWrapper} ${styles.pos7}`}>
-          <Image
-            src="/images/Landing_page/shield.png"
-            alt="Security"
-            width={90}
-            height={90}
-            priority
-            quality={75}
-          />
-          <span className={styles.hoverMessage}>Secure Payments</span>
+      {/* 1. Top Left: Pink (Moves slightly) */}
+      <div
+        className={`${styles.coinWrapper} ${styles.pos1}`}
+        style={getTransform(-0.02)}
+      >
+        <div
+          className={`${styles.coinVisual} ${styles.coinPink} ${styles.angle1}`}
+        >
+          <RiFlashlightFill />
         </div>
       </div>
 
-      <div className={styles.container}>
-        {/* ... Rest of your container code (Badge, Headline, Input) ... */}
-        <div className={styles.statusBadge}>
-          <span className={styles.statusDot}></span>
-          <span className={styles.statusText}>READY TO DEPLOY IN SECONDS</span>
+      {/* 2. Bottom Left: Green (Brand color, closer) */}
+      <div
+        className={`${styles.coinWrapper} ${styles.pos2}`}
+        style={getTransform(-0.04)}
+      >
+        <div
+          className={`${styles.coinVisual} ${styles.coinGreen} ${styles.angle2}`}
+        >
+          <RiFlashlightFill />
         </div>
+      </div>
 
+      {/* 3. Top Right: Yellow (Moves slightly) */}
+      <div
+        className={`${styles.coinWrapper} ${styles.pos3}`}
+        style={getTransform(0.025)}
+      >
+        <div
+          className={`${styles.coinVisual} ${styles.coinYellow} ${styles.angle3}`}
+        >
+          <RiFlashlightFill />
+        </div>
+      </div>
+
+      {/* 4. Bottom Right: Blue (Closest, moves most) */}
+      <div
+        className={`${styles.coinWrapper} ${styles.pos4}`}
+        style={getTransform(0.05)}
+      >
+        <div
+          className={`${styles.coinVisual} ${styles.coinBlue} ${styles.angle4}`}
+        >
+          <RiFlashlightFill />
+        </div>
+      </div>
+
+      {/* 5. Middle Right: Orange (Medium depth) */}
+      <div
+        className={`${styles.coinWrapper} ${styles.pos5}`}
+        style={getTransform(-0.03)}
+      >
+        <div
+          className={`${styles.coinVisual} ${styles.coinOrange} ${styles.angle5}`}
+        >
+          <RiFlashlightFill />
+        </div>
+      </div>
+
+      {/* --- MAIN CONTENT --- */}
+      <div className={styles.container}>
         <h1 className={styles.headline}>
           Easiest way to monetize your
           <div className={styles.rotatingBadgeWrapper}>
@@ -134,9 +124,7 @@ export default function Hero() {
                 onChange={(e) => setSlug(e.target.value)}
               />
             </div>
-            <button className={`${styles.pillButton} ${styles.claimButton}`}>
-              Claim your link
-            </button>
+            <button className={styles.pillButton}>Claim your link</button>
           </div>
           <p className={styles.inputHint}>
             No credit card required. Cancel anytime.

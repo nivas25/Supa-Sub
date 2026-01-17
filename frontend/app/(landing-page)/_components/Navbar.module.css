@@ -5,12 +5,11 @@
   position: fixed;
   top: 40px;
   left: 0;
-  right: 0;
   width: 100%;
   display: flex;
   justify-content: center;
   z-index: 9999;
-  padding: 0 20px;
+  padding: 0 32px;
   pointer-events: none;
   transition: all 0.3s ease;
 }
@@ -29,19 +28,21 @@
   background: #fff;
   background-image: linear-gradient(#fafafa 1px, transparent 1px);
   background-size: 20px 20px;
-  border: 3px solid #000;
+
+  /* Border & Shadow settings from previous steps */
+  border: 1px solid #d4d4d4;
+  box-shadow: none;
+
   border-radius: 100px;
   padding: 8px 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  max-width: 1400px;
-  box-shadow: 6px 6px 0 rgba(0, 0, 0, 1);
+  max-width: 1200px;
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
   height: 60px;
-  overflow: visible;
 }
 
 /* --- COLLAPSED STATE (Desktop Pill) --- */
@@ -50,7 +51,7 @@
   min-width: 0;
   padding: 6px 20px;
   gap: 30px;
-  height: 50px; /* Even smaller when collapsed */
+  height: 50px;
 }
 
 /* Hide Links & Auth in Pill Mode */
@@ -64,56 +65,83 @@
   display: flex !important;
 }
 
-/* --- BRAND MARK --- */
+/* --- BRAND MARK (UPDATED TO MATCH FOOTER) --- */
 .brandLogo {
   text-decoration: none;
   user-select: none;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 8px; /* Slightly tighter than footer for navbar context */
   flex-shrink: 0;
 }
 
+/* 1. "Sub" - Bold & Authoritative */
 .wordSub {
-  font-family: var(--font-space, monospace);
-  font-weight: 700;
-  font-size: 1rem;
-  background: #000;
-  color: #fff;
-  padding: 4px 10px;
-  border-radius: 6px;
-  line-height: 1;
-  transform: rotate(-2deg);
-}
-
-.wordStarter {
-  font-family: "Georgia", serif;
-  font-style: italic;
-  font-weight: 500;
-  font-size: 1.3rem;
+  font-family: var(--font-outfit, sans-serif);
+  font-size: 1.4rem; /* Scaled for Navbar */
+  font-weight: 800;
+  letter-spacing: -0.03em;
   color: #000;
   line-height: 1;
+
+  /* Resetting previous "sticker" styles */
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+  transform: none;
 }
 
+/* 2. "Starter" - Sleek & Fast */
+.wordStarter {
+  font-family: var(--font-outfit, sans-serif);
+  font-size: 1.4rem; /* Match Sub */
+  font-weight: 500;
+  color: #1a1a1a;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  margin-left: -2px;
+
+  /* Resetting previous serif styles */
+  font-style: normal;
+}
+
+/* 3. The "Coin" (Green -> Black Logic) */
 .boltCircle {
-  width: 22px;
-  height: 22px;
+  /* Move to the LEFT automatically */
+  order: -1;
+
+  width: 30px; /* Scaled for Navbar */
+  height: 30px;
+
+  /* INITIAL STATE: Green BG, Black Icon */
   background: #25d366;
+  color: #000;
+
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
+
+  /* Border & Shadow */
   border: 2px solid #000;
-  color: #000;
-  font-size: 0.75rem;
-  transition: transform 0.3s;
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 1);
+
+  font-size: 0.9rem;
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
+/* HOVER STATE: Black BG, Green Icon */
 .brandLogo:hover .boltCircle {
-  transform: rotate(180deg) scale(1.1);
+  background: #000;
+  color: #25d366;
+  border-color: #000;
+
+  /* Pop effect */
+  transform: translateY(-2px) rotate(15deg);
+  box-shadow: 3px 3px 0 rgba(37, 211, 102, 0.4);
 }
 
-/* --- DESKTOP NAVIGATION (Using Hero Font) --- */
+/* --- DESKTOP NAVIGATION --- */
 .desktopLinks {
   display: flex;
   align-items: center;
@@ -126,10 +154,10 @@
 .navLink {
   text-decoration: none;
   color: #111;
-  /* Hero Section Font */
   font-family: var(--font-outfit, sans-serif);
-  font-weight: 600;
-  font-size: 0.9rem;
+  font-weight: normal; /* Kept normal as requested */
+  white-space: nowrap;
+  font-size: 0.95rem;
   padding: 8px 16px;
   border-radius: 100px;
   transition: background 0.2s;
@@ -142,20 +170,30 @@
 
 .activeLink {
   background: #e8f5e9;
-  color: #008069; /* WhatsApp Green */
+  color: #008069;
 }
 
 /* --- AUTH BUTTONS --- */
 .desktopAuth {
   display: flex;
   align-items: center;
+  -webkit-tap-highlight-color: transparent;
   gap: 12px;
 }
 
 .dashboardLink {
   text-decoration: none;
+
+.mobileLink:focus {
+  outline: none;
+}
+
+.mobileLink:active {
   color: #000;
-  font-weight: 700;
+  background: #f0f2f5;
+}
+  color: #000;
+  font-weight: 600;
   font-size: 0.9rem;
   font-family: var(--font-outfit, sans-serif);
 }
@@ -163,11 +201,11 @@
 .loginBtn {
   background: #000;
   color: #fff;
-  border: 2px solid #000;
+  border: 1px solid #000;
   padding: 8px 20px;
   border-radius: 100px;
   font-family: var(--font-outfit, sans-serif);
-  font-weight: 700;
+  font-weight: 600;
   font-size: 0.9rem;
   cursor: pointer;
   transition: transform 0.1s;
@@ -218,52 +256,35 @@
 
 /* --- MOBILE MENU OVERLAY --- */
 .mobileMenu {
-  position: fixed;
-  top: 110px;
-  left: 20px;
-  transform: translateY(-10px) scale(0.95);
-  width: 280px;
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  width: 260px;
   background: #fff;
-  border: 3px solid #000;
+  border: 1px solid #d4d4d4;
+  box-shadow: none;
   border-radius: 20px;
   padding: 16px;
-  box-shadow: 8px 8px 0 rgba(0, 0, 0, 1);
   display: flex;
   flex-direction: column;
   gap: 4px;
   opacity: 0;
-  visibility: hidden;
+  transform: translateY(-10px) scale(0.95);
   pointer-events: none;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  z-index: 10000;
 }
 
 .menuActive {
   opacity: 1;
-  visibility: visible;
   transform: translateY(0) scale(1);
   pointer-events: auto;
-}
-
-/* Mobile menu centered on mobile */
-@media (max-width: 900px) {
-  .mobileMenu {
-    left: 50%;
-    transform: translateX(-50%) translateY(-10px) scale(0.95);
-    width: 90%;
-    max-width: 320px;
-  }
-
-  .menuActive {
-    transform: translateX(-50%) translateY(0) scale(1);
-  }
 }
 
 .mobileLink {
   text-decoration: none;
   color: #000;
   font-family: var(--font-outfit, sans-serif);
-  font-weight: 600;
+  font-weight: normal;
   font-size: 1rem;
   padding: 10px 16px;
   border-radius: 12px;
@@ -278,10 +299,10 @@
   width: 100%;
   background: #25d366;
   color: #000;
-  border: 2px solid #000;
+  border: 1px solid #000;
   padding: 12px;
   border-radius: 12px;
-  font-weight: 800;
+  font-weight: 700;
   cursor: pointer;
   text-transform: uppercase;
   font-family: var(--font-outfit, sans-serif);
@@ -291,7 +312,7 @@
 @media (max-width: 900px) {
   .navWrapper {
     padding: 0 16px;
-    top: 20px; /* Smaller gap on mobile */
+    top: 20px;
   }
 
   .navContainer {

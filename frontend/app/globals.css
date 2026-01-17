@@ -47,6 +47,18 @@ section:hover {
   will-change: transform;
 }
 
+/* Remove blue tap highlight on mobile (iOS/Android) */
+@media (pointer: coarse) {
+  a,
+  button,
+  input,
+  textarea,
+  select {
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
+  }
+}
+
 img {
   max-width: 100%;
   height: auto;

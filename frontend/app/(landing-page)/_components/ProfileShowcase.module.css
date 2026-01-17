@@ -2,13 +2,13 @@
 
 .wrapper {
   background: #ffffff;
-  padding: 100px 0; /* Reduced padding */
+  padding: 100px 0;
   overflow: hidden;
   position: relative;
   border-top: 1px solid #eee;
 }
 
-/* High-Visibility Dot Pattern (Preserved) */
+/* Texture Pattern */
 .dotPattern {
   position: absolute;
   top: 0;
@@ -28,10 +28,10 @@
   z-index: 1;
 }
 
-/* --- HEADER (Preserved Exact Copy) --- */
+/* --- HEADER --- */
 .header {
   text-align: center;
-  margin-bottom: 60px; /* Tighter margin */
+  margin-bottom: 60px;
   padding: 0 20px;
 }
 
@@ -84,7 +84,6 @@
   padding-right: 20px;
   cursor: grab;
   display: flex;
-  /* Snap for better UX */
   scroll-snap-type: x mandatory;
 }
 
@@ -98,13 +97,13 @@
   width: max-content;
 }
 
-/* --- PHONE MOCKUP (Optimized Height) --- */
+/* --- PHONE MOCKUP --- */
 .phoneMockup {
   scroll-snap-align: center;
-  width: 320px; /* Slightly narrower */
-  height: 580px; /* Reduced from 680px to fix "Too Long" */
+  width: 340px;
+  height: 640px;
   background: #fff;
-  border: 6px solid #000; /* Thinner bezel */
+  border: 6px solid #000;
   border-radius: 36px;
   overflow: hidden;
   position: relative;
@@ -130,6 +129,7 @@
   justify-content: center;
   z-index: 10;
   position: relative;
+  flex-shrink: 0;
 }
 
 .urlBar {
@@ -154,30 +154,57 @@
 /* Screen Content */
 .screenContent {
   flex: 1;
-  overflow-y: hidden;
+  overflow-y: auto;
   position: relative;
   background: #fff;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 90px;
+}
+
+.screenContent::-webkit-scrollbar {
+  width: 4px;
+}
+.screenContent::-webkit-scrollbar-thumb {
+  background: #ddd;
+  border-radius: 4px;
 }
 
 /* Profile Header */
 .coverPhoto {
-  height: 100px; /* Reduced height */
+  height: 110px;
   background: #eee;
   position: relative;
+  flex-shrink: 0;
 }
 .coverImg {
   object-fit: cover;
 }
 
+.categoryTag {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  font-size: 0.6rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  padding: 4px 8px;
+  border-radius: 4px;
+  backdrop-filter: blur(4px);
+}
+
 .profileInfo {
-  padding: 0 16px;
+  padding: 0 20px;
   text-align: center;
-  transform: translateY(-36px);
+  transform: translateY(-40px);
+  margin-bottom: -20px;
 }
 
 .avatarBox {
-  width: 72px; /* Smaller avatar */
-  height: 72px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
   border: 4px solid #fff;
   background: #000;
@@ -191,196 +218,227 @@
 }
 
 .handle {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   font-weight: 900;
   color: #000;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 4px;
-  margin-bottom: 4px;
+  gap: 6px;
+  margin-bottom: 6px;
 }
 .verified {
   color: #0066ff;
-  font-size: 0.9rem;
+  font-size: 1rem;
 }
 
 .bio {
-  font-size: 0.8rem;
-  color: #666;
-  line-height: 1.4;
-  margin-bottom: 12px;
-  display: -webkit-box;
-  -webkit-line-clamp: 2; /* Limit text lines */
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  font-size: 0.85rem;
+  color: #555;
+  line-height: 1.5;
+  margin-bottom: 16px;
 }
 
 /* Stats */
 .statsGrid {
   display: flex;
   justify-content: center;
-  gap: 20px;
-  padding-bottom: 12px;
+  gap: 24px;
+  padding-bottom: 16px;
   border-bottom: 1px solid #f0f0f0;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 }
 .stat {
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 .statNum {
   font-weight: 900;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: #000;
 }
 .statLabel {
-  font-size: 0.6rem;
+  font-size: 0.65rem;
   color: #888;
-  font-weight: 600;
+  font-weight: 700;
   text-transform: uppercase;
+  margin-top: 2px;
 }
 
-/* Feed Preview */
-.feedPreview {
-  text-align: left;
+/* --- LINKS SECTION --- */
+.linksSection {
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
-.feedTitle {
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.sectionLabel {
   font-size: 0.75rem;
-  font-weight: 800;
-  color: #000;
-  margin-bottom: 10px;
+  font-weight: 900;
   text-transform: uppercase;
-  padding-left: 16px;
+  color: #000;
+  letter-spacing: 0.5px;
 }
 
-.postList {
+.infoIcon {
+  color: #aaa;
+  font-size: 0.9rem;
+}
+
+.linkCard {
+  background: #f8f9fa;
+  border: 1px solid #eee;
+  padding: 14px;
+  border-radius: 16px;
+  transition: all 0.2s;
+  cursor: default;
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding: 0 16px;
 }
 
-.postItem {
+.linkCard:hover {
+  background: #fff;
+  border-color: #000;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.06);
+}
+
+.cardTop {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.linkIcon {
+  width: 40px;
+  height: 40px;
   border-radius: 10px;
-  overflow: hidden;
-  position: relative;
-  border: 1px solid #eee;
+  background: #fff;
+  border: 1px solid #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  color: #000;
+  flex-shrink: 0;
 }
 
-/* Free Post */
-.freePost {
-  height: 64px; /* Compact */
-  display: flex;
-  background: #f9f9f9;
-}
-.postThumb {
-  width: 64px;
-  height: 64px;
-  background: #ddd;
-  position: relative;
-}
-.postMeta {
-  padding: 10px;
+.linkInfo {
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-.postLine {
-  height: 6px;
-  background: #ddd;
-  border-radius: 4px;
-  width: 80%;
-  margin-bottom: 6px;
-}
-.postLine.short {
-  width: 50%;
+  text-align: left;
 }
 
-/* Locked Post (Enhanced) */
-.lockedPost {
-  height: 120px;
-  position: relative;
-  transition: all 0.3s;
-}
-
-.blurLayer {
-  position: absolute;
-  inset: 0;
-  background-size: cover;
-  background-position: center;
-  filter: blur(10px) brightness(0.9);
-}
-
-.lockOverlay {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: rgba(255, 255, 255, 0.3);
-  gap: 8px;
-  transition: background 0.3s;
-}
-
-.lockedPost:hover .lockOverlay {
-  background: rgba(255, 255, 255, 0.1); /* Clearer on hover */
-}
-
-.lockBadge {
-  background: #000;
-  color: #fff;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.1rem;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-}
-
-.lockText {
-  font-size: 0.7rem;
+.linkTitle {
+  font-size: 0.9rem;
   font-weight: 800;
   color: #000;
-  background: #fff;
-  padding: 6px 12px;
-  border-radius: 100px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  display: block;
+  margin-bottom: 2px;
 }
 
-/* Sticky Action Button */
+.platformTag {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #666;
+  background: #eee;
+  padding: 2px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  display: inline-block;
+}
+
+.arrowIcon {
+  color: #ccc;
+  font-size: 1.2rem;
+}
+
+.linkDesc {
+  font-size: 0.8rem;
+  color: #666;
+  line-height: 1.4;
+  padding-top: 8px;
+  border-top: 1px dashed #ddd;
+  text-align: left;
+}
+
+/* --- SPLIT FOOTER --- */
 .stickyBtnContainer {
   position: absolute;
-  bottom: 16px;
-  left: 16px;
-  right: 16px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 12px 20px; /* Reduced padding slightly */
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(8px);
+  border-top: 1px solid #eee;
   z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.02);
 }
 
-.subscribeBtn {
-  width: 100%;
+.priceBox {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.priceLabel {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #888;
+  text-transform: uppercase;
+}
+
+.priceValue {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #000;
+  line-height: 1;
+}
+
+/* UPDATED: Smaller Join Button */
+.joinBtn {
+  flex: 1;
   background: #000;
   color: #fff;
   border: none;
+
+  /* Changed to pill shape for sleeker look */
   border-radius: 100px;
+
+  /* Reduced Height */
+  height: 42px;
+
+  /* Reduced Font */
   font-size: 0.9rem;
+
   font-weight: 800;
   cursor: pointer;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 12px 20px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  justify-content: center;
+  gap: 8px;
   transition: transform 0.2s;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-.subscribeBtn:hover {
-  transform: scale(1.03);
-  background: var(--accent); /* Uses inline style variable */
+.joinBtn:hover {
+  transform: translateY(-2px);
+  background: var(--accent);
+  color: #000;
 }
 
 /* --- CREATE CARD --- */
@@ -401,7 +459,7 @@
 }
 
 .createTitle {
-  font-size: 2rem;
+  font-size: 2.2rem;
   font-weight: 900;
   line-height: 1;
   margin-bottom: 20px;
@@ -415,8 +473,8 @@
   background: #fff;
   color: #000;
   border: none;
-  padding: 14px 28px;
-  font-size: 0.9rem;
+  padding: 16px 32px;
+  font-size: 1rem;
   font-weight: 900;
   border-radius: 100px;
   margin-top: 30px;
@@ -438,8 +496,8 @@
     margin-bottom: 40px;
   }
   .phoneMockup {
-    width: 280px;
-    height: 540px;
+    width: 300px;
+    height: 600px;
   }
   .track {
     gap: 24px;
