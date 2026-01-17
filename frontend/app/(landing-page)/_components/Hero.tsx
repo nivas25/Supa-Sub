@@ -1,79 +1,146 @@
 "use client";
 import React, { useState } from "react";
+import Image from "next/image";
 import styles from "./Hero.module.css";
-import { RiArrowRightLine, RiFlashlightFill } from "react-icons/ri";
 
 export default function Hero() {
   const [slug, setSlug] = useState("");
 
   return (
     <section className={styles.heroWrapper}>
-      <div className={styles.container}>
-        {/* Status Badge */}
-        <div className={styles.badge}>
-          <span className={styles.statusDot} />
-          <span className={styles.badgeText}>
-            PARTNER PROGRAM: 95/5 REVENUE SPLIT
-          </span>
+      <div className={styles.floatingElements}>
+        {/* Existing Icons */}
+        <div className={`${styles.iconWrapper} ${styles.pos1}`}>
+          <Image
+            src="/images/Landing_page/marketing-megaphone.png"
+            alt="Marketing"
+            width={100}
+            height={100}
+            priority
+            quality={75}
+          />
+          <span className={styles.hoverMessage}>Blast your reach</span>
+        </div>
+        <div className={`${styles.iconWrapper} ${styles.pos2}`}>
+          <Image
+            src="/images/Landing_page/likee.png"
+            alt="Engagement"
+            width={80}
+            height={80}
+            priority
+            quality={75}
+          />
+          <span className={styles.hoverMessage}>Fans love it</span>
+        </div>
+        <div className={`${styles.iconWrapper} ${styles.pos3}`}>
+          <Image
+            src="/images/Landing_page/reels-video.png"
+            alt="Content"
+            width={90}
+            height={90}
+            priority
+            quality={75}
+          />
+          <span className={styles.hoverMessage}>Content that pays</span>
+        </div>
+        <div className={`${styles.iconWrapper} ${styles.pos4}`}>
+          <Image
+            src="/images/Landing_page/money-treasure.png"
+            alt="Revenue"
+            width={110}
+            height={110}
+            priority
+            quality={75}
+          />
+          <span className={styles.hoverMessage}>Keep 95% Profit</span>
         </div>
 
-        {/* Title with Multi-Colored Slider */}
-        <h1 className={styles.mainTitle}>
-          <span className={styles.lightText}>MONETIZE YOUR</span>
+        {/* New Middle Icons */}
+        <div className={`${styles.iconWrapper} ${styles.pos5}`}>
+          <Image
+            src="/images/Landing_page/lightning.jpg"
+            alt="Speed"
+            width={85}
+            height={85}
+            priority
+            quality={75}
+          />
+          <span className={styles.hoverMessage}>Instant Deploy</span>
+        </div>
+        <div className={`${styles.iconWrapper} ${styles.pos6}`}>
+          <Image
+            src="/images/Landing_page/chart.png"
+            alt="Analytics"
+            width={95}
+            height={95}
+            priority
+            quality={75}
+          />
+          <span className={styles.hoverMessage}>Real-time Growth</span>
+        </div>
+        <div className={`${styles.iconWrapper} ${styles.pos7}`}>
+          <Image
+            src="/images/Landing_page/shield.png"
+            alt="Security"
+            width={90}
+            height={90}
+            priority
+            quality={75}
+          />
+          <span className={styles.hoverMessage}>Secure Payments</span>
+        </div>
+      </div>
 
-          <div className={styles.sliderContainer}>
+      <div className={styles.container}>
+        {/* ... Rest of your container code (Badge, Headline, Input) ... */}
+        <div className={styles.statusBadge}>
+          <span className={styles.statusDot}></span>
+          <span className={styles.statusText}>READY TO DEPLOY IN SECONDS</span>
+        </div>
+
+        <h1 className={styles.headline}>
+          Easiest way to monetize your
+          <div className={styles.rotatingBadgeWrapper}>
             <div className={styles.wordSlider}>
-              <div className={`${styles.word} ${styles.pink}`}>
-                MASTERCLASSES
-              </div>
-              <div className={`${styles.word} ${styles.yellow}`}>COURSES</div>
-              <div className={`${styles.word} ${styles.green}`}>RESOURCES</div>
-              <div className={`${styles.word} ${styles.orange}`}>EXPERTISE</div>
-              <div className={`${styles.word} ${styles.blue}`}>SOLUTIONS</div>
-              <div className={`${styles.word} ${styles.red}`}>CONTENT</div>
-              {/* Duplicate first word for seamless loop */}
-              <div className={`${styles.word} ${styles.pink}`}>
-                MASTERCLASSES
-              </div>
+              <span className={`${styles.word} ${styles.pink}`}>COURSES</span>
+              <span className={`${styles.word} ${styles.yellow}`}>
+                RESOURCES
+              </span>
+              <span className={`${styles.word} ${styles.green}`}>
+                EXPERTISE
+              </span>
+              <span className={`${styles.word} ${styles.orange}`}>CONTENT</span>
+              <span className={`${styles.word} ${styles.blue}`}>SOLUTIONS</span>
+              <span className={`${styles.word} ${styles.pink}`}>COURSES</span>
             </div>
           </div>
-
-          <span className={styles.boldText}>IN EASY WAY.</span>
         </h1>
 
-        <p className={styles.description}>
-          We deploy your full digital infrastructure.
-          <span className={styles.highlight}> You keep 95% of every sale.</span>
+        <p className={styles.subheadline}>
+          Build your digital storefront in minutes. We handle the tech and
+          payments.
+          <strong> You focus on creating.</strong>
         </p>
 
-        {/* Unique Split-Design Input Bar */}
-        <div className={styles.uniqueInputWrapper}>
-          <div className={styles.liquidBar}>
-            <div className={styles.inputSection}>
-              <span className={styles.brandPrefix}>substarter.com/</span>
+        <div className={styles.ctaContainer}>
+          <div className={styles.pillInputContainer}>
+            <div className={styles.inputInternal}>
+              <span className={styles.prefix}>substarter.com/</span>
               <input
                 type="text"
                 placeholder="username"
-                className={styles.cleanInput}
+                className={styles.inputField}
                 value={slug}
                 onChange={(e) => setSlug(e.target.value)}
               />
             </div>
-            <button className={styles.actionButton}>
-              <span className={styles.btnText}>Get started for free</span>
-              <div className={styles.btnIcon}>
-                <RiArrowRightLine />
-              </div>
+            <button className={`${styles.pillButton} ${styles.claimButton}`}>
+              Claim your link
             </button>
           </div>
-
-          <div className={styles.trustTags}>
-            <span>
-              <RiFlashlightFill /> No setup fees
-            </span>
-            <span className={styles.dot}>•</span>
-            <span>Performance based</span>
-          </div>
+          <p className={styles.inputHint}>
+            No credit card required. Cancel anytime.
+          </p>
         </div>
       </div>
     </section>

@@ -3,313 +3,178 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import styles from "./Navbar.module.css";
+import { RiFlashlightFill } from "react-icons/ri";
 
-const SECTION_IDS = ["features", "steps", "showcase", "pricing", "faq"];
+const NAV_ITEMS = [
+  { id: "features", label: "Features" },
+  { id: "steps", label: "How it Works" },
+  { id: "showcase", label: "Creators" },
+  { id: "pricing", label: "Pricing" },
+  { id: "profitCalculator", label: "Revenue" },
+  { id: "faq", label: "FAQ's" },
+];
 
-export default function LandingNavbar() {
+export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
   const [isCollapsed, setIsCollapsed] = useState(false);
 
+  // Scroll Spy
   useEffect(() => {
-    let ticking = false;
-    const runMeasurement = () => {
-      const scrollPosition = window.scrollY + 120; // offset for detection
-      let foundSection = "";
-
-      // Check each section from top to bottom
-      for (const section of SECTION_IDS) {
-        const element = document.getElementById(section);
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY + 200;
+      for (const item of NAV_ITEMS) {
+        const element = document.getElementById(item.id);
         if (element) {
           const { offsetTop, offsetHeight } = element;
-          // Check if scrollPosition is within this section
           if (
             scrollPosition >= offsetTop &&
             scrollPosition < offsetTop + offsetHeight
           ) {
-            foundSection = section;
+            setActiveSection(item.id);
             break;
           }
         }
       }
-      setActiveSection((prev) => (prev === foundSection ? prev : foundSection));
-      ticking = false;
     };
-
-    const handleScroll = () => {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(runMeasurement);
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    runMeasurement(); // initial
+    window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Collapse navbar when scrolled past threshold (rAF throttled)
+  // Collapse Logic
   useEffect(() => {
-    let ticking = false;
-
-    const onScroll = () => {
-      if (ticking) return;
-      ticking = true;
-
-      requestAnimationFrame(() => {
-        const shouldCollapse = window.scrollY > 200;
-        setIsCollapsed((prev) =>
-          prev === shouldCollapse ? prev : shouldCollapse
-        );
-
-        // Close menu when scrolling back to top
-        if (!shouldCollapse) {
-          setIsMenuOpen(false);
-        }
-        ticking = false;
-      });
-    };
-
-    window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  // Close menu on Escape, when resizing to desktop, and when clicking outside
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setIsMenuOpen(false);
-    };
-    const onResize = () => {
-      setIsMenuOpen(false);
-    };
-    const onClickOutside = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      const nav = document.querySelector("[aria-label='Primary']");
-
-      // Close menu if click is outside navbar (works for both mobile and desktop)
-      if (nav && !nav.contains(target) && isMenuOpen) {
+    const handleCollapse = () => {
+      setIsCollapsed(window.scrollY > 100);
+      if (Math.abs(window.scrollY) > 500 && isMenuOpen) {
         setIsMenuOpen(false);
       }
     };
-
-    window.addEventListener("keydown", onKey);
-    window.addEventListener("resize", onResize);
-    document.addEventListener("click", onClickOutside, true); // Use capture phase
-
-    return () => {
-      window.removeEventListener("keydown", onKey);
-      window.removeEventListener("resize", onResize);
-      document.removeEventListener("click", onClickOutside, true);
-    };
+    window.addEventListener("scroll", handleCollapse);
+    return () => window.removeEventListener("scroll", handleCollapse);
   }, [isMenuOpen]);
 
-  const handleNavClick = (sectionId: string) => {
+  const scrollToSection = (id: string) => {
     setIsMenuOpen(false);
-    const element = document.getElementById(sectionId);
+    const element = document.getElementById(id);
     if (element) {
-      const offset = 100;
-      const elementPosition = element.offsetTop - offset;
+      const offset = 120;
+      const elementPosition =
+        element.getBoundingClientRect().top + window.scrollY;
       window.scrollTo({
-        top: elementPosition,
+        top: elementPosition - offset,
         behavior: "smooth",
       });
     }
   };
 
   return (
-    <nav
+    <div
       className={`${styles.navWrapper} ${
         isCollapsed ? styles.collapsedWrapper : ""
       }`}
-      aria-label="Primary"
     >
-      <div
-        className={`${styles.navMain} ${isCollapsed ? styles.collapsed : ""}`}
+      <nav
+        className={`${styles.navContainer} ${
+          isCollapsed ? styles.collapsed : ""
+        }`}
       >
-        <Link href="/" className={styles.logo}>
-          SubStarter<span>.</span>
+        {/* BRAND MARK */}
+        <Link
+          href="/"
+          className={styles.brandLogo}
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        >
+          <span className={styles.wordSub}>Sub</span>
+          <span className={styles.wordStarter}>Starter</span>
+          <div className={styles.boltCircle}>
+            <RiFlashlightFill />
+          </div>
         </Link>
 
-        {/* Desktop Links */}
+        {/* DESKTOP NAV */}
+        <div className={styles.desktopLinks}>
+          {NAV_ITEMS.map((item) => (
+            <a
+              key={item.id}
+              href={`#${item.id}`}
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection(item.id);
+              }}
+              className={`${styles.navLink} ${
+                activeSection === item.id ? styles.activeLink : ""
+              }`}
+            >
+              {item.label}
+            </a>
+          ))}
+        </div>
+
+        {/* DESKTOP AUTH */}
+        <div className={styles.desktopAuth}>
+          <SignedOut>
+            <SignInButton mode="modal" forceRedirectUrl="/dashboard">
+              <button className={styles.loginBtn}>Login</button>
+            </SignInButton>
+          </SignedOut>
+          <SignedIn>
+            <Link href="/dashboard" className={styles.dashboardLink}>
+              Dashboard
+            </Link>
+            <UserButton afterSignOutUrl="/" />
+          </SignedIn>
+        </div>
+
+        {/* HAMBURGER TOGGLE */}
+        <button
+          className={`${styles.mobileToggle} ${isMenuOpen ? styles.open : ""}`}
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          aria-label="Menu"
+        >
+          <span className={styles.bar} />
+          <span className={styles.bar} />
+          <span className={styles.bar} />
+        </button>
+
+        {/* MOBILE MENU */}
         <div
-          className={styles.desktopLinks}
-          role="navigation"
-          aria-label="Section links"
+          className={`${styles.mobileMenu} ${
+            isMenuOpen ? styles.menuActive : ""
+          }`}
         >
-          <a
-            href="#features"
-            onClick={(e) => {
-              e.preventDefault();
-              handleNavClick("features");
-            }}
-            className={activeSection === "features" ? styles.active : ""}
-          >
-            Features
-          </a>
-          <a
-            href="#steps"
-            onClick={(e) => {
-              e.preventDefault();
-              handleNavClick("steps");
-            }}
-            className={activeSection === "steps" ? styles.active : ""}
-          >
-            Steps
-          </a>
-          <a
-            href="#showcase"
-            onClick={(e) => {
-              e.preventDefault();
-              handleNavClick("showcase");
-            }}
-            className={activeSection === "showcase" ? styles.active : ""}
-          >
-            Showcase
-          </a>
-          <a
-            href="#pricing"
-            onClick={(e) => {
-              e.preventDefault();
-              handleNavClick("pricing");
-            }}
-            className={activeSection === "pricing" ? styles.active : ""}
-          >
-            Pricing
-          </a>
-          <a
-            href="#faq"
-            onClick={(e) => {
-              e.preventDefault();
-              handleNavClick("faq");
-            }}
-            className={activeSection === "faq" ? styles.active : ""}
-          >
-            FAQ's
-          </a>
+          {NAV_ITEMS.map((item) => (
+            <a
+              key={item.id}
+              href={`#${item.id}`}
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection(item.id);
+              }}
+              className={`${styles.mobileLink} ${
+                activeSection === item.id ? styles.activeLink : ""
+              }`}
+            >
+              {item.label}
+            </a>
+          ))}
+          <hr className={styles.divider} />
+
+          <SignedOut>
+            <SignInButton mode="modal" forceRedirectUrl="/dashboard">
+              <button className={styles.mobileAuthBtn}>Login / Sign Up</button>
+            </SignInButton>
+          </SignedOut>
+
+          <SignedIn>
+            <Link href="/dashboard" className={styles.mobileLink}>
+              Go to Dashboard
+            </Link>
+            <div style={{ padding: "8px 16px" }}>
+              <UserButton afterSignOutUrl="/" showName />
+            </div>
+          </SignedIn>
         </div>
-
-        <div className={styles.actions}>
-          <div className={styles.desktopButtons}>
-            <SignedOut>
-              <SignInButton mode="modal" forceRedirectUrl="/dashboard">
-                <button className={styles.cta}>Login</button>
-              </SignInButton>
-            </SignedOut>
-            <SignedIn>
-              <Link href="/dashboard" className={styles.dashboardLink}>
-                Dashboard
-              </Link>
-              <UserButton afterSignOutUrl="/" />
-            </SignedIn>
-          </div>
-
-          {/* Mobile Toggle */}
-          <button
-            className={styles.mobileToggle}
-            onClick={() => setIsMenuOpen((s) => !s)}
-            aria-expanded={isMenuOpen}
-            aria-controls="mobile-menu"
-            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-          >
-            <div
-              className={`${styles.bar} ${
-                isMenuOpen ? styles.openBar1 : styles.bar1
-              }`}
-            />
-            <div
-              className={`${styles.bar} ${
-                isMenuOpen ? styles.openBar2 : styles.bar2
-              }`}
-            />
-            <div
-              className={`${styles.bar} ${
-                isMenuOpen ? styles.openBar3 : styles.bar3
-              }`}
-            />
-          </button>
-        </div>
-      </div>
-
-      {/* Mobile Overlay */}
-      <div
-        id="mobile-menu"
-        className={`${styles.mobileMenu} ${
-          isMenuOpen ? styles.menuActive : ""
-        }`}
-        role="menu"
-        aria-hidden={!isMenuOpen}
-      >
-        <a
-          href="#features"
-          onClick={(e) => {
-            e.preventDefault();
-            handleNavClick("features");
-          }}
-          className={activeSection === "features" ? styles.active : ""}
-          role="menuitem"
-        >
-          Features
-        </a>
-        <a
-          href="#blueprint"
-          onClick={(e) => {
-            e.preventDefault();
-            handleNavClick("blueprint");
-          }}
-          className={activeSection === "blueprint" ? styles.active : ""}
-          role="menuitem"
-        >
-          Blueprint
-        </a>
-        <a
-          href="#showcase"
-          onClick={(e) => {
-            e.preventDefault();
-            handleNavClick("showcase");
-          }}
-          className={activeSection === "showcase" ? styles.active : ""}
-          role="menuitem"
-        >
-          Showcase
-        </a>
-        <a
-          href="#pricing"
-          onClick={(e) => {
-            e.preventDefault();
-            handleNavClick("pricing");
-          }}
-          className={activeSection === "pricing" ? styles.active : ""}
-          role="menuitem"
-        >
-          Pricing
-        </a>
-        <a
-          href="#faq"
-          onClick={(e) => {
-            e.preventDefault();
-            handleNavClick("faq");
-          }}
-          className={activeSection === "faq" ? styles.active : ""}
-          role="menuitem"
-        >
-          FAQ
-        </a>
-
-        <hr className={styles.divider} />
-
-        <SignedOut>
-          <SignInButton mode="modal" forceRedirectUrl="/dashboard">
-            <button className={styles.mobileCta}>Login</button>
-          </SignInButton>
-        </SignedOut>
-
-        <SignedIn>
-          <Link href="/dashboard" className={styles.mobileDashboard}>
-            Dashboard
-          </Link>
-          <UserButton afterSignOutUrl="/" />
-        </SignedIn>
-      </div>
-    </nav>
+      </nav>
+    </div>
   );
 }

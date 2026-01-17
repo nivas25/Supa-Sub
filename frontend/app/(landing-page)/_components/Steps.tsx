@@ -1,206 +1,305 @@
 "use client";
-import React, { CSSProperties, useEffect, useState, useRef } from "react";
+import React from "react";
 import styles from "./Steps.module.css";
 import {
-  RiLink,
-  RiAtLine,
-  RiLayoutMasonryLine,
-  RiRobot2Line,
-  RiLineChartLine,
-  RiBankCardLine,
+  RiCustomerService2Fill,
+  RiSendPlaneFill,
   RiFlashlightFill,
-  RiArrowRightSLine,
+  RiWhatsappFill,
+  RiTelegramFill,
+  RiDiscordFill,
+  RiLinkM,
+  RiBankCardLine,
+  RiUserFollowFill,
 } from "react-icons/ri";
 
-interface CustomStyle extends CSSProperties {
-  "--index"?: number;
-  "--accent"?: string;
-}
-
-const JOURNEY = [
-  {
-    id: "01",
-    phase: "GATEWAY",
-    title: "LINK YOUR ECOSYSTEM",
-    desc: "Bridge your WhatsApp, Telegram, or Discord. Our engine prepares to handle your members with surgical precision.",
-    benefit: "Universal platform support.",
-    color: "#25D366",
-    icon: <RiLink />,
-  },
-  {
-    id: "02",
-    phase: "BRANDING",
-    title: "CLAIM YOUR DOMAIN",
-    desc: "Secure your custom substarter.com URL. Establish instant trust with a professional storefront that screams authority.",
-    benefit: "100% Brand Ownership.",
-    color: "#FFD700",
-    icon: <RiAtLine />,
-  },
-  {
-    id: "03",
-    phase: "CHECKOUT",
-    title: "DESIGN THE FLOW",
-    desc: "Launch a high-converting checkout page. Customize tiers and pricing to match your community's value.",
-    benefit: "Optimized for mobile sales.",
-    color: "#00D1FF",
-    icon: <RiLayoutMasonryLine />,
-  },
-  {
-    id: "04",
-    phase: "AUTONOMY",
-    title: "DEPLOY THE BOTS",
-    desc: "Our autonomous bots take over 24/7. They handle every invite, renewal, and removal while you sleep.",
-    benefit: "Hands-free management.",
-    color: "#5865F2",
-    icon: <RiRobot2Line />,
-  },
-  {
-    id: "05",
-    phase: "ANALYTICS",
-    title: "READ THE VITAL SIGNS",
-    desc: "Deep-dive into growth metrics. Track revenue, churn, and member retention through a clear, technical dashboard.",
-    benefit: "Real-time growth data.",
-    color: "#FF2E63",
-    icon: <RiLineChartLine />,
-  },
-  {
-    id: "06",
-    phase: "SETTLEMENT",
-    title: "COLLECT YOUR 95%",
-    desc: "Withdraw your earnings with zero friction. We only succeed when you do, keeping the industry's best 95/5 split.",
-    benefit: "Maximum creator profit.",
-    color: "#FF9F1C",
-    icon: <RiBankCardLine />,
-  },
-];
-
 export default function Steps() {
-  const [activeStep, setActiveStep] = useState("01");
-  const stepRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const observerRef = useRef<IntersectionObserver | null>(null);
-
-  useEffect(() => {
-    if (typeof window === "undefined" || !("IntersectionObserver" in window)) {
-      return undefined;
-    }
-
-    observerRef.current = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
-
-        const top = visible[0];
-        if (top?.target) {
-          const index = stepRefs.current.findIndex((el) => el === top.target);
-          if (index !== -1) {
-            setActiveStep(JOURNEY[index].id);
-          }
-        }
-      },
-      {
-        root: null,
-        threshold: [0.2, 0.4, 0.6, 0.8],
-        rootMargin: "-35% 0px -35% 0px",
-      }
-    );
-
-    stepRefs.current.forEach((node) => {
-      if (node) {
-        observerRef.current?.observe(node);
-      }
-    });
-
-    return () => observerRef.current?.disconnect();
-  }, []);
-
-  // Smooth scroll to step when clicking tracker node
-  const scrollToStep = (index: number) => {
-    stepRefs.current[index]?.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-    });
-  };
-
   return (
     <section className={styles.wrapper} id="steps">
-      <div className={styles.dotPattern} />
       <div className={styles.container}>
-        <div className={styles.leftSide}>
-          <div className={styles.stickyContent}>
-            <div className={styles.statusBadge}>
-              <RiFlashlightFill /> <span>PHASE-BY-PHASE BLUEPRINT</span>
+        {/* SPLIT LAYOUT */}
+        <div className={styles.splitGrid}>
+          {/* LEFT: Sticky Text */}
+          <div className={styles.leftContent}>
+            <div className={styles.badge}>
+              <RiFlashlightFill style={{ marginRight: 6 }} />
+              SETUP GUIDE
             </div>
-            <h2 className={styles.giantTitle}>
-              THE <br /> <span className={styles.highlight}>EXPLORER.</span>
+
+            <h2 className={styles.title}>
+              It’s not magic.
+              <br />
+              It’s a <span className={styles.serifHighlight}>workflow</span>.
             </h2>
 
-            <div className={styles.progressTracker}>
-              {JOURNEY.map((step, i) => (
-                <div
-                  key={step.id}
-                  onClick={() => scrollToStep(i)}
-                  className={`${styles.trackerNode} ${
-                    activeStep === step.id ? styles.nodeActive : ""
-                  }`}
-                >
-                  <div
-                    className={styles.nodeCircle}
-                    style={{
-                      borderColor: activeStep === step.id ? step.color : "#eee",
-                      backgroundColor:
-                        activeStep === step.id ? "#fff" : "transparent",
-                    }}
-                  >
-                    {step.id}
-                  </div>
-                  <div className={styles.nodeText}>
-                    <span className={styles.nodePhase}>{step.phase}</span>
-                    <span className={styles.nodeTitle}>{step.title}</span>
-                  </div>
-                </div>
-              ))}
+            <p className={styles.subtitle}>
+              Our support team guides you through the configuration
+              step-by-step. You stay in control, we handle the infrastructure.
+            </p>
+
+            {/* Visual Steps List */}
+            <div className={styles.roadmapList}>
+              <div className={`${styles.roadmapItem} ${styles.active}`}>
+                <div className={styles.stepNum}>1</div>
+                <span>Connect Community</span>
+              </div>
+              <div className={`${styles.roadmapItem} ${styles.active}`}>
+                <div className={styles.stepNum}>2</div>
+                <span>Verify Ownership</span>
+              </div>
+              <div className={`${styles.roadmapItem} ${styles.active}`}>
+                <div className={styles.stepNum}>3</div>
+                <span>Configure Pricing</span>
+              </div>
+              <div className={`${styles.roadmapItem} ${styles.active}`}>
+                <div className={styles.stepNum}>4</div>
+                <span>Receive Payouts</span>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className={styles.rightSide}>
-          {JOURNEY.map((step, i) => (
-            <div
-              key={step.id}
-              ref={(el) => {
-                stepRefs.current[i] = el;
-              }}
-              className={styles.stepBlock}
-            >
-              <div
-                className={styles.card}
-                style={{ "--accent": step.color } as CustomStyle}
-              >
-                <div className={styles.cardTop}>
-                  <div className={styles.numberArea}>{step.id}</div>
-                  <div
-                    className={styles.phaseArea}
-                    style={{ background: step.color }}
-                  >
-                    <span className={styles.phase}>{step.phase}</span>
-                    <div className={styles.iconWrapper}>{step.icon}</div>
+          {/* RIGHT: Chat Window */}
+          <div className={styles.rightContent}>
+            <div className={styles.chatWindow}>
+              {/* Header */}
+              <div className={styles.windowHeader}>
+                <div className={styles.agentInfo}>
+                  <div className={styles.agentAvatar}>
+                    <RiCustomerService2Fill />
+                    <div className={styles.onlineStatus} />
+                  </div>
+                  <div className={styles.agentDetails}>
+                    <span className={styles.agentName}>Alex (Support)</span>
+                    <span className={styles.ticketId}>Ticket #SETUP-2026</span>
                   </div>
                 </div>
-                <div className={styles.cardBody}>
-                  <h3 className={styles.title}>{step.title}</h3>
-                  <p className={styles.description}>{step.desc}</p>
+                <div className={styles.windowControls}>
+                  <div
+                    className={styles.controlDot}
+                    style={{ background: "#ff5f56" }}
+                  />
+                  <div
+                    className={styles.controlDot}
+                    style={{ background: "#ffbd2e" }}
+                  />
+                  <div
+                    className={styles.controlDot}
+                    style={{ background: "#27c93f" }}
+                  />
                 </div>
-                <div className={styles.cardBottom}>
-                  <div className={styles.outcomeBadge}>
-                    <span className={styles.outcomeLabel}>OUTCOME</span>
-                    <span className={styles.outcomeValue}>{step.benefit}</span>
-                    <RiArrowRightSLine className={styles.arrowIcon} />
+              </div>
+
+              {/* Messages */}
+              <div className={styles.messageStream}>
+                {/* --- 1. CONNECT --- */}
+                <div className={styles.userRow}>
+                  <div className={styles.userBubble}>
+                    <span className={styles.userLabel}>You</span>
+                    Hi Alex, I want to monetize my Telegram group.
+                  </div>
+                </div>
+
+                <div className={styles.supportRow}>
+                  <div className={styles.supportIcon}>
+                    <RiCustomerService2Fill />
+                  </div>
+                  <div className={styles.supportContent}>
+                    <div className={styles.supportBubble}>
+                      I can help with that. First, select your platform below so
+                      we can initiate the connection protocol.
+                    </div>
+                    <div className={styles.actionCard}>
+                      <div className={styles.cardHeader}>
+                        <span className={styles.cardTitle}>
+                          STEP 1: SELECT PLATFORM
+                        </span>
+                      </div>
+                      <div className={styles.cardBody}>
+                        <div className={styles.platformGrid}>
+                          <div className={styles.platBtn}>
+                            <RiWhatsappFill size={24} />{" "}
+                            <span className={styles.platLabel}>WhatsApp</span>
+                          </div>
+                          <div className={`${styles.platBtn} ${styles.active}`}>
+                            <RiTelegramFill size={24} />{" "}
+                            <span className={styles.platLabel}>Telegram</span>
+                          </div>
+                          <div className={styles.platBtn}>
+                            <RiDiscordFill size={24} />{" "}
+                            <span className={styles.platLabel}>Discord</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* --- 2. VERIFY --- */}
+                <div className={styles.userRow}>
+                  <div className={styles.userBubble}>
+                    <span className={styles.userLabel}>You</span>
+                    Selected. How do you know it's my group?
+                  </div>
+                </div>
+
+                <div className={styles.supportRow}>
+                  <div className={styles.supportIcon}>
+                    <RiCustomerService2Fill />
+                  </div>
+                  <div className={styles.supportContent}>
+                    <div className={styles.supportBubble}>
+                      Paste your <b>Group Invite Link</b> below. Our system will
+                      check for admin rights instantly.
+                    </div>
+                    <div className={styles.actionCard}>
+                      <div className={styles.cardHeader}>
+                        <span className={styles.cardTitle}>
+                          STEP 2: VERIFICATION
+                        </span>
+                      </div>
+                      <div className={styles.cardBody}>
+                        <div className={styles.inputVisual}>
+                          <span className={styles.label}>INVITE LINK</span>
+                          <div className={styles.inputBox}>
+                            <RiLinkM style={{ marginRight: 8, opacity: 0.5 }} />
+                            t.me/+7382_private_vip
+                          </div>
+                          <div className={styles.connectBtn}>
+                            VERIFY CHANNEL
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* --- 3. PRICING --- */}
+                <div className={styles.userRow}>
+                  <div className={styles.userBubble}>
+                    <span className={styles.userLabel}>You</span>
+                    Verified! I want to charge $25 per month.
+                  </div>
+                </div>
+
+                <div className={styles.supportRow}>
+                  <div className={styles.supportIcon}>
+                    <RiCustomerService2Fill />
+                  </div>
+                  <div className={styles.supportContent}>
+                    <div className={styles.supportBubble}>
+                      Perfect. Configure your subscription product below.
+                    </div>
+                    <div className={styles.actionCard}>
+                      <div className={styles.cardHeader}>
+                        <span className={styles.cardTitle}>STEP 3: CONFIG</span>
+                      </div>
+                      <div className={styles.cardBody}>
+                        <div className={styles.priceVisual}>
+                          <div className={styles.priceBox}>
+                            <span className={styles.priceVal}>$ 25.00</span>
+                            <span className={styles.priceSub}>Price</span>
+                          </div>
+                          <div className={styles.priceBox}>
+                            <span className={styles.priceVal}>Monthly</span>
+                            <span className={styles.priceSub}>Billing</span>
+                          </div>
+                        </div>
+                        <div
+                          className={styles.connectBtn}
+                          style={{
+                            marginTop: 10,
+                            background: "#25D366",
+                            color: "#000",
+                          }}
+                        >
+                          PUBLISH PAGE
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* --- 4. PAYOUT LOGIC (Updated Copy) --- */}
+                <div className={styles.userRow}>
+                  <div className={styles.userBubble}>
+                    <span className={styles.userLabel}>You</span>
+                    How exactly does the 5% fee work?
+                  </div>
+                </div>
+
+                <div className={styles.supportRow}>
+                  <div className={styles.supportIcon}>
+                    <RiCustomerService2Fill />
+                  </div>
+                  <div className={styles.supportContent}>
+                    <div className={styles.supportBubble}>
+                      We charge a flat <b>5% fee on each subscription</b>{" "}
+                      transaction. The remaining 95% is transferred directly to
+                      you. Here is an example of a single sale:
+                    </div>
+                    <div className={styles.actionCard}>
+                      <div className={styles.cardHeader}>
+                        <span className={styles.cardTitle}>
+                          STEP 4: TRANSACTION RECEIPT
+                        </span>
+                      </div>
+                      <div className={styles.cardBody}>
+                        <div className={styles.payoutReceipt}>
+                          <div className={styles.transactionHeader}>
+                            <RiUserFollowFill
+                              style={{
+                                verticalAlign: "middle",
+                                marginRight: 4,
+                              }}
+                            />
+                            New Subscriber: "Alex"
+                          </div>
+                          <div className={styles.receiptRow}>
+                            <span>User Paid</span>
+                            <span>$25.00</span>
+                          </div>
+                          <div className={`${styles.receiptRow} ${styles.fee}`}>
+                            <span>Platform Fee (5%)</span>
+                            <span>- $1.25</span>
+                          </div>
+                          <div
+                            className={`${styles.receiptRow} ${styles.total}`}
+                          >
+                            <span>NET TO YOU</span>
+                            <span className={styles.highlightGreen}>
+                              $23.75
+                            </span>
+                          </div>
+                          <div
+                            style={{
+                              fontSize: "0.7rem",
+                              color: "#888",
+                              marginTop: 6,
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 6,
+                            }}
+                          >
+                            <RiBankCardLine /> Instant Allocation
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
+
+              {/* Footer */}
+              <div className={styles.chatFooter}>
+                <div className={styles.fakeInput}>
+                  That's clear. I'm ready to start...
+                </div>
+                <div className={styles.sendBtn}>
+                  <RiSendPlaneFill size={20} />
+                </div>
+              </div>
             </div>
-          ))}
+          </div>
         </div>
       </div>
     </section>

@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import Image from "next/image";
 import styles from "./Identity.module.css";
 import {
   RiCheckLine,
@@ -16,6 +17,7 @@ export default function Identity() {
     <section className={styles.wrapper} id="identity">
       <div className={styles.container}>
         <div className={styles.contentGrid}>
+          {/* Left Text Content */}
           <div className={styles.textContent}>
             <div className={styles.statusBadge}>
               <RiShieldFlashLine /> <span>MONETIZATION ENGINE</span>
@@ -34,6 +36,7 @@ export default function Identity() {
                   <div className={`${styles.slideBox} ${styles.discord}`}>
                     <RiDiscordFill /> DISCORD
                   </div>
+                  {/* Duplicate first item for smooth loop */}
                   <div className={`${styles.slideBox} ${styles.whatsapp}`}>
                     <RiWhatsappFill /> WHATSAPP
                   </div>
@@ -65,21 +68,71 @@ export default function Identity() {
             </div>
           </div>
 
+          {/* Right Card Content */}
           <div className={styles.modernCard}>
-            <div className={styles.cardRibbon}>PARTNER PLAN</div>
-            <div className={styles.statValue}>
-              <span className={styles.number}>95</span>
-              <span className={styles.percent}>%</span>
+            <div className={styles.backgroundIcons}>
+              <a
+                href="https://discord.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`${styles.brandLink} ${styles.linkDc}`}
+              >
+                {/* CSS controls width/height responsiveness, we keep intrinsic ratio here */}
+                <Image
+                  src="/images/Landing_Page/discord.png"
+                  width={140}
+                  height={140}
+                  alt="Discord"
+                  style={{ width: "100%", height: "auto" }}
+                />
+              </a>
+              <a
+                href="https://telegram.org"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`${styles.brandLink} ${styles.linkTg}`}
+              >
+                <Image
+                  src="/images/Landing_Page/telegram.png"
+                  width={120}
+                  height={120}
+                  alt="Telegram"
+                  style={{ width: "100%", height: "auto" }}
+                />
+              </a>
+              <a
+                href="https://www.whatsapp.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`${styles.brandLink} ${styles.linkWa}`}
+              >
+                <Image
+                  src="/images/Landing_Page/whatsapp.png"
+                  width={130}
+                  height={130}
+                  alt="WhatsApp"
+                  style={{ width: "100%", height: "auto" }}
+                />
+              </a>
             </div>
-            <div className={styles.statLabel}>
-              <RiPieChart2Fill /> YOUR NET REVENUE
-            </div>
-            <p className={styles.statDetail}>
-              Ditch the 30% platform tax. We take a <strong>5% flat fee</strong>{" "}
-              so you can invest more back into your content.
-            </p>
-            <div className={styles.ownershipBadge}>
-              <RiUserStarLine /> NO HIDDEN MONTHLY FEES
+
+            <div className={styles.cardContent}>
+              <div className={styles.cardRibbon}>PARTNER PLAN</div>
+              <div className={styles.statValue}>
+                <span className={styles.number}>95</span>
+                <span className={styles.percent}>%</span>
+              </div>
+              <div className={styles.statLabel}>
+                <RiPieChart2Fill /> YOUR NET REVENUE
+              </div>
+              <p className={styles.statDetail}>
+                Ditch the 30% platform tax. We take a{" "}
+                <strong>5% flat fee</strong> so you can invest more back into
+                your content.
+              </p>
+              <div className={styles.ownershipBadge}>
+                <RiUserStarLine /> NO HIDDEN MONTHLY FEES
+              </div>
             </div>
           </div>
         </div>

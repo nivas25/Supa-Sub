@@ -1,11 +1,12 @@
 /* Identity.module.css */
 
 .wrapper {
-  padding: 100px 0;
-  background: transparent; /* Use globals.css continuity */
+  padding: 120px 0;
+  background-color: transparent;
   position: relative;
-  display: flex;
-  align-items: center;
+  /* changed from visible to clip to prevent horizontal scroll on mobile */
+  overflow-x: clip;
+  overflow-y: visible;
 }
 
 .container {
@@ -22,7 +23,7 @@
   align-items: center;
 }
 
-/* --- LIGHTER FONTS --- */
+/* --- TYPOGRAPHY --- */
 .statusBadge {
   display: inline-flex;
   align-items: center;
@@ -31,27 +32,25 @@
   color: #fff;
   padding: 8px 16px;
   border-radius: 4px;
-  font-size: 0.7rem;
-  font-weight: 700; /* Reduced from 900 */
+  font-size: 0.75rem;
+  font-weight: 700;
   margin-bottom: 25px;
-  font-family: var(--font-space); /* Space Mono from globals.css */
 }
 
 .title {
-  font-size: clamp(2.5rem, 6vw, 4.2rem);
-  font-weight: 800; /* Reduced from 1000 */
+  /* Adjusted clamp for better mobile scaling */
+  font-size: clamp(2.2rem, 5vw, 4.2rem);
+  font-weight: 800;
   line-height: 1.1;
   color: #000;
   letter-spacing: -2px;
-  font-family: var(--font-outfit); /* Outfit from globals.css */
 }
 
-/* --- PERFECT SLIDER FIX --- */
 .sliderWindow {
-  height: 75px; /* Consistent height to prevent 2-word glitch */
+  height: 75px;
   overflow: hidden;
   margin: 12px 0;
-  display: block;
+  /* REMOVED mask-image to keep edges sharp/hard */
 }
 
 .wordSlider {
@@ -61,7 +60,7 @@
 }
 
 .slideBox {
-  height: 75px; /* Match window exactly */
+  height: 75px;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -69,21 +68,22 @@
   color: #fff;
   border: 3px solid #000;
   width: fit-content;
-  font-weight: 800; /* Reduced weight */
+  font-weight: 800;
   font-size: 0.75em;
-  box-sizing: border-box;
+  white-space: nowrap; /* Prevent text wrap on small screens */
 }
 
 .whatsapp {
-  background-color: #25d366;
+  background: #1eb956;
 }
 .telegram {
-  background-color: #0088cc;
+  background: #0077b5;
 }
 .discord {
-  background-color: #5865f2;
+  background: #4752c4;
 }
 
+/* Desktop Animation (75px steps) */
 @keyframes slideFix {
   0%,
   28% {
@@ -92,7 +92,7 @@
   33%,
   61% {
     transform: translateY(-75px);
-  } /* Precise 1-box increment */
+  }
   66%,
   94% {
     transform: translateY(-150px);
@@ -103,12 +103,11 @@
 }
 
 .description {
-  font-size: 1.15rem;
+  font-size: 1.2rem;
   line-height: 1.6;
-  color: #444;
+  color: #333;
   margin: 30px 0;
   max-width: 580px;
-  font-weight: 500;
 }
 
 .benefitList {
@@ -134,43 +133,100 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 
-/* --- CARD STYLES --- */
+/* --- THE REVENUE CARD --- */
 .modernCard {
   background: #fff;
-  padding: 50px 40px;
-  border: 3px solid #000;
-  border-radius: 24px;
-  box-shadow: 12px 12px 0px #000;
-  text-align: center;
+  border: 4px solid #000;
+  border-radius: 32px;
+  box-shadow: 16px 16px 0px #000;
   position: relative;
+  padding: 60px 40px;
+  text-align: center;
+  z-index: 10;
+  max-width: 100%;
+}
+
+/* --- BACKGROUND ICONS --- */
+.backgroundIcons {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.brandLink {
+  position: absolute;
+  pointer-events: auto;
+  opacity: 1;
+  transition: all 0.3s ease;
+  filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.15));
+}
+
+.brandLink:hover {
+  transform: scale(1.1) rotate(5deg);
+  z-index: 20;
+}
+
+/* Desktop Positions */
+.linkDc {
+  top: -10%;
+  left: -15%;
+  transform: rotate(-15deg);
+  width: 140px;
+  height: auto;
+}
+.linkTg {
+  top: -15%;
+  right: -10%;
+  transform: rotate(10deg);
+  width: 120px;
+  height: auto;
+}
+.linkWa {
+  bottom: -10%;
+  right: -5%;
+  transform: rotate(-8deg);
+  width: 130px;
+  height: auto;
+}
+
+.cardContent {
+  position: relative;
+  z-index: 5;
 }
 
 .cardRibbon {
   position: absolute;
-  top: -18px;
+  top: -45px;
   left: 50%;
   transform: translateX(-50%);
   background: #ffeb3b;
   border: 2px solid #000;
-  padding: 4px 20px;
-  font-weight: 800;
-  font-size: 0.8rem;
+  padding: 6px 24px;
+  font-weight: 900;
+  font-size: 0.85rem;
+  box-shadow: 4px 4px 0px #000;
+  white-space: nowrap;
 }
 
 .number {
-  font-size: 8rem;
-  font-weight: 800;
+  font-size: clamp(5rem, 10vw, 8rem);
+  font-weight: 900;
   line-height: 1;
-  font-family: var(--font-outfit);
+  letter-spacing: -6px;
 }
+
 .percent {
-  font-size: 3rem;
+  font-size: clamp(2rem, 4vw, 3rem);
   font-weight: 700;
   vertical-align: top;
-  margin-top: 10px;
-  display: inline-block;
+  color: #ffc900;
 }
 
 .statLabel {
@@ -178,76 +234,160 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  font-weight: 700;
+  font-weight: 800;
   margin: 20px 0;
-  font-family: var(--font-space);
+  text-transform: uppercase;
+  flex-wrap: wrap;
 }
 
 .ownershipBadge {
   background: #000;
   color: #fff;
   padding: 16px;
-  border-radius: 8px;
+  border-radius: 12px;
   font-weight: 800;
-  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
-  margin-top: 35px; /* Added gap */
+  margin-top: 30px;
+  font-size: 0.9rem;
 }
 
-/* --- MOBILE OPTIMIZATION --- */
+/* --- TABLET & MOBILE RESPONSIVENESS --- */
+
+/* Tablet Portrait & Small Laptops */
 @media (max-width: 1024px) {
+  .wrapper {
+    padding: 80px 0;
+  }
+
   .contentGrid {
     grid-template-columns: 1fr;
+    gap: 60px;
     text-align: center;
   }
+
+  .statusBadge {
+    margin: 0 auto 25px auto;
+  }
+
+  .title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
   .sliderWindow {
-    justify-content: center;
+    margin: 12px auto;
   }
-  .slideBox {
-    margin: 0 auto;
+
+  .description {
+    margin: 30px auto;
   }
+
   .benefitList {
     align-items: center;
   }
+
   .modernCard {
-    margin: 40px auto 0;
+    margin-top: 40px;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 500px;
+  }
+
+  .linkDc {
+    top: -40px;
+    left: -30px;
+    width: 110px;
+  }
+  .linkTg {
+    top: -50px;
+    right: -20px;
+    width: 100px;
+  }
+  .linkWa {
+    bottom: -30px;
+    right: -10px;
+    width: 110px;
   }
 }
 
-@media (max-width: 600px) {
+/* Mobile Devices */
+@media (max-width: 640px) {
   .wrapper {
-    padding: 35px 0; /* Reduced mobile top padding */
-  }
-  .title {
-    font-size: 2rem;
-  }
-  .sliderWindow,
-  .slideBox {
-    height: 55px;
-  }
-  .slideBox {
-    font-size: 0.6em;
-    border-width: 2px;
+    padding: 60px 0;
   }
 
-  @keyframes slideFix {
-    0%,
-    28% {
-      transform: translateY(0);
-    }
-    33%,
-    61% {
-      transform: translateY(-55px);
-    }
-    66%,
-    94% {
-      transform: translateY(-110px);
-    }
-    100% {
-      transform: translateY(-165px);
-    }
+  .container {
+    padding: 0 20px;
+  }
+
+  .modernCard {
+    padding: 50px 20px;
+    border-radius: 24px;
+    box-shadow: 8px 8px 0px #000;
+  }
+
+  /* --- MOBILE SLIDER ADJUSTMENTS --- */
+  .sliderWindow {
+    height: 55px;
+  }
+
+  .slideBox {
+    height: 55px;
+    font-size: 0.6em;
+    padding: 0 16px;
+  }
+
+  .wordSlider {
+    animation-name: slideFixMobile;
+  }
+
+  /* --- MOBILE ICON ADJUSTMENTS --- */
+  .linkDc {
+    width: 80px;
+    top: -30px;
+    left: -10px;
+  }
+  .linkTg {
+    width: 70px;
+    top: -40px;
+    right: -5px;
+  }
+  .linkWa {
+    width: 75px;
+    bottom: -25px;
+    right: -5px;
+  }
+
+  .number {
+    letter-spacing: -3px;
+  }
+
+  .ownershipBadge {
+    flex-direction: column;
+    padding: 12px;
+    text-align: center;
+  }
+}
+
+/* Mobile Animation Keyframes */
+@keyframes slideFixMobile {
+  0%,
+  28% {
+    transform: translateY(0);
+  }
+  33%,
+  61% {
+    transform: translateY(-55px);
+  }
+  66%,
+  94% {
+    transform: translateY(-110px);
+  }
+  100% {
+    transform: translateY(-165px);
   }
 }

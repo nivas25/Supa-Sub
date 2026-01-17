@@ -16,7 +16,7 @@ const STORIES = [
     value: "$12,450",
     sub: "Net earnings this week",
     icon: <RiPulseLine />,
-    color: "#00E0FF",
+    color: "#00E0FF", // Cyan
   },
   {
     id: 1,
@@ -24,7 +24,7 @@ const STORIES = [
     value: "1,284",
     sub: "Active paid subscribers",
     icon: <RiUserFollowLine />,
-    color: "#FF0055",
+    color: "#FF90E8", // Pink
   },
   {
     id: 2,
@@ -32,7 +32,7 @@ const STORIES = [
     value: "94.2%",
     sub: "Low churn monthly rate",
     icon: <RiPieChartLine />,
-    color: "#00FF66",
+    color: "#25D366", // Green
   },
   {
     id: 3,
@@ -40,7 +40,7 @@ const STORIES = [
     value: "+24%",
     sub: "Conversion spike detected",
     icon: <RiFlashlightLine />,
-    color: "#FFD600",
+    color: "#FFEB3B", // Yellow
   },
 ];
 
@@ -68,18 +68,21 @@ export default function Analytics() {
     "REAL-TIME SUBSCRIBER ANALYTICS • CHURN TRACKING • REVENUE FORECASTING • SETTLEMENT LOGS • ";
 
   return (
-    <section className={styles.wrapper} id="showcase">
-      <div className={styles.meshGradient}></div>
+    <section className={styles.wrapper} id="analytics">
+      {/* Mesh Gradient Removed - Clean Dot Grid BG used in CSS */}
 
       <div className={styles.container}>
+        {/* Ticker / Marquee */}
         <div className={styles.marqueeWrapper}>
           <div className={styles.marqueeTrack}>
+            <span>{marqueeText}</span>
             <span>{marqueeText}</span>
             <span>{marqueeText}</span>
           </div>
         </div>
 
         <div className={styles.splitGrid}>
+          {/* LEFT: Text Content */}
           <div className={styles.leftContent}>
             <div className={styles.premiumBadge}>
               <RiCompass3Line className={styles.spinIcon} /> ANALYTICS ENGINE
@@ -87,8 +90,7 @@ export default function Analytics() {
             </div>
 
             <h2 className={styles.mainTitle}>
-              <span className={styles.staticText}>TRACK YOUR</span>
-              <br />
+              TRACK YOUR <br />
               <div className={styles.sliderContainer}>
                 <div className={styles.wordSlider}>
                   {SLIDER_WORDS.map((word, i) => (
@@ -98,7 +100,8 @@ export default function Analytics() {
                   ))}
                 </div>
               </div>
-              <span className={styles.staticText}> IN REAL-TIME.</span>
+              <br />
+              IN REAL-TIME.
             </h2>
 
             <p className={styles.description}>
@@ -108,7 +111,9 @@ export default function Analytics() {
             </p>
           </div>
 
+          {/* RIGHT: Phone / Story Visuals */}
           <div className={styles.rightContent}>
+            {/* Story Selection Tray */}
             <div className={styles.storyTray}>
               {STORIES.map((story, index) => (
                 <button
@@ -117,15 +122,14 @@ export default function Analytics() {
                     activeStory === index ? styles.activeStory : ""
                   }`}
                   onClick={() => setActiveStory(index)}
+                  aria-label={`View ${story.label}`}
                 >
                   <div className={styles.iosRing}>
                     <div className={styles.innerCircle}>
                       <span
                         style={{
-                          color:
-                            activeStory === index
-                              ? story.color
-                              : "rgba(120,120,120,0.4)",
+                          // If active, icon is white via CSS. If inactive, grey.
+                          color: activeStory === index ? "#fff" : "#000",
                         }}
                       >
                         {story.icon}
@@ -136,13 +140,14 @@ export default function Analytics() {
               ))}
             </div>
 
+            {/* The Hard-Bordered "Phone" */}
             <div className={styles.phoneContainer}>
-              <div className={styles.phoneReflection}></div>
               <div className={styles.phoneFrame}>
                 <div
                   className={styles.storyCard}
-                  style={{ borderColor: `${current.color}44` }}
+                  style={{ borderColor: "#000" }}
                 >
+                  {/* Status Bar */}
                   <div className={styles.statusBar}>
                     <div className={styles.progressRow}>
                       {STORIES.map((_, i) => (
@@ -161,6 +166,7 @@ export default function Analytics() {
                     </div>
                   </div>
 
+                  {/* Header */}
                   <div className={styles.storyHeader}>
                     <div
                       className={styles.brandIcon}
@@ -174,17 +180,19 @@ export default function Analytics() {
                     </div>
                   </div>
 
+                  {/* Main Value Content */}
                   <div className={styles.storyContent}>
-                    <div
-                      className={styles.valueGlow}
+                    {/* Value without glow, hard shadow via CSS */}
+                    <h3
+                      className={styles.storyValue}
                       style={{ color: current.color }}
                     >
                       {current.value}
-                    </div>
-                    <h3 className={styles.storyValue}>{current.value}</h3>
+                    </h3>
                     <div className={styles.premiumPill}>{current.sub}</div>
                   </div>
 
+                  {/* Footer Action */}
                   <div className={styles.footerAction}>
                     <div className={styles.fullReportBtn}>
                       View Detailed Metrics

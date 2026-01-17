@@ -1,333 +1,394 @@
 /* Pricing.module.css */
 
 .wrapper {
-  padding: 120px 24px;
-  background: #fdfdfd;
+  padding: 120px 0;
+  background-color: #f2f0ea; /* Slightly warmer "newsprint" grey */
+  background-image: linear-gradient(#e4e2dd 1px, transparent 1px),
+    linear-gradient(90deg, #e4e2dd 1px, transparent 1px);
+  background-size: 32px 32px;
   position: relative;
   overflow: hidden;
-  display: flex;
-  justify-content: center;
-}
-
-/* --- ENHANCED FLOATING SHAPES --- */
-.bgShapes {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  overflow: hidden;
-}
-
-.shape {
-  position: absolute;
-  opacity: 0.08; /* Subtle watermark look */
-  filter: blur(1px);
-  animation: floatShape 10s ease-in-out infinite;
-}
-
-/* Original Shapes */
-.shapeDollar {
-  top: 5%;
-  left: 5%;
-  color: #05ac72;
-  font-size: 8rem;
-  animation-delay: 0s;
-  transform: rotate(-15deg);
-}
-.shapeCoin {
-  bottom: 15%;
-  left: 15%;
-  color: #ffeb3b;
-  font-size: 7rem;
-  animation-delay: 2s;
-  opacity: 0.15;
-}
-.shapeChart {
-  top: 12%;
-  right: 8%;
-  color: #0066ff;
-  font-size: 6rem;
-  animation-delay: 4s;
-}
-.shapeWallet {
-  bottom: 10%;
-  right: 20%;
-  color: #6366f1;
-  font-size: 5rem;
-  animation-delay: 1s;
-  transform: rotate(10deg);
-}
-
-/* NEW Desktop Shapes */
-.shapePercent {
-  top: 40%;
-  left: -5%;
-  color: #ff3344;
-  font-size: 10rem;
-  animation-delay: 3s;
-  opacity: 0.05;
-}
-.shapeBank {
-  top: 30%;
-  right: -2%;
-  color: #000;
-  font-size: 9rem;
-  animation-delay: 5s;
-  opacity: 0.04;
-  transform: rotate(-10deg);
-}
-.shapeSafe {
-  bottom: 5%;
-  left: 40%;
-  color: #333;
-  font-size: 4rem;
-  animation-delay: 2.5s;
-  opacity: 0.06;
-}
-.shapeGlobal {
-  top: 2%;
-  left: 45%;
-  color: #0066ff;
-  font-size: 3rem;
-  animation-delay: 1.5s;
-  opacity: 0.1;
-}
-
-@keyframes floatShape {
-  0% {
-    transform: translateY(0) rotate(0deg);
-  }
-  50% {
-    transform: translateY(-15px) rotate(3deg);
-  }
-  100% {
-    transform: translateY(0) rotate(0deg);
-  }
-}
-
-/* --- AMBIENT GLOW --- */
-.ambientGlow {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 600px;
-  height: 600px;
-  background: radial-gradient(
-    circle,
-    rgba(5, 172, 114, 0.06) 0%,
-    rgba(255, 255, 255, 0) 70%
-  );
-  z-index: 0;
-  pointer-events: none;
+  border-top: 3px solid #000;
+  perspective: 1000px; /* For 3D effects */
 }
 
 .container {
-  max-width: 480px;
-  width: 100%;
-  position: relative;
-  z-index: 1;
-}
-
-.header {
-  text-align: center;
-  margin-bottom: 35px;
-}
-
-.pill {
-  display: inline-flex;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   align-items: center;
-  gap: 6px;
+  gap: 80px;
+}
+
+/* --- LEFT SIDE: THE PITCH --- */
+.contentSide {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  position: relative;
+  z-index: 2;
+}
+
+.tag {
+  font-family: monospace;
+  font-weight: 700;
   background: #000;
   color: #fff;
-  padding: 5px 14px;
-  border-radius: 100px;
-  font-size: 0.65rem;
-  font-weight: 800;
-  font-family: var(--font-space);
-  margin-bottom: 15px;
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  width: fit-content;
+  text-transform: uppercase;
+  transform: rotate(-2deg);
 }
 
 .title {
-  font-size: 2.8rem;
-  font-weight: 900;
-  line-height: 1;
-  font-family: var(--font-outfit);
-  color: #000;
-}
-
-.gradientText {
-  background: linear-gradient(135deg, #05ac72 0%, #0066ff 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-/* --- THE "LITTLE BIT GUMROAD" CARD --- */
-.glassCard {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(20px);
-  border: 2px solid #000; /* Sharp Gumroad Border */
-  border-radius: 36px;
-  overflow: hidden;
-  /* Hard Shadow, but transparent = Subtle Gumroad Effect */
-  box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.08);
-  transition: transform 0.3s ease;
-}
-
-.glassCard:hover {
-  transform: translate(-3px, -3px);
-  box-shadow: 14px 14px 0 rgba(0, 0, 0, 0.12); /* Slightly deeper on hover */
-}
-
-.splitHeader {
-  padding: 35px 30px;
-  border-bottom: 2px solid rgba(0, 0, 0, 0.06);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: linear-gradient(
-    to bottom,
-    rgba(255, 255, 255, 0.9),
-    rgba(255, 255, 255, 0.5)
-  );
-}
-
-.splitLeft {
-  display: flex;
-  flex-direction: column;
-}
-.bigPercent {
-  font-size: 3.5rem;
-  font-weight: 900;
+  font-size: clamp(3rem, 6vw, 5rem);
+  font-weight: 1000;
   line-height: 0.9;
-  font-family: var(--font-outfit);
-  letter-spacing: -1px;
-}
-.splitLabel {
-  font-size: 0.6rem;
-  font-weight: 800;
-  color: #999;
-  letter-spacing: 1px;
-  margin-top: 6px;
+  color: #000;
+  letter-spacing: -3px;
 }
 
-.splitRight {
+.highlight {
+  position: relative;
+  display: inline-block;
+  color: #000;
+  z-index: 1;
+}
+
+.highlight::after {
+  content: "";
+  position: absolute;
+  bottom: 8px;
+  left: -5px;
+  right: -10px;
+  height: 24px;
+  background: #25d366; /* Marker Green */
+  z-index: -1;
+  transform: rotate(-1.5deg);
+  opacity: 0.8;
+}
+
+.description {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  color: #333;
+  font-weight: 500;
+  max-width: 90%;
+}
+
+.featureList {
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
-}
-.feeBadge {
-  background: #ff3344;
-  color: #fff;
-  font-weight: 900;
-  font-size: 0.85rem;
-  padding: 6px 12px;
-  border-radius: 8px;
-  margin-bottom: 4px;
+  gap: 16px;
+  margin-top: 10px;
 }
 
-.divider {
-  width: 1px;
-  height: 40px;
-  background: rgba(0, 0, 0, 0.1);
-}
-
-.bodyContent {
-  padding: 30px;
-  text-align: center;
-}
-
-.mainText {
-  font-size: 1rem;
-  line-height: 1.6;
-  color: #444;
-  margin-bottom: 30px;
-}
-.mainText strong {
-  color: #000;
-  font-weight: 800;
-  background: rgba(5, 172, 114, 0.1);
-  padding: 0 4px;
-  border-radius: 4px;
-}
-
-.featureStack {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 15px;
-  margin-bottom: 30px;
-  text-align: left;
-}
-.featItem {
+.feature {
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: 0.8rem;
-  font-weight: 700;
-  color: #333;
+  gap: 16px;
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: #000;
 }
-.checkCircle {
-  width: 20px;
-  height: 20px;
+
+.checkIcon {
+  width: 24px;
+  height: 24px;
   background: #000;
   color: #fff;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
 }
 
-.glowButton {
+/* --- RIGHT SIDE: THE PRINTER --- */
+.visualSide {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  height: 650px; /* Fixed height for animation space */
+  align-items: flex-start;
+  padding-top: 50px;
+}
+
+/* The Black Slot the receipt comes out of */
+.printerSlot {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 420px;
+  height: 60px;
+  background: #111;
+  border-radius: 12px;
+  z-index: 10;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.printerSlot::after {
+  content: "";
+  width: 80%;
+  height: 6px;
+  background: #333;
+  border-radius: 100px;
+}
+
+/* The Paper Receipt */
+.receiptContainer {
+  position: relative;
+  z-index: 1;
+  /* Initial State for Animation */
+  animation: printReceipt 1.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  transform-origin: top center;
+}
+
+@keyframes printReceipt {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(40px);
+    opacity: 1;
+  }
+}
+
+.receipt {
+  background: #fff;
+  width: 380px;
+  padding: 40px 30px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05), 0 20px 40px rgba(0, 0, 0, 0.1);
+  font-family: "Courier New", Courier, monospace;
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  /* Subtle Paper Texture */
+  background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E");
+}
+
+.receipt:hover {
+  transform: translateY(5px) scale(1.01);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+}
+
+/* Jagged Top Edge (Tear) */
+.receipt::before {
+  content: "";
+  position: absolute;
+  top: -12px;
+  left: 0;
   width: 100%;
+  height: 12px;
+  background: linear-gradient(135deg, transparent 8px, #fff 8px),
+    linear-gradient(-135deg, transparent 8px, #fff 8px);
+  background-size: 24px 24px;
+  background-repeat: repeat-x;
+}
+
+/* Jagged Bottom Edge */
+.receipt::after {
+  content: "";
+  position: absolute;
+  bottom: -12px;
+  left: 0;
+  width: 100%;
+  height: 12px;
+  background: linear-gradient(45deg, transparent 8px, #fff 8px),
+    linear-gradient(-45deg, transparent 8px, #fff 8px);
+  background-size: 24px 24px;
+  background-repeat: repeat-x;
+}
+
+/* Content Styling */
+.receiptHeader {
+  text-align: center;
+  border-bottom: 2px dashed #000;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+}
+
+.logoText {
+  font-weight: 900;
+  font-size: 1.8rem;
+  letter-spacing: -2px;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.metaRow {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.7rem;
+  color: #666;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.lineItem {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.feeItem {
+  color: #666;
+  position: relative;
+}
+
+/* Highlight for the fee */
+.feeHighlight {
+  position: absolute;
+  left: -10px;
+  right: -10px;
+  top: -2px;
+  bottom: -2px;
+  background: rgba(255, 235, 59, 0.3); /* Highlighter Yellow */
+  transform: rotate(-1deg);
+  border-radius: 4px;
+  pointer-events: none;
+}
+
+.totalSection {
+  border-top: 3px solid #000;
+  border-bottom: 3px solid #000; /* Double line style */
+  margin-top: 20px;
+  padding: 15px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.totalLabel {
+  font-weight: 900;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+}
+
+.totalAmount {
+  font-weight: 900;
+  font-size: 2rem;
   background: #000;
   color: #fff;
-  border: none;
-  padding: 18px;
-  border-radius: 14px;
-  font-size: 1rem;
-  font-weight: 800;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-.glowButton:hover {
-  background: #05ac72;
-  transform: scale(1.02);
-  box-shadow: 4px 4px 0 #000; /* Gumroad hover effect on button */
+  padding: 4px 10px;
+  transform: rotate(-2deg);
 }
 
-.footerNote {
+/* STAMP ANIMATION */
+.stamp {
+  position: absolute;
+  bottom: 100px;
+  right: 30px;
+  border: 5px solid #ff3b30;
+  color: #ff3b30;
+  font-weight: 900;
+  font-size: 1.6rem;
+  padding: 10px 24px;
+  border-radius: 8px;
+  text-transform: uppercase;
+  transform: rotate(-15deg);
+  opacity: 0;
+  animation: stampSlam 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  animation-delay: 1.2s; /* Wait for print */
+  mix-blend-mode: multiply;
+  mask-image: url("data:image/svg+xml,..."); /* Grunge mask simulated */
+}
+
+@keyframes stampSlam {
+  0% {
+    transform: scale(3) rotate(0deg);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1) rotate(-15deg);
+    opacity: 0.8;
+  }
+}
+
+/* SIGNATURE */
+.signatureSection {
+  margin-top: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.signLabel {
+  font-size: 0.7rem;
+  font-weight: 700;
+  border-top: 1px solid #000;
+  padding-top: 4px;
+  width: 40%;
+}
+
+.signature {
+  font-family: "Brush Script MT", cursive; /* Handwriting font */
+  font-size: 1.8rem;
+  color: #0066ff; /* Pen Blue */
+  transform: rotate(-5deg) translateY(10px);
+}
+
+.barcode {
+  height: 40px;
+  background: repeating-linear-gradient(
+    to right,
+    #000 0,
+    #000 3px,
+    transparent 3px,
+    transparent 6px,
+    #000 6px,
+    #000 10px,
+    transparent 10px,
+    transparent 12px
+  );
+  width: 100%;
   margin-top: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  font-size: 0.65rem;
-  font-weight: 800;
-  color: #bbb;
-  font-family: var(--font-space);
+  opacity: 0.8;
 }
 
-@media (max-width: 500px) {
-  .featureStack {
+.footerCode {
+  text-align: center;
+  font-size: 0.7rem;
+  margin-top: 8px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+/* --- MOBILE --- */
+@media (max-width: 1024px) {
+  .container {
     grid-template-columns: 1fr;
-    padding-left: 20px;
+    gap: 40px;
   }
-  .splitHeader {
-    padding: 25px 20px;
+  .visualSide {
+    height: auto;
+    padding-bottom: 40px;
   }
-  .bigPercent {
-    font-size: 3rem;
+  .printerSlot {
+    display: none; /* Hide printer slot on mobile for space */
   }
-  /* Reduce shape clutter on mobile */
-  .shapePercent,
-  .shapeBank,
-  .shapeSafe,
-  .shapeGlobal {
-    display: none;
+  .receiptContainer {
+    animation: none;
+    transform: none;
+    opacity: 1;
+  }
+  .receipt {
+    width: 100%;
+    max-width: 380px;
+  }
+  .stamp {
+    animation: none;
+    opacity: 0.8;
   }
 }

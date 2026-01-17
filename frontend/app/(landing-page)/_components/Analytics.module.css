@@ -1,52 +1,14 @@
-/**
- * Analytics.module.css
- * Fixed: Title Line-Height Overlap
- * Feature: Multi-color Word Slider
- */
+/* Analytics.module.css */
 
 .wrapper {
-  padding: clamp(60px, 10vw, 120px) 0;
-  background: var(--background);
+  padding: 100px 0;
+  background-color: #fff;
+  /* Neo-Brutalist Dot Grid Texture */
+  background-image: radial-gradient(#d4d4d4 1.5px, transparent 1.5px);
+  background-size: 24px 24px;
   overflow: hidden;
   position: relative;
-}
-
-/* --- ANIMATED LIQUID MESH --- */
-.meshGradient {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 150%;
-  height: 150%;
-  background: radial-gradient(
-      circle at 30% 30%,
-      rgba(0, 102, 255, 0.08) 0%,
-      transparent 50%
-    ),
-    radial-gradient(
-      circle at 70% 70%,
-      rgba(255, 0, 85, 0.08) 0%,
-      transparent 50%
-    ),
-    radial-gradient(
-      circle at 50% 10%,
-      rgba(0, 255, 102, 0.05) 0%,
-      transparent 40%
-    );
-  filter: blur(100px);
-  z-index: 0;
-  animation: liquidRotate 30s linear infinite;
-  will-change: transform;
-}
-
-@keyframes liquidRotate {
-  from {
-    transform: translate(-50%, -50%) rotate(0deg);
-  }
-  to {
-    transform: translate(-50%, -50%) rotate(360deg);
-  }
+  border-top: 3px solid #000;
 }
 
 .container {
@@ -65,26 +27,30 @@
   right: 50%;
   margin-left: -50vw;
   margin-right: -50vw;
-  background: rgba(0, 0, 0, 0.02);
-  border-top: 1px solid rgba(0, 0, 0, 0.05);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-  padding: 16px 0;
-  margin-bottom: clamp(40px, 8vw, 80px);
+  background: #ffeb3b; /* Gumroad Yellow */
+  border-top: 3px solid #000;
+  border-bottom: 3px solid #000;
+  padding: 12px 0;
+  margin-bottom: 60px;
+  transform: rotate(-1deg);
+  z-index: 10;
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.1);
 }
 
 .marqueeTrack {
   display: flex;
   width: max-content;
-  animation: marquee 40s linear infinite;
+  animation: marquee 30s linear infinite;
 }
 
 .marqueeTrack span {
-  font-family: var(--font-space);
-  color: var(--foreground);
-  font-weight: 700;
-  font-size: 0.75rem;
-  letter-spacing: 2px;
-  padding-right: 80px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: #000;
+  font-weight: 900;
+  font-size: 1rem;
+  letter-spacing: 1px;
+  padding-right: 60px;
+  text-transform: uppercase;
 }
 
 @keyframes marquee {
@@ -96,34 +62,58 @@
 /* --- GRID LAYOUT --- */
 .splitGrid {
   display: grid;
-  grid-template-columns: 1.15fr 0.85fr;
-  gap: clamp(40px, 5vw, 80px);
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
   align-items: center;
 }
 
-/* --- TITLE & SLIDER (THE OVERLAP FIX) --- */
-.mainTitle {
-  font-size: clamp(2.2rem, 5.5vw, 4.2rem);
-  font-weight: 900;
-  /* Increased line-height (1.4) to ensure the slider box doesn't touch text above/below */
-  line-height: 1.4;
-  letter-spacing: -2px;
+/* --- LEFT CONTENT --- */
+.leftContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.premiumBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #000;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 100px;
+  font-weight: 800;
+  font-size: 0.75rem;
+  letter-spacing: 1px;
   margin-bottom: 24px;
-  color: var(--foreground);
+  width: fit-content;
+  box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.2);
+}
+
+.spinIcon {
+  animation: spin 4s linear infinite;
+}
+
+.mainTitle {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 900;
+  line-height: 1.1;
+  margin-bottom: 24px;
+  color: #000;
+  letter-spacing: -2px;
 }
 
 .sliderContainer {
   display: inline-flex;
-  /* Height set to 1.2em to fit inside the 1.4 line-height comfortably */
-  height: 1.2em;
+  height: 1.1em;
   overflow: hidden;
-  background: #000; /* Contrast background for the sliding words */
-  padding: 0 0.4em;
-  border-radius: 12px;
-  vertical-align: middle;
-  margin: 0 0.1em;
-  position: relative;
-  top: -0.05em;
+  background: #000;
+  padding: 0 0.2em;
+  vertical-align: bottom;
+  margin: 0 0.15em;
+  border-radius: 8px;
+  transform: skewX(-5deg);
 }
 
 .wordSlider {
@@ -133,69 +123,45 @@
 }
 
 .word {
-  height: 1.2em; /* Matches the slider container exactly */
+  height: 1.1em;
   display: flex;
   align-items: center;
   justify-content: center;
   white-space: nowrap;
   font-weight: 900;
+  transform: skewX(5deg);
 }
 
-/* --- WORD COLORS --- */
 .blue {
   color: #00e0ff;
 }
 .pink {
-  color: #ff0055;
+  color: #ff90e8;
 }
 .green {
-  color: #00ff66;
+  color: #25d366;
 }
 .yellow {
-  color: #ffd600;
+  color: #ffeb3b;
 }
 .purple {
   color: #b026ff;
 }
 
 .description {
-  font-size: clamp(1rem, 2vw, 1.15rem);
+  font-size: 1.1rem;
   line-height: 1.6;
-  opacity: 0.6;
-  max-width: 480px;
+  color: #333;
+  font-weight: 500;
+  max-width: 500px;
 }
 
-.premiumBadge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-family: var(--font-space);
-  font-weight: 800;
-  font-size: 0.7rem;
-  color: var(--accent);
-  margin-bottom: 12px;
-  letter-spacing: 2px;
-}
-
-.spinIcon {
-  animation: spin 4s linear infinite;
-}
-
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* --- STORY NAVIGATION TRAY --- */
+/* --- STORY TRAY --- */
 .storyTray {
   display: flex;
-  justify-content: center;
   gap: 12px;
   margin-bottom: 30px;
+  flex-wrap: wrap;
 }
 
 .storyCircleWrapper {
@@ -204,64 +170,86 @@
   cursor: pointer;
   padding: 0;
   outline: none;
+  transition: transform 0.2s;
+}
+
+.storyCircleWrapper:hover {
+  transform: translateY(-4px);
 }
 
 .iosRing {
-  width: clamp(44px, 6vw, 52px);
-  height: clamp(44px, 6vw, 52px);
-  border-radius: 16px;
-  background: rgba(120, 120, 120, 0.1);
-  padding: 2px;
-  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.activeStory .iosRing {
-  background: var(--foreground);
-  transform: scale(1.15);
-}
-
-.innerCircle {
-  width: 100%;
-  height: 100%;
-  background: var(--background);
+  width: 50px;
+  height: 50px;
   border-radius: 14px;
+  background: #fff;
+  border: 3px solid #000;
+  padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.2rem;
+  box-shadow: 3px 3px 0px #000;
+  transition: all 0.2s ease;
 }
 
-/* --- PHONE VISUALS --- */
+.activeStory .iosRing {
+  background: #000;
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0px #000;
+}
+
+.innerCircle {
+  font-size: 1.3rem;
+  color: #000;
+}
+
+.activeStory .innerCircle {
+  color: #fff !important;
+}
+
+/* --- PHONE VISUALS (Compact Box) --- */
+.rightContent {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .phoneContainer {
   position: relative;
   width: 100%;
-  max-width: 320px;
-  margin: 0 auto;
+  max-width: 320px; /* Reduced from 380px */
 }
 
 .phoneFrame {
   position: relative;
-  background: #000;
+  background: #fff;
+  border: 4px solid #000;
+  border-radius: 32px;
   padding: 10px;
-  border-radius: clamp(40px, 6vw, 52px);
-  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.4);
+  box-shadow: 14px 14px 0px #000;
   z-index: 1;
+  transition: transform 0.3s ease;
+}
+
+.phoneFrame:hover {
+  transform: translate(-4px, -4px);
+  box-shadow: 18px 18px 0px #000;
 }
 
 .storyCard {
   width: 100%;
   aspect-ratio: 9 / 16;
   background: #000;
-  border-radius: clamp(32px, 5vw, 42px);
+  border-radius: 24px;
   padding: 20px;
   display: flex;
   flex-direction: column;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  transition: border-color 0.4s ease;
   overflow: hidden;
+  position: relative;
+  border: 2px solid #000;
 }
 
-/* Status Bar & Progress Indicators */
+/* Status Bar */
 .statusBar {
   margin-bottom: 20px;
 }
@@ -271,8 +259,9 @@
 }
 .progressBarBg {
   flex: 1;
-  height: 2px;
-  background: rgba(255, 255, 255, 0.1);
+  height: 3px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
   overflow: hidden;
 }
 .progressBarFill {
@@ -287,32 +276,44 @@
   animation: fillBar 4s linear forwards;
 }
 
-/* Story Content Styling */
+/* Content */
 .storyHeader {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 24px;
+  gap: 10px;
+  margin-bottom: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
+
 .brandIcon {
-  width: 34px;
-  height: 34px;
-  border-radius: 9px;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
-  font-size: 1.1rem;
+  color: #000;
+  font-size: 1.2rem;
+  border: 2px solid #fff;
 }
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+}
+
 .userName {
   color: #fff;
-  font-weight: 700;
-  font-size: 0.85rem;
-  display: block;
+  font-weight: 800;
+  font-size: 0.9rem;
 }
 .timeAgo {
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(255, 255, 255, 0.6);
   font-size: 0.7rem;
+  font-weight: 500;
 }
 
 .storyContent {
@@ -324,46 +325,55 @@
   position: relative;
 }
 
-.valueGlow {
-  position: absolute;
-  font-size: 6rem;
-  font-weight: 900;
-  filter: blur(50px);
-  opacity: 0.3;
-  pointer-events: none;
-}
-
 .storyValue {
-  font-size: clamp(2.4rem, 8vw, 3.4rem);
+  /* Smaller font to fit smaller box */
+  font-size: clamp(2.5rem, 15vw, 3.5rem);
   font-weight: 900;
   color: #fff;
   letter-spacing: -2px;
   z-index: 2;
   text-align: center;
+  text-shadow: 4px 4px 0px #000;
+  line-height: 1;
 }
 
 .premiumPill {
-  background: rgba(255, 255, 255, 0.08);
-  padding: 6px 16px;
+  background: #fff;
+  padding: 6px 14px;
   border-radius: 100px;
-  color: #fff;
-  font-size: 0.8rem;
-  margin-top: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #000;
+  font-size: 0.75rem;
+  font-weight: 700;
+  margin-top: 16px;
+  border: 2px solid #000;
+  box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.5);
+}
+
+.footerAction {
+  margin-top: auto;
+  width: 100%;
 }
 
 .fullReportBtn {
-  background: #fff;
+  background: #25d366;
   color: #000;
   padding: 14px;
-  border-radius: 20px;
+  border-radius: 12px;
   text-align: center;
   font-weight: 800;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   width: 100%;
-  border: none;
+  border: 3px solid #000;
   cursor: pointer;
-  margin-top: auto;
+  box-shadow: 4px 4px 0px #000;
+  transition: transform 0.1s;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.fullReportBtn:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px #000;
 }
 
 /* --- KEYFRAMES --- */
@@ -374,22 +384,31 @@
   }
   20%,
   35% {
-    transform: translateY(-1.2em);
+    transform: translateY(-1.1em);
   }
   40%,
   55% {
-    transform: translateY(-2.4em);
+    transform: translateY(-2.2em);
   }
   60%,
   75% {
-    transform: translateY(-3.6em);
+    transform: translateY(-3.3em);
   }
   80%,
   95% {
-    transform: translateY(-4.8em);
+    transform: translateY(-4.4em);
   }
   100% {
-    transform: translateY(-6em);
+    transform: translateY(-5.5em);
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
   }
 }
 
@@ -402,37 +421,20 @@
   }
 }
 
-/* --- RESPONSIVE MEDIA QUERIES --- */
+/* --- RESPONSIVE --- */
 @media (max-width: 900px) {
   .splitGrid {
     grid-template-columns: 1fr;
-    gap: 40px;
+    gap: 50px;
     text-align: center;
   }
   .leftContent {
     align-items: center;
   }
-  .description {
-    margin: 0 auto;
+  .premiumBadge {
+    margin: 0 auto 24px auto;
   }
-  .mainTitle {
-    line-height: 1.5;
-  } /* Slightly more space for mobile titles */
-}
-
-@media (max-width: 480px) {
-  .container {
-    padding: 0 20px;
-  }
-  .iosRing {
-    width: 42px;
-    height: 42px;
-    border-radius: 12px;
-  }
-  .mainTitle {
-    font-size: 2.1rem;
-  }
-  .storyValue {
-    font-size: 2.2rem;
+  .storyTray {
+    justify-content: center;
   }
 }

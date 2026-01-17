@@ -4,117 +4,116 @@ import Image from "next/image";
 import styles from "./ProfileShowcase.module.css";
 import {
   RiFireFill,
-  RiArrowRightLine,
   RiVerifiedBadgeFill,
+  RiLockFill,
   RiFlashlightFill,
-  RiUserHeartLine,
-  RiGroupLine,
+  RiArrowRightLine,
 } from "react-icons/ri";
 
 const CREATORS = [
   {
     id: "01",
-    tag: "FITNESS",
-    headline: "Your Personal",
-    highlight: "Coach",
-    desc: "Daily workout plans and nutrition guides for a healthier you.",
+    handle: "fitness_mike",
+    name: "Mike's Gym",
+    bio: "Daily HIIT workouts & meal plans. Get fit with the squad.",
     price: "19",
     image: "/images/Profiles/1.jpg",
+    avatar: "/images/Profiles/1.jpg",
     color: "#ffc900", // Yellow
-    badge: "POPULAR 🔥",
-    btnText: "Join the Squad",
     members: "140K",
+    posts: "342",
+    linkText: "substarter.com/fitness-mike",
   },
   {
     id: "02",
-    tag: "CODING",
-    headline: "Zero to",
-    highlight: "Mastery",
-    desc: "Full-stack bootcamps and weekly code reviews.",
+    handle: "code_mastery",
+    name: "Dev Sarah",
+    bio: "Zero to Hero coding bootcamps. Weekly code reviews.",
     price: "25",
     image: "/images/Profiles/2.jpg",
+    avatar: "/images/Profiles/2.jpg",
     color: "#0066ff", // Blue
-    badge: "BEST SELLER 💎",
-    btnText: "Join the Devs",
     members: "42K",
+    posts: "85",
+    linkText: "substarter.com/dev-sarah",
   },
   {
     id: "03",
-    tag: "HEALTH",
-    headline: "Holistic",
-    highlight: "Living",
-    desc: "Mental health tips and guided meditation sessions.",
+    handle: "zen_living",
+    name: "Yoga Jen",
+    bio: "Guided meditations and daily flows for inner peace.",
     price: "15",
     image: "/images/Profiles/3.jpg",
+    avatar: "/images/Profiles/3.jpg",
     color: "#05ac72", // Green
-    badge: "TRENDING 🌿",
-    btnText: "Join the Zen",
     members: "89K",
+    posts: "200+",
+    linkText: "substarter.com/yoga-jen",
   },
   {
     id: "04",
-    tag: "VFX ART",
-    headline: "VFX Magic",
-    highlight: "School",
-    desc: "Learn 3D modeling and animation from industry pros.",
+    handle: "vfx_school",
+    name: "VFX Wizard",
+    bio: "Blender & Maya tutorials. 3D Assets included.",
     price: "30",
     image: "/images/Profiles/4.jpg",
+    avatar: "/images/Profiles/4.jpg",
     color: "#ff4d00", // Orange
-    badge: "TOP RATED ⭐",
-    btnText: "Join the Art",
-    members: "256K",
+    members: "25K",
+    posts: "45",
+    linkText: "substarter.com/vfx-wizard",
   },
   {
     id: "05",
-    tag: "COOKING",
-    headline: "Chef Marc's",
-    highlight: "Kitchen",
-    desc: "Secret recipes and video tutorials for home cooks.",
+    handle: "chef_marc",
+    name: "Chef Marc",
+    bio: "Secret family recipes and masterclasses. Cook like a pro.",
     price: "12",
     image: "/images/Profiles/5.jpg",
+    avatar: "/images/Profiles/5.jpg",
     color: "#ffc900", // Yellow
-    badge: "TASTY PICKS 🍳",
-    btnText: "Join the Feast",
     members: "12K",
+    posts: "30",
+    linkText: "substarter.com/chef-marc",
   },
   {
     id: "06",
-    tag: "MUSIC",
-    headline: "Guitar Pro",
-    highlight: "Tabs",
-    desc: "Learn to play your favorite songs in minutes.",
+    handle: "riff_master",
+    name: "Guitar Pro",
+    bio: "Learn to play your favorite songs in minutes. Tabs included.",
     price: "20",
     image: "/images/Profiles/6.jpg",
+    avatar: "/images/Profiles/6.jpg",
     color: "#ff90e8", // Pink
-    badge: "NEW DROP 🎸",
-    btnText: "Join the Jam",
     members: "35K",
+    posts: "150",
+    linkText: "substarter.com/riff-master",
   },
   {
     id: "07",
-    tag: "FINANCE",
-    headline: "Market",
-    highlight: "Movers",
-    desc: "Real-time stock signals and crypto analysis.",
+    handle: "crypto_king",
+    name: "Market Movers",
+    bio: "Real-time stock signals and crypto analysis. Daily alerts.",
     price: "49",
     image: "/images/Profiles/7.jpg",
+    avatar: "/images/Profiles/7.jpg",
     color: "#0066ff", // Blue
-    badge: "HIGH VALUE 💸",
-    btnText: "Join the Club",
     members: "110K",
+    posts: "900+",
+    linkText: "substarter.com/market-movers",
   },
   {
     id: "08",
-    tag: "TRAVEL",
-    headline: "Globetrotter",
-    highlight: "Guides",
-    desc: "Hidden gems and travel hacks for your next trip.",
+    handle: "travel_anna",
+    name: "Globetrotter",
+    bio: "Hidden gems and travel hacks for your next adventure.",
     price: "10",
     image: "/images/Profiles/8.jpg",
+    avatar: "/images/Profiles/8.jpg",
     color: "#05ac72", // Green
-    badge: "ADVENTURE 🗺️",
-    btnText: "Join the Trip",
     members: "65K",
+    posts: "210",
+    linkText: "substarter.com/travel-anna",
   },
 ];
 
@@ -140,77 +139,134 @@ export default function ProfileShowcase() {
           </p>
         </div>
 
-        {/* --- MARKETPLACE SCROLLER --- */}
+        {/* --- PHONE SCROLLER --- */}
         <div className={styles.scrollContainer}>
           <div className={styles.track}>
             {CREATORS.map((item) => (
               <div
                 key={item.id}
-                className={styles.productCard}
-                style={{ "--accent": item.color } as any}
+                className={styles.phoneMockup}
+                style={{ "--accent": item.color } as React.CSSProperties}
               >
-                {/* Image & Status Area */}
-                <div className={styles.imageArea}>
-                  <div className={styles.liveTag}>
-                    <span className={styles.pulseDot} /> LIVE
+                {/* 1. Browser Chrome */}
+                <div className={styles.browserChrome}>
+                  <div className={styles.urlBar}>
+                    <RiLockFill className={styles.lockIcon} />
+                    {item.linkText}
                   </div>
-                  <span className={styles.categoryTag}>{item.tag}</span>
-                  <Image
-                    src={item.image}
-                    alt={item.headline}
-                    fill
-                    className={styles.bgImage}
-                  />
                 </div>
 
-                {/* Content Body */}
-                <div className={styles.cardContent}>
-                  <div className={styles.topMeta}>
-                    <div className={styles.creatorBadge}>
-                      <RiVerifiedBadgeFill className={styles.verifyIcon} />
-                      <span className={styles.badgeText}>{item.badge}</span>
+                {/* 2. Screen Content */}
+                <div className={styles.screenContent}>
+                  {/* Cover & Avatar */}
+                  <div className={styles.coverPhoto}>
+                    <Image
+                      src={item.image}
+                      alt="cover"
+                      fill
+                      className={styles.coverImg}
+                      loading="lazy"
+                      quality={75}
+                    />
+                  </div>
+
+                  <div className={styles.profileInfo}>
+                    <div className={styles.avatarBox}>
+                      <Image
+                        src={item.avatar}
+                        alt="avatar"
+                        fill
+                        className={styles.avatarImg}
+                        loading="lazy"
+                        quality={75}
+                      />
                     </div>
-                    <div className={styles.memberCount}>
-                      <RiGroupLine /> {item.members}
+                    <div className={styles.handle}>
+                      {item.name}{" "}
+                      <RiVerifiedBadgeFill className={styles.verified} />
+                    </div>
+                    <p className={styles.bio}>{item.bio}</p>
+
+                    <div className={styles.statsGrid}>
+                      <div className={styles.stat}>
+                        <span className={styles.statNum}>{item.members}</span>
+                        <span className={styles.statLabel}>Members</span>
+                      </div>
+                      <div className={styles.stat}>
+                        <span className={styles.statNum}>{item.posts}</span>
+                        <span className={styles.statLabel}>Posts</span>
+                      </div>
                     </div>
                   </div>
 
-                  <h3 className={styles.cardTitle}>
-                    {item.headline}{" "}
-                    <span className={styles.textHighlight}>
-                      {item.highlight}
-                    </span>
-                  </h3>
-                  <p className={styles.cardDesc}>{item.desc}</p>
+                  {/* Feed Preview */}
+                  <div className={styles.feedPreview}>
+                    <div className={styles.feedTitle}>Recent Posts</div>
+                    <div className={styles.postList}>
+                      {/* Free Post */}
+                      <div className={`${styles.postItem} ${styles.freePost}`}>
+                        <div className={styles.postThumb}>
+                          <Image
+                            src={item.image}
+                            alt="post"
+                            fill
+                            style={{ objectFit: "cover", opacity: 0.8 }}
+                          />
+                        </div>
+                        <div className={styles.postMeta}>
+                          <div className={styles.postLine} />
+                          <div
+                            className={`${styles.postLine} ${styles.short}`}
+                          />
+                        </div>
+                      </div>
+
+                      {/* Locked Post */}
+                      <div
+                        className={`${styles.postItem} ${styles.lockedPost}`}
+                      >
+                        <div
+                          className={styles.blurLayer}
+                          style={{ backgroundImage: `url(${item.image})` }}
+                        />
+                        <div className={styles.lockOverlay}>
+                          <div className={styles.lockBadge}>
+                            <RiLockFill />
+                          </div>
+                          <div className={styles.lockText}>
+                            Subscribers Only
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
-                {/* Interactive Footer */}
-                <div className={styles.cardFooter}>
-                  <div className={styles.priceTag}>
-                    <span className={styles.currency}>$</span>
-                    {item.price}
-                  </div>
-                  <button className={styles.accessBtn}>
-                    {item.btnText} <RiUserHeartLine />
+                {/* 3. Sticky Action Button */}
+                <div className={styles.stickyBtnContainer}>
+                  <button className={styles.subscribeBtn}>
+                    <span>Join Community</span>
+                    <span>${item.price}/mo</span>
                   </button>
                 </div>
               </div>
             ))}
 
-            {/* "Create Yours" CTA Card */}
-            <div className={`${styles.productCard} ${styles.ctaCard}`}>
-              <div className={styles.ctaContent}>
-                <div className={styles.iconBox}>
-                  <RiFlashlightFill />
-                </div>
-                <h3 className={styles.ctaHeading}>
-                  YOUR EMPIRE <br />
-                  <span className={styles.whiteHighlight}>STARTS HERE.</span>
+            {/* "Create Yours" Card */}
+            <div className={`${styles.phoneMockup} ${styles.createCard}`}>
+              <div className={styles.createContent}>
+                <RiFlashlightFill
+                  size={60}
+                  style={{ marginBottom: 20, color: "#ff90e8" }}
+                />
+                <h3 className={styles.createTitle}>
+                  YOUR PAGE <br />
+                  <span className={styles.createHighlight}>GOES HERE.</span>
                 </h3>
-                <p className={styles.ctaText}>
-                  Join 10,000+ creators earning on their own terms.
+                <p style={{ color: "#aaa", lineHeight: 1.5 }}>
+                  Claim your unique link and start earning in minutes.
                 </p>
-                <button className={styles.startBtn}>
+                <button className={styles.createBtn}>
                   Create My Page <RiArrowRightLine />
                 </button>
               </div>

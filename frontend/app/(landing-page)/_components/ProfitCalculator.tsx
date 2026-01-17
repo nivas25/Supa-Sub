@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import styles from "./ProfitCalculator.module.css";
-import { RiCoinFill, RiCalculatorFill } from "react-icons/ri";
+import { RiCalculatorFill, RiCheckDoubleLine } from "react-icons/ri";
 
 // --- REUSABLE SLOT DIGIT COMPONENT ---
 const SlotDigit = ({ value }: { value: string }) => {
@@ -24,17 +24,24 @@ const SlotDigit = ({ value }: { value: string }) => {
 export default function ProfitCalculator() {
   const [subscribers, setSubscribers] = useState(1000);
   const [price, setPrice] = useState(29);
-  const [revenue, setRevenue] = useState(0);
+
+  const [gross, setGross] = useState(0);
+  const [net, setNet] = useState(0);
+  const [fee, setFee] = useState(0);
 
   // Update revenue calculation
   useEffect(() => {
-    const gross = subscribers * price;
-    const net = Math.floor(gross * 0.95);
-    setRevenue(net);
+    const grossCalc = subscribers * price;
+    const feeCalc = Math.floor(grossCalc * 0.05); // 5% Fee
+    const netCalc = grossCalc - feeCalc;
+
+    setGross(grossCalc);
+    setFee(feeCalc);
+    setNet(netCalc);
   }, [subscribers, price]);
 
-  // Convert revenue to digit array
-  const revenueString = revenue
+  // Convert revenue to digit array for slot machine
+  const revenueString = net
     .toLocaleString("en-US", {
       minimumIntegerDigits: 1,
       useGrouping: false,
@@ -45,58 +52,64 @@ export default function ProfitCalculator() {
   return (
     <section className={styles.wrapper}>
       <div className={styles.container}>
-        {/* --- HEADER --- */}
+        {/* HEADER */}
         <div className={styles.header}>
           <div className={styles.badge}>
-            <RiCalculatorFill /> <span>REVENUE FORECAST</span>
+            <RiCalculatorFill /> <span>FORECASTING ENGINE</span>
           </div>
           <h2 className={styles.title}>
             Keep the <span className={styles.highlight}>Lion's Share.</span>
           </h2>
           <p className={styles.subtitle}>
-            Stop losing 30% to platform fees. We take a flat 5%. You keep the
-            rest.
+            Stop losing 30% to legacy platforms. We charge a flat 5% transaction
+            fee. You keep 95% of every dollar.
           </p>
         </div>
 
-        {/* --- DESKTOP GRID LAYOUT --- */}
+        {/* CALCULATOR INTERFACE */}
         <div className={styles.contentGrid}>
-          {/* LEFT: SLOT MACHINE DISPLAY */}
-          <div className={styles.slotMachine}>
-            {/* Decorative Bolts */}
-            <div className={`${styles.bolt} ${styles.boltTL}`} />
-            <div className={`${styles.bolt} ${styles.boltTR}`} />
-            <div className={`${styles.bolt} ${styles.boltBL}`} />
-            <div className={`${styles.bolt} ${styles.boltBR}`} />
-
-            <div className={styles.machineHeader}>
-              <span className={styles.indicator} />
-              <span className={styles.label}>ESTIMATED MONTHLY PROFIT</span>
-              <span className={styles.indicator} />
-            </div>
-
-            <div className={styles.windowFrame}>
-              <div className={styles.currency}>$</div>
-
-              {/* The Reels */}
-              <div className={styles.reelsWrapper}>
-                {digits.map((digit, i) => (
-                  <SlotDigit key={i} value={digit} />
-                ))}
+          {/* LEFT: THE PROFIT ENGINE */}
+          <div className={styles.machineWrapper}>
+            <div className={styles.slotMachine}>
+              {/* Decorative Vents */}
+              <div className={styles.vents}>
+                <div className={styles.ventSlot} />
+                <div className={styles.ventSlot} />
+                <div className={styles.ventSlot} />
               </div>
 
-              <div className={styles.perMo}>/mo</div>
-            </div>
+              {/* Machine Header */}
+              <div className={styles.machineHeader}>
+                <span className={styles.machineLabel}>NET MONTHLY PROFIT</span>
+                <div className={styles.statusLight} />
+              </div>
 
-            <div className={styles.machineFooter}>
-              <RiCoinFill className={styles.coinIcon} />
-              <span>BASED ON 95% PAYOUT RATIO</span>
+              {/* Display Window */}
+              <div className={styles.windowFrame}>
+                <div className={styles.currency}>$</div>
+
+                {/* Rolling Digits */}
+                <div className={styles.reelsWrapper}>
+                  {digits.map((digit, i) => (
+                    <SlotDigit key={i} value={digit} />
+                  ))}
+                </div>
+
+                <div className={styles.perMo}>/mo</div>
+              </div>
+
+              {/* Dynamic Breakdown Panel */}
+              <div className={styles.breakdownPanel}>
+                <span>Gross: ${gross.toLocaleString()}</span>
+                <span style={{ color: "#aaa" }}>|</span>
+                <span>Fee: -${fee.toLocaleString()} (5%)</span>
+              </div>
             </div>
           </div>
 
-          {/* RIGHT: CHUNKY CONTROLS */}
+          {/* RIGHT: CONTROL PANEL */}
           <div className={styles.controlsPanel}>
-            {/* Slider 1 */}
+            {/* Slider 1: Subscribers */}
             <div className={styles.controlGroup}>
               <div className={styles.labelRow}>
                 <span className={styles.labelText}>ACTIVE SUBSCRIBERS</span>
@@ -115,7 +128,7 @@ export default function ProfitCalculator() {
               />
             </div>
 
-            {/* Slider 2 */}
+            {/* Slider 2: Price */}
             <div className={styles.controlGroup}>
               <div className={styles.labelRow}>
                 <span className={styles.labelText}>MONTHLY PRICE</span>
@@ -132,10 +145,13 @@ export default function ProfitCalculator() {
               />
             </div>
 
-            {/* Extra Info */}
+            {/* Footer Info */}
             <div className={styles.infoRow}>
-              We process payments instantly. <br />
-              <strong>No holding periods.</strong>
+              <RiCheckDoubleLine className={styles.checkIcon} />
+              <span>
+                Calculated based on 95% payout ratio. <br />
+                <strong>Funds settle to your bank daily.</strong>
+              </span>
             </div>
           </div>
         </div>

@@ -35,7 +35,8 @@ const FAQS = [
 ];
 
 export default function FAQ() {
-  const [active, setActive] = useState<number | null>(0);
+  // Initial state is null so no question is open by default
+  const [active, setActive] = useState<number | null>(null);
 
   return (
     <section className={styles.wrapper}>
@@ -46,13 +47,10 @@ export default function FAQ() {
             <RiQuestionAnswerLine /> <span>SUPPORT CENTER</span>
           </div>
           <h2 className={styles.title}>
-            Common <br />
-            <span className={styles.italicHighlight}>Queries.</span>
+            Frequently Asked <br />
+            <span className={styles.italicHighlight}>Questions.</span>
           </h2>
-          <div className={styles.statusWidget}>
-            <div className={styles.pulseDot} />
-            <span>OPERATIONS: ONLINE</span>
-          </div>
+          {/* Operations Status Widget Removed */}
         </div>
 
         {/* Clean Accordion List */}

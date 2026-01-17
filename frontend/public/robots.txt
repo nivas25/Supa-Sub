@@ -1,0 +1,21 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /private
+Disallow: /_next/
+Disallow: /public/
+
+# Sitemap
+Sitemap: https://supasub.com/sitemap.xml
+
+# Crawl delay
+Crawl-delay: 1
+
+# User agents
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1

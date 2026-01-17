@@ -1,0 +1,81 @@
+/* ImageSkeleton.module.css */
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.skeleton {
+  height: 400px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 1000px 400px;
+  animation: shimmer 2s infinite;
+  border-radius: 8px;
+}
+
+.cardSkeleton {
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+}
+
+.imageSkeleton {
+  height: 250px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 1000px 250px;
+  animation: shimmer 2s infinite;
+}
+
+.textSkeleton {
+  padding: 16px;
+}
+
+.textLine {
+  height: 12px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 1000px 12px;
+  animation: shimmer 2s infinite;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+
+.heroSkeleton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 40px;
+}
+
+.badgeSkeleton {
+  height: 36px;
+  width: 300px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 1000px 36px;
+  animation: shimmer 2s infinite;
+  border-radius: 20px;
+}
+
+.titleSkeleton {
+  height: 60px;
+  width: 100%;
+  max-width: 500px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 1000px 60px;
+  animation: shimmer 2s infinite;
+  border-radius: 8px;
+}
+
+.buttonSkeleton {
+  height: 50px;
+  width: 200px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 1000px 50px;
+  animation: shimmer 2s infinite;
+  border-radius: 8px;
+}

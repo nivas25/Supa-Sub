@@ -1,11 +1,17 @@
 /* ProfitCalculator.module.css */
 
 .wrapper {
-  background: transparent;
+  background: #fff;
   padding: 120px 20px;
   font-family: var(--font-space, monospace);
   display: flex;
   justify-content: center;
+  /* Grid paper background */
+  background-image: linear-gradient(#f0f0f0 1px, transparent 1px),
+    linear-gradient(90deg, #f0f0f0 1px, transparent 1px);
+  background-size: 32px 32px;
+  position: relative;
+  border-top: 3px solid #000;
 }
 
 .container {
@@ -28,223 +34,257 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: #f4f4f5;
-  color: #555;
-  padding: 6px 14px;
+  background: #000;
+  color: #fff;
+  padding: 8px 18px;
   border-radius: 100px;
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 1px;
-  margin-bottom: 20px;
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  margin-bottom: 24px;
+  transform: rotate(-2deg);
+  box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.2);
 }
 
 .title {
-  font-size: clamp(2.5rem, 6vw, 3.8rem);
-  font-weight: 900;
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-weight: 1000;
   line-height: 1;
-  color: #111;
-  font-family: var(--font-outfit, sans-serif);
-  margin-bottom: 15px;
+  color: #000;
+  margin-bottom: 16px;
+  letter-spacing: -2px;
 }
 
 .highlight {
-  color: #000;
-  text-decoration: underline;
-  text-decoration-color: #ffc900;
-  text-decoration-thickness: 6px;
-  text-underline-offset: 4px;
+  position: relative;
+  display: inline-block;
+  z-index: 1;
+}
+
+.highlight::after {
+  content: "";
+  position: absolute;
+  bottom: 10px;
+  left: -5px;
+  right: -5px;
+  height: 20px;
+  background: #ffeb3b;
+  z-index: -1;
+  transform: skewX(-10deg);
 }
 
 .subtitle {
-  font-size: 1.1rem;
-  color: #666;
-  font-family: var(--font-inter, sans-serif);
-  line-height: 1.5;
+  font-size: 1.15rem;
+  color: #444;
+  line-height: 1.6;
+  font-weight: 500;
 }
 
-/* --- DESKTOP GRID LAYOUT --- */
+/* --- GRID LAYOUT --- */
 .contentGrid {
   display: grid;
-  grid-template-columns: 1.2fr 1fr;
-  gap: 50px;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
   width: 100%;
   align-items: center;
 }
 
-/* --- THE SLOT MACHINE --- */
+/* --- THE "PROFIT ENGINE" (Left Side) --- */
+.machineWrapper {
+  position: relative;
+  z-index: 2;
+}
+
 .slotMachine {
-  background: #ffc900;
+  background: #ffc900; /* Industrial Yellow */
   border: 4px solid #000;
-  border-radius: 20px;
+  border-radius: 24px;
   padding: 40px;
-  box-shadow: 16px 16px 0 #000;
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.2), 16px 16px 0 #000;
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
   position: relative;
-  background-image: linear-gradient(
-    120deg,
-    rgba(255, 255, 255, 0.2) 0%,
-    rgba(255, 255, 255, 0) 40%
-  );
   transform: rotate(-1deg);
   transition: transform 0.3s;
+  overflow: hidden;
 }
 
 .slotMachine:hover {
   transform: rotate(0deg) scale(1.01);
 }
 
-.bolt {
+/* Decorative "Vents" */
+.vents {
   position: absolute;
-  width: 14px;
-  height: 14px;
-  background: #000;
-  border-radius: 50%;
-  box-shadow: inset 3px 3px 0 rgba(255, 255, 255, 0.3);
+  top: 20px;
+  right: 20px;
+  display: flex;
+  gap: 6px;
 }
-.boltTL {
-  top: 12px;
-  left: 12px;
-}
-.boltTR {
-  top: 12px;
-  right: 12px;
-}
-.boltBL {
-  bottom: 12px;
-  left: 12px;
-}
-.boltBR {
-  bottom: 12px;
-  right: 12px;
+.ventSlot {
+  width: 6px;
+  height: 24px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
 }
 
+/* Header inside machine */
 .machineHeader {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 25px;
+  justify-content: space-between;
+  margin-bottom: 30px;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+  padding-bottom: 16px;
 }
 
-.label {
+.machineLabel {
   font-weight: 900;
-  font-size: 0.9rem;
-  letter-spacing: 2px;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
   color: #000;
+  text-transform: uppercase;
 }
 
-.indicator {
-  width: 10px;
-  height: 10px;
-  background: #000;
+.statusLight {
+  width: 12px;
+  height: 12px;
+  background: #00ff00;
   border-radius: 50%;
-  opacity: 0.4;
+  border: 2px solid #000;
+  box-shadow: 0 0 10px #00ff00;
+  animation: blink 2s infinite;
 }
 
-/* Glass Window */
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* The Screen */
 .windowFrame {
-  background: #fff;
+  background: #222;
   border: 4px solid #000;
-  border-radius: 12px;
-  padding: 25px 15px;
+  border-radius: 16px;
+  padding: 30px 20px;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
   width: 100%;
-  box-shadow: inset 0 6px 15px rgba(0, 0, 0, 0.15);
+  box-shadow: inset 0 10px 30px rgba(0, 0, 0, 0.5);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Screen Glare */
+.windowFrame::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 45%,
+    rgba(255, 255, 255, 0.05) 50%,
+    transparent 55%
+  );
+  pointer-events: none;
 }
 
 .currency {
-  font-size: 3.5rem;
+  font-size: 3rem;
   font-weight: 900;
-  color: #000;
-  font-family: var(--font-outfit, sans-serif);
-  margin-right: 5px;
+  color: #fff;
+  margin-right: 8px;
+  opacity: 0.5;
 }
 
 .reelsWrapper {
   display: flex;
   gap: 6px;
   overflow: hidden;
-  height: 65px;
+  height: 70px;
   align-items: center;
 }
 
-/* REEL ANIMATION */
+/* Reel Animation */
 .reelContainer {
-  width: 45px;
-  height: 65px;
+  width: 50px;
+  height: 70px;
   overflow: hidden;
   position: relative;
-  background: #f8f8f8;
-  border-radius: 6px;
+  background: #fff;
+  border-radius: 8px;
   border: 2px solid #000;
-  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0 -4px 0 rgba(0, 0, 0, 0.1);
 }
 
 .reelTrack {
   display: flex;
   flex-direction: column;
-  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .reelNumber {
-  height: 65px;
+  height: 70px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 3rem;
   font-weight: 900;
   color: #000;
-  font-family: var(--font-outfit, sans-serif);
   flex-shrink: 0;
 }
 
 .perMo {
-  font-size: 1.5rem;
-  font-weight: 900;
-  color: #ccc;
-  align-self: flex-end;
-  margin-bottom: 8px;
-  margin-left: 5px;
-  font-family: var(--font-outfit);
-}
-
-.machineFooter {
-  margin-top: 25px;
-  font-size: 0.75rem;
+  font-size: 1.2rem;
   font-weight: 800;
-  letter-spacing: 1px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: #000;
-  opacity: 0.7;
+  color: #666;
+  align-self: flex-end;
+  margin-bottom: 12px;
+  margin-left: 8px;
 }
 
-/* --- CONTROLS PANEL --- */
+/* Breakdown Panel below screen */
+.breakdownPanel {
+  margin-top: 24px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 0.85rem;
+  color: #000;
+  font-weight: 700;
+  display: flex;
+  justify-content: space-between;
+  border: 2px dashed rgba(0, 0, 0, 0.1);
+}
+
+/* --- CONTROLS PANEL (Right Side) --- */
 .controlsPanel {
   background: #fff;
   border: 4px solid #000;
   padding: 40px;
   width: 100%;
-  height: 100%;
-  box-shadow: 16px 16px 0 rgba(0, 0, 0, 0.1);
-  border-radius: 20px;
+  box-shadow: 12px 12px 0 rgba(0, 0, 0, 0.1);
+  border-radius: 24px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   gap: 40px;
 }
 
 .controlGroup {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 16px;
 }
 
 .labelRow {
@@ -254,132 +294,104 @@
 }
 
 .labelText {
-  font-weight: 800;
-  font-size: 0.85rem;
-  letter-spacing: 0.5px;
+  font-weight: 900;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #888;
 }
 
 .valueBadge {
   background: #000;
   color: #fff;
-  padding: 4px 12px;
-  font-weight: 700;
-  font-size: 0.9rem;
-  border-radius: 6px;
-  font-family: var(--font-outfit);
+  padding: 6px 14px;
+  font-weight: 800;
+  font-size: 1rem;
+  border-radius: 8px;
+  min-width: 80px;
+  text-align: center;
 }
 
-.infoRow {
-  margin-top: 10px;
-  font-size: 0.9rem;
-  color: #666;
-  font-family: var(--font-inter);
-  line-height: 1.5;
-}
-
-/* --- GUMROAD SLIDER --- */
+/* --- CUSTOM SLIDER --- */
 .gumroadSlider {
   -webkit-appearance: none;
   width: 100%;
-  height: 18px;
-  background: #f0f0f0;
-  border: 3px solid #000;
+  height: 12px;
+  background: #eee;
+  border: 2px solid #000;
   border-radius: 100px;
   outline: none;
   cursor: pointer;
-  box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.05);
+  position: relative;
 }
+
+/* Track Fill Logic would need JS or complex CSS, keeping simple bold track */
 
 .gumroadSlider::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: 36px;
-  height: 36px;
-  background: #ff90e8;
-  border: 3px solid #000;
+  width: 32px;
+  height: 32px;
+  background: #fff;
+  border: 4px solid #000;
   border-radius: 50%;
-  box-shadow: 3px 3px 0 #000;
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.2);
   cursor: grab;
-  transition: transform 0.1s;
-  margin-top: -12px;
+  transition: transform 0.1s, background 0.2s;
+  margin-top: -12px; /* Center thumb on track */
+  transform: translateY(2px);
 }
 
 .gumroadSlider::-webkit-slider-thumb:hover {
-  transform: scale(1.1);
-  background: #00f5a0;
+  transform: scale(1.1) translateY(2px);
+  background: #25d366; /* Interactive Green */
 }
 
-/* --- MOBILE OPTIMIZATION --- */
+/* --- INFO FOOTER --- */
+.infoRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-top: 20px;
+  border-top: 2px solid #eee;
+  font-size: 0.9rem;
+  color: #555;
+  font-weight: 500;
+}
+
+.checkIcon {
+  color: #25d366;
+  font-size: 1.2rem;
+}
+
+/* --- MOBILE --- */
 @media (max-width: 900px) {
   .wrapper {
     padding: 80px 20px;
   }
-
   .contentGrid {
-    grid-template-columns: 1fr; /* Stack vertically */
-    gap: 40px;
+    grid-template-columns: 1fr;
+    gap: 50px;
   }
 
   .slotMachine {
+    transform: rotate(0deg);
     width: 100%;
-    transform: rotate(0deg); /* Remove tilt on mobile for cleaner lines */
     padding: 30px 20px;
-    box-shadow: 10px 10px 0 #000;
   }
 
-  /* Scale down the big slot text */
   .currency {
-    font-size: 2.5rem;
+    font-size: 2rem;
   }
   .reelContainer {
-    width: 35px;
+    width: 36px;
     height: 50px;
   }
   .reelNumber {
     height: 50px;
-    font-size: 2.2rem;
-  }
-  .perMo {
-    font-size: 1.2rem;
+    font-size: 2rem;
   }
 
   .controlsPanel {
     padding: 30px 20px;
-    box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.1);
-  }
-}
-
-@media (max-width: 480px) {
-  .title {
-    font-size: 2.2rem;
-  }
-  .machineHeader {
-    flex-direction: column;
-    gap: 8px;
-  }
-  .indicator {
-    display: none;
-  }
-
-  /* Even smaller slot reels for very small screens */
-  .windowFrame {
-    padding: 15px 10px;
-    gap: 4px;
-  }
-  .currency {
-    font-size: 2rem;
-    margin-right: 2px;
-  }
-  .reelContainer {
-    width: 28px;
-    height: 40px;
-    border-width: 1.5px;
-  }
-  .reelNumber {
-    height: 40px;
-    font-size: 1.5rem;
-  }
-  .perMo {
-    font-size: 1rem;
-    margin-bottom: 5px;
   }
 }

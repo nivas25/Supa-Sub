@@ -1,108 +1,108 @@
 "use client";
 import React from "react";
 import styles from "./Pricing.module.css";
-import {
-  RiCheckLine,
-  RiArrowRightLine,
-  RiShieldCheckLine,
-  RiSparklingFill,
-  RiMoneyDollarCircleFill,
-  RiCoinFill,
-  RiStockFill,
-  RiWallet3Fill,
-  RiPercentFill,
-  RiBankFill,
-  RiSafe2Fill,
-  RiGlobalLine,
-} from "react-icons/ri";
+import { RiCheckFill } from "react-icons/ri";
 
 export default function Pricing() {
   return (
-    <section className={styles.wrapper}>
-      {/* --- EXPANDED FLOATING BACKGROUND --- */}
-      <div className={styles.bgShapes}>
-        <div className={`${styles.shape} ${styles.shapeDollar}`}>
-          <RiMoneyDollarCircleFill />
-        </div>
-        <div className={`${styles.shape} ${styles.shapeCoin}`}>
-          <RiCoinFill />
-        </div>
-        <div className={`${styles.shape} ${styles.shapeChart}`}>
-          <RiStockFill />
-        </div>
-        <div className={`${styles.shape} ${styles.shapeWallet}`}>
-          <RiWallet3Fill />
-        </div>
-        {/* New Shapes for Desktop Density */}
-        <div className={`${styles.shape} ${styles.shapePercent}`}>
-          <RiPercentFill />
-        </div>
-        <div className={`${styles.shape} ${styles.shapeBank}`}>
-          <RiBankFill />
-        </div>
-        <div className={`${styles.shape} ${styles.shapeSafe}`}>
-          <RiSafe2Fill />
-        </div>
-        <div className={`${styles.shape} ${styles.shapeGlobal}`}>
-          <RiGlobalLine />
-        </div>
-      </div>
-
-      <div className={styles.ambientGlow} />
-
+    <section className={styles.wrapper} id="pricing">
       <div className={styles.container}>
-        <div className={styles.header}>
-          <div className={styles.pill}>
-            <RiSparklingFill /> <span>CREATOR FIRST MODEL</span>
-          </div>
+        {/* LEFT: THE PITCH */}
+        <div className={styles.contentSide}>
+          <div className={styles.tag}>ZERO RISK MODEL</div>
+
           <h2 className={styles.title}>
-            Your Profit <span className={styles.gradientText}>Engine.</span>
+            We only win <br />
+            when <span className={styles.highlight}>you win.</span>
           </h2>
+
+          <p className={styles.description}>
+            Launch for free. No credit card required. <br />
+            We simply deduct a flat 5% transaction fee when you get paid. You
+            keep 95% of every subscription.
+          </p>
+
+          <div className={styles.featureList}>
+            <div className={styles.feature}>
+              <div className={styles.checkIcon}>
+                <RiCheckFill />
+              </div>
+              <span>Unlimited Members & Revenue</span>
+            </div>
+            <div className={styles.feature}>
+              <div className={styles.checkIcon}>
+                <RiCheckFill />
+              </div>
+              <span>Instant Daily Payouts</span>
+            </div>
+            <div className={styles.feature}>
+              <div className={styles.checkIcon}>
+                <RiCheckFill />
+              </div>
+              <span>Fraud Protection Included</span>
+            </div>
+            <div className={styles.feature}>
+              <div className={styles.checkIcon}>
+                <RiCheckFill />
+              </div>
+              <span>No Fee on Free Tiers</span>
+            </div>
+          </div>
         </div>
 
-        <div className={styles.glassCard}>
-          <div className={styles.splitHeader}>
-            <div className={styles.splitLeft}>
-              <span className={styles.bigPercent}>95%</span>
-              <span className={styles.splitLabel}>YOUR REVENUE</span>
-            </div>
-            <div className={styles.divider} />
-            <div className={styles.splitRight}>
-              <div className={styles.feeBadge}>5% FLAT FEE</div>
-              <span className={styles.splitLabel}>PER TRANSACTION</span>
-            </div>
-          </div>
+        {/* RIGHT: THE PRINTER VISUAL */}
+        <div className={styles.visualSide}>
+          {/* The Slot */}
+          <div className={styles.printerSlot} />
 
-          <div className={styles.bodyContent}>
-            <p className={styles.mainText}>
-              When a subscriber joins, <strong>95% goes directly to you</strong>
-              . We take a flat 5% fee for each subscription to keep your
-              infrastructure running on autopilot.
-            </p>
-
-            <div className={styles.featureStack}>
-              {[
-                "Instant Payouts",
-                "Automated Member Sync",
-                "Anti-Fraud Protection",
-                "Unlimited Growth",
-              ].map((feat, i) => (
-                <div key={i} className={styles.featItem}>
-                  <div className={styles.checkCircle}>
-                    <RiCheckLine />
-                  </div>
-                  <span>{feat}</span>
+          {/* The Receipt */}
+          <div className={styles.receiptContainer}>
+            <div className={styles.receipt}>
+              {/* Header */}
+              <div className={styles.receiptHeader}>
+                <span className={styles.logoText}>SUBSTARTER</span>
+                <div className={styles.metaRow}>
+                  <span>ID: 8829-X</span>
+                  <span>{new Date().toISOString().split("T")[0]}</span>
+                  <span>TERM: 04</span>
                 </div>
-              ))}
-            </div>
+              </div>
 
-            <button className={styles.glowButton}>
-              START EARNING <RiArrowRightLine />
-            </button>
+              {/* Items */}
+              <div className={styles.lineItem}>
+                <span>VIP SUBSCRIPTION</span>
+                <span>$100.00</span>
+              </div>
 
-            <div className={styles.footerNote}>
-              <RiShieldCheckLine />{" "}
-              <span>CANCEL ANYTIME • NO HIDDEN COSTS</span>
+              <div className={`${styles.lineItem} ${styles.feeItem}`}>
+                <div className={styles.feeHighlight} />
+                <span>PLATFORM FEE (5%)</span>
+                <span>- $5.00</span>
+              </div>
+
+              <div className={`${styles.lineItem} ${styles.feeItem}`}>
+                <span>PAYMENT PROC.</span>
+                <span>INCL.</span>
+              </div>
+
+              {/* Total */}
+              <div className={styles.totalSection}>
+                <span className={styles.totalLabel}>NET PAYOUT</span>
+                <span className={styles.totalAmount}>$95.00</span>
+              </div>
+
+              {/* Signature */}
+              <div className={styles.signatureSection}>
+                <span className={styles.signature}>Your Brand Inc.</span>
+                <div className={styles.signLabel}>AUTHORIZED SIGNATURE</div>
+              </div>
+
+              {/* Stamp */}
+              <div className={styles.stamp}>SETTLED</div>
+
+              {/* Footer Code */}
+              <div className={styles.barcode} />
+              <div className={styles.footerCode}>THANK YOU FOR CREATING</div>
             </div>
           </div>
         </div>

@@ -1,8 +1,31 @@
 import "./globals.css";
+import { Metadata } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Space_Grotesk, Outfit } from "next/font/google";
 import { Providers } from "./providers";
-import { clerkAppearance } from "@/lib/clerk-theme"; // Import from your new file
+import { clerkAppearance } from "@/lib/clerk-theme";
+
+export const metadata: Metadata = {
+  metadataBase: new URL("https://supasub.com"),
+  title: {
+    default: "Supa Sub - Monetize Your Content with 95% Revenue Share",
+    template: "%s | Supa Sub",
+  },
+  description:
+    "Build your digital storefront in minutes. Deploy autonomous bots for WhatsApp, Telegram & Discord. Keep 95% of every sale.",
+  keywords: [
+    "creator platform",
+    "content monetization",
+    "subscription platform",
+    "WhatsApp bot",
+  ],
+  authors: [{ name: "Supa Sub" }],
+  creator: "Supa Sub",
+  robots: {
+    index: true,
+    follow: true,
+  },
+};
 
 const outfit = Outfit({
   subsets: ["latin"],

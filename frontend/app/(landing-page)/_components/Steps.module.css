@@ -1,279 +1,490 @@
 /* Steps.module.css */
 
 .wrapper {
-  background: #fff;
+  background-color: #fff;
   padding: 100px 0;
-  position: relative;
-  overflow: visible; /* Essential for sticky to work */
-}
-
-.dotPattern {
-  position: absolute;
-  inset: 0;
-  background-image: radial-gradient(#ddd 1.5px, transparent 1.5px);
-  background-size: 40px 40px;
-  z-index: 0;
-  opacity: 0.5;
-  pointer-events: none;
+  background-image: linear-gradient(#f1f1f1 1px, transparent 1px),
+    linear-gradient(90deg, #f1f1f1 1px, transparent 1px);
+  background-size: 32px 32px;
+  border-top: 3px solid #000;
 }
 
 .container {
-  max-width: 1300px;
+  max-width: 1280px;
   margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* --- SPLIT LAYOUT --- */
+.splitGrid {
   display: grid;
-  grid-template-columns: 1fr 1.3fr;
-  padding: 0 40px;
-  gap: 80px;
-  position: relative;
-  z-index: 1;
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: 60px;
+  align-items: flex-start;
 }
 
-/* --- LEFT SIDE: FIXED TRACKER --- */
-.stickyContent {
+/* --- LEFT SIDE --- */
+.leftContent {
   position: sticky;
-  top: 10vh;
-}
-
-.statusBadge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: #000;
-  color: #fff;
-  padding: 8px 16px;
-  border-radius: 4px;
-  font-size: 0.7rem;
-  font-weight: 800;
-  margin-bottom: 25px;
-  font-family: var(--font-space); /* */
-}
-
-.giantTitle {
-  font-size: clamp(3rem, 8vw, 6rem);
-  font-weight: 900;
-  line-height: 0.85;
-  letter-spacing: -4px;
-  color: #000;
-  font-family: var(--font-outfit); /* */
-}
-
-.highlight {
-  color: #0066ff;
-  text-decoration: underline;
-  text-decoration-color: #ffeb3b;
-  text-underline-offset: 8px;
-}
-
-/* Scroll-Synced Tracker */
-.progressTracker {
-  margin-top: 50px;
+  top: 100px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  border-left: 2px solid #eee;
-  padding-left: 25px;
+  gap: 24px;
 }
 
-.trackerNode {
+.badge {
+  background: #000;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 100px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-weight: 800;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  width: fit-content;
+  box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.2);
+  transform: rotate(-2deg);
+}
+
+.title {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 900;
+  line-height: 1.05;
+  color: #000;
+  letter-spacing: -1.5px;
+}
+
+.serifHighlight {
+  font-family: "Georgia", serif;
+  font-style: italic;
+  font-weight: 400;
+  background: linear-gradient(to top, #ffeb3b 40%, transparent 40%);
+  padding: 0 4px;
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #444;
+  font-weight: 500;
+  max-width: 90%;
+}
+
+.roadmapList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 20px;
+  border-left: 2px solid #eee;
+  padding-left: 24px;
+}
+
+.roadmapItem {
   display: flex;
   align-items: center;
-  gap: 15px;
-  cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  filter: grayscale(1);
-  opacity: 0.2; /* Dims when inactive */
+  gap: 12px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #aaa;
 }
 
-.nodeActive {
-  filter: grayscale(0);
-  opacity: 1;
-  transform: translateX(10px); /* Visual feedback on active */
+.roadmapItem.active {
+  color: #000;
+  transform: translateX(10px);
+  transition: transform 0.3s;
 }
 
-.nodeCircle {
-  width: 34px;
-  height: 34px;
-  border: 3px solid #eee;
+/* --- RIGHT SIDE: CHAT WINDOW --- */
+.rightContent {
+  width: 100%;
+}
+
+.chatWindow {
+  background: #f4f6f8;
+  border: 4px solid #000;
+  border-radius: 24px;
+  box-shadow: 16px 16px 0px #000;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 850px;
+}
+
+.windowHeader {
+  background: #fff;
+  border-bottom: 3px solid #000;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.agentInfo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.agentAvatar {
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  font-size: 0.75rem;
-  font-weight: 900;
+  background: #000;
+  color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s ease;
+  font-size: 1.2rem;
+  position: relative;
 }
 
-.nodeText {
+.onlineStatus {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 12px;
+  height: 12px;
+  background: #25d366;
+  border: 2px solid #fff;
+  border-radius: 50%;
+}
+
+.agentDetails {
   display: flex;
   flex-direction: column;
 }
-.nodePhase {
-  font-size: 0.6rem;
-  font-weight: 900;
-  letter-spacing: 1px;
-  color: #aaa;
-}
-.nodeTitle {
-  font-size: 0.85rem;
+.agentName {
   font-weight: 800;
-  color: #ddd;
-}
-
-.nodeActive .nodeTitle {
+  font-size: 0.9rem;
   color: #000;
 }
+.ticketId {
+  font-size: 0.7rem;
+  color: #888;
+  font-family: monospace;
+}
+.windowControls {
+  display: flex;
+  gap: 6px;
+}
+.controlDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid #ccc;
+}
 
-/* --- RIGHT SIDE: STEP CARDS --- */
-.rightSide {
+/* --- MESSAGE STREAM & SCROLLBAR --- */
+.messageStream {
+  padding: 40px 30px; /* Increased padding */
   display: flex;
   flex-direction: column;
+  gap: 0; /* Gap handled by individual margins for better control */
+  overflow-y: auto;
+  flex: 1;
+  /* Custom Scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: #000 transparent;
 }
 
-.stepBlock {
-  min-height: 95vh; /* Enough space to scroll */
+.messageStream::-webkit-scrollbar {
+  width: 6px;
+}
+.messageStream::-webkit-scrollbar-track {
+  background: transparent;
+}
+.messageStream::-webkit-scrollbar-thumb {
+  background-color: #000;
+  border-radius: 10px;
+}
+
+/* --- USER BUBBLE --- */
+.userRow {
   display: flex;
-  align-items: flex-start;
-  position: sticky;
-  top: 10vh;
-  padding-bottom: 100px;
+  justify-content: flex-end;
+  margin-bottom: 24px; /* Gap after user speaks */
 }
 
-/* Sticky Stack Logic */
-.stepBlock:nth-child(1) {
-  top: 10vh;
-}
-.stepBlock:nth-child(2) {
-  top: 13vh;
-}
-.stepBlock:nth-child(3) {
-  top: 16vh;
-}
-.stepBlock:nth-child(4) {
-  top: 19vh;
-}
-.stepBlock:nth-child(5) {
-  top: 22vh;
-}
-.stepBlock:nth-child(6) {
-  top: 25vh;
-}
-
-.card {
-  background: #fff;
-  border: 3px solid #000;
-  width: 100%;
-  border-radius: 40px; /* iOS Fusion Squircle */
-  overflow: hidden;
-  box-shadow: 10px 10px 0 #000;
-  transition: transform 0.3s ease;
-}
-
-.card:hover {
-  transform: translate(-4px, -4px);
-  box-shadow: 16px 16px 0 var(--accent);
-}
-
-.cardTop {
-  display: flex;
-  border-bottom: 3px solid #000;
-}
-.numberArea {
+.userBubble {
   background: #000;
   color: #fff;
-  padding: 20px 30px;
-  font-size: 2.2rem;
-  font-weight: 900;
+  padding: 14px 20px;
+  border-radius: 18px 18px 4px 18px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  max-width: 75%;
+  box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.1);
+  line-height: 1.5;
+  position: relative;
 }
-.phaseArea {
-  flex: 1;
-  padding: 0 30px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+
+.userLabel {
+  position: absolute;
+  top: -20px;
+  right: 4px;
+  font-size: 0.65rem;
   font-weight: 800;
+  color: #888;
+  text-transform: uppercase;
 }
-.iconWrapper {
-  font-size: 2rem;
+
+/* --- SUPPORT ROW --- */
+.supportRow {
   display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 16px;
+  width: 100%;
+  margin-bottom: 60px; /* BIG GAP after support replies */
+}
+
+.supportIcon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 1rem;
+  margin-top: 4px;
+}
+
+.supportContent {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 85%;
+}
+
+.supportBubble {
+  background: #fff;
+  border: 2px solid #e0e0e0;
+  padding: 14px 20px;
+  border-radius: 4px 18px 18px 18px;
+  font-size: 0.95rem;
+  color: #333;
+  line-height: 1.5;
+  box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.05);
+}
+
+/* --- ACTION CARDS --- */
+.actionCard {
+  background: #fff;
+  border: 3px solid #000;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 8px 8px 0px rgba(0, 0, 0, 0.1);
+  width: 100%;
+}
+
+.cardHeader {
+  background: #f8f8f8;
+  padding: 10px 16px;
+  border-bottom: 2px solid #000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cardTitle {
+  font-weight: 800;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .cardBody {
-  padding: 50px 40px;
-}
-.title {
-  font-size: 2.4rem;
-  font-weight: 900;
-  margin-bottom: 20px;
-  letter-spacing: -2px;
-}
-.description {
-  font-size: 1.15rem;
-  font-weight: 600;
-  line-height: 1.6;
-  color: #333;
+  padding: 20px;
 }
 
-.cardBottom {
-  padding: 25px 40px;
-  background: #fafafa;
-  border-top: 3px solid #000;
-}
-.outcomeBadge {
+/* Visual Components */
+.platformGrid {
   display: flex;
-  align-items: center;
-  gap: 15px;
+  gap: 8px;
+  flex-wrap: wrap;
 }
-.outcomeLabel {
-  font-size: 0.6rem;
-  font-weight: 900;
+.platBtn {
+  flex: 1;
+  border: 2px solid #eee;
+  border-radius: 8px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  min-width: 80px;
+}
+.platBtn.active {
+  border-color: #25d366;
+  background: #f0fdf4;
+  color: #15803d;
+}
+.platLabel {
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.inputVisual {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #666;
+}
+.inputBox {
+  display: flex;
+  border: 2px solid #000;
+  border-radius: 8px;
+  padding: 10px;
+  background: #fff;
+  font-family: monospace;
+  font-size: 0.9rem;
+  overflow: hidden;
+}
+.connectBtn {
+  margin-top: 10px;
   background: #000;
   color: #fff;
-  padding: 4px 10px;
-  border-radius: 4px;
-}
-.outcomeValue {
-  font-size: 0.95rem;
-  font-weight: 800;
-  color: #000;
-  flex: 1;
-}
-.arrowIcon {
-  font-size: 1.4rem;
-  color: #ccc;
+  text-align: center;
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 700;
 }
 
-/* --- MOBILE --- */
+.priceVisual {
+  display: flex;
+  gap: 12px;
+}
+.priceBox {
+  flex: 1;
+  border: 2px solid #000;
+  border-radius: 8px;
+  padding: 12px;
+  text-align: center;
+}
+.priceVal {
+  display: block;
+  font-weight: 900;
+  font-size: 1.1rem;
+}
+.priceSub {
+  font-size: 0.7rem;
+  color: #666;
+}
+
+/* REVISED PAYOUT RECEIPT */
+.payoutReceipt {
+  background: #fff;
+  border: 2px solid #000;
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.transactionHeader {
+  border-bottom: 1px solid #eee;
+  padding-bottom: 8px;
+  margin-bottom: 4px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #888;
+}
+.receiptRow {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #444;
+}
+.receiptRow.fee {
+  color: #ff5f56; /* Red for deduction */
+}
+.receiptRow.total {
+  border-top: 2px dashed #ddd;
+  padding-top: 12px;
+  margin-top: 4px;
+  color: #000;
+  font-size: 1.1rem;
+  font-weight: 900;
+}
+.highlightGreen {
+  color: #25d366;
+}
+
+/* Footer */
+.chatFooter {
+  background: #fff;
+  border-top: 3px solid #000;
+  padding: 20px 30px;
+  display: flex;
+  gap: 16px;
+}
+.fakeInput {
+  flex: 1;
+  background: #f4f6f8;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  padding: 12px 16px;
+  color: #aaa;
+  font-size: 0.9rem;
+}
+.sendBtn {
+  background: #25d366;
+  border: 2px solid #000;
+  padding: 0 24px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 4px 4px 0px #000;
+}
+
+/* Mobile */
 @media (max-width: 1024px) {
-  .container {
+  .splitGrid {
     grid-template-columns: 1fr;
-    padding: 0 20px;
+    gap: 40px;
   }
-  .stickyContent {
+  .leftContent {
     position: relative;
     top: 0;
     text-align: center;
+    align-items: center;
   }
-  .progressTracker {
-    display: none;
-  } /* Focus on cards for mobile */
-
-  .rightSide {
-    scroll-snap-type: y mandatory;
-    height: 70vh;
-    overflow-y: scroll;
-    border: 3px solid #000;
-    border-radius: 35px;
-    padding: 0 10px;
-    background: #fdfdfd;
+  .roadmapList {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    border-left: none;
+    padding-left: 0;
+    gap: 12px;
   }
-  .stepBlock {
-    min-height: 60vh;
-    position: relative !important;
-    top: 0 !important;
-    scroll-snap-align: center;
+  .roadmapItem {
+    font-size: 0.8rem;
+    background: #f5f5f5;
+    padding: 6px 12px;
+    border-radius: 100px;
   }
-  .card {
-    border-radius: 30px;
-    box-shadow: 8px 8px 0 #000;
+  .chatWindow {
+    height: 650px;
+    border-width: 3px;
+  }
+  .messageStream {
+    padding: 20px;
+  }
+  .userBubble {
+    max-width: 90%;
   }
 }
