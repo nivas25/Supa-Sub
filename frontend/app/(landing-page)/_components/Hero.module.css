@@ -296,8 +296,8 @@
 @media (max-width: 1000px) {
   .heroWrapper {
     flex-direction: column;
-    padding-top: 120px;
-    margin-top: 40px;
+    padding-top: 90px;
+    margin-top: 16px;
   }
 
   .floatingElements {
@@ -335,7 +335,7 @@
   }
 
   .headline {
-    font-size: 2.3rem;
+    font-size: 2.6rem;
   }
   .rotatingBadgeWrapper {
     height: 50px;
@@ -351,18 +351,21 @@
 
   .pillInputContainer {
     flex-direction: column;
-    padding: 12px;
-    gap: 10px;
+    padding: 10px;
+    gap: 8px;
+    max-width: 90%;
+    margin: 0 auto;
+    box-shadow: 6px 6px 0px #000;
   }
   .inputInternal {
     padding-left: 0;
     justify-content: center;
     border-bottom: 2px solid #eee;
-    padding-bottom: 12px;
+    padding-bottom: 10px;
   }
   .pillButton {
     width: 100%;
-    padding: 18px;
+    padding: 14px;
   }
 
   .inputHint {

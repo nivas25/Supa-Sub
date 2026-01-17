@@ -79,10 +79,12 @@ export default function Identity() {
               >
                 {/* CSS controls width/height responsiveness, we keep intrinsic ratio here */}
                 <Image
-                  src="/images/Landing_Page/discord.png"
+                  src="/images/Landing_page/discord.png"
                   width={140}
                   height={140}
                   alt="Discord"
+                  priority
+                  quality={80}
                   style={{ width: "100%", height: "auto" }}
                 />
               </a>
@@ -93,10 +95,12 @@ export default function Identity() {
                 className={`${styles.brandLink} ${styles.linkTg}`}
               >
                 <Image
-                  src="/images/Landing_Page/telegram.png"
+                  src="/images/Landing_page/telegram.png"
                   width={120}
                   height={120}
                   alt="Telegram"
+                  priority
+                  quality={80}
                   style={{ width: "100%", height: "auto" }}
                 />
               </a>
@@ -107,10 +111,12 @@ export default function Identity() {
                 className={`${styles.brandLink} ${styles.linkWa}`}
               >
                 <Image
-                  src="/images/Landing_Page/whatsapp.png"
+                  src="/images/Landing_page/whatsapp.png"
                   width={130}
                   height={130}
                   alt="WhatsApp"
+                  priority
+                  quality={80}
                   style={{ width: "100%", height: "auto" }}
                 />
               </a>
