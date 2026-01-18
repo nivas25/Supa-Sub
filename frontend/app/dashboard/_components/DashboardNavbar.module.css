@@ -1,96 +1,180 @@
-/* --- BASE WRAPPER --- */
+/* DashboardNavbar.module.css */
+
+/* --- LAYOUT WRAPPER --- */
 .navWrapper {
-  position: fixed;
-  top: 15px;
+  position: sticky;
+  top: 0;
   left: 0;
   width: 100%;
-  padding: 0 15px;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  z-index: 9999;
+  justify-content: center;
+  z-index: 1000;
+  padding: 12px 32px;
+  background: #fff;
+  border-bottom: 1px solid #e5e5e5;
+  transition: all 0.3s ease;
 }
 
-/* --- THE MAIN BAR --- */
+/* --- MAIN NAVBAR CONTAINER --- */
 .navMain {
-  width: 100%;
-  max-width: 1300px;
-  height: 64px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 20px;
-  border-radius: 100px;
-  border: 3px solid var(--nav-border);
-  background: var(--nav-bg);
-  backdrop-filter: saturate(160%) brightness(1.1);
-  box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.4),
-    0 8px 0px var(--nav-shadow);
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  width: 100%;
+  max-width: 1400px;
+  gap: 40px;
 }
 
-/* --- LOGO --- */
+/* --- BRAND LOGO --- */
 .logo {
-  font-family: var(--font-outfit), sans-serif;
-  font-size: 1.4rem;
-  font-weight: 900;
-  color: var(--foreground);
   text-decoration: none;
-  letter-spacing: -2.5px;
-  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  cursor: pointer;
+  user-select: none;
+  flex-shrink: 0;
+  font-family: var(--font-outfit, sans-serif);
+  font-size: 1.4rem;
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  color: #000;
+  transition: all 0.3s ease;
 }
 
 .logo span {
-  color: var(--accent);
+  color: #25d366;
+  font-weight: 900;
+  margin-left: 2px;
 }
 
-/* --- DASHBOARD NAV LINKS --- */
+.logo:hover {
+  transform: scale(1.05);
+}
+
+/* --- NAVIGATION LINKS --- */
 .navLinks {
   display: flex;
-  gap: 10px;
   align-items: center;
+  gap: 8px;
+  flex: 1;
+  justify-content: flex-start;
 }
 
 .navLink {
   text-decoration: none;
-  color: var(--foreground);
-  font-family: var(--font-space), sans-serif;
-  font-weight: 800;
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  padding: 10px 20px;
-  border-radius: 12px;
-  border: 2px solid transparent;
-  transition: 0.2s;
-  cursor: pointer;
+  color: #555;
+  font-family: var(--font-outfit, sans-serif);
+  font-weight: 500;
+  font-size: 0.95rem;
+  padding: 8px 16px;
+  border-radius: 8px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+  position: relative;
 }
 
 .navLink:hover {
-  background: var(--accent);
-  color: #fff;
-  border-color: var(--nav-border);
-  transform: translateY(-3px);
-  box-shadow: 4px 4px 0px var(--nav-border);
+  background: #f5f5f5;
+  color: #000;
+  transform: translateY(-2px);
 }
 
-/* --- ACTIONS --- */
+.navLink::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: #25d366;
+  border-radius: 1px;
+  transition: width 0.3s ease;
+}
+
+.navLink:hover::after {
+  width: 100%;
+}
+
+/* --- ACTION BUTTONS --- */
 .actions {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 16px;
+  margin-left: auto;
 }
 
+.userEmail {
+  font-size: 0.9rem;
+  color: #666;
+  font-weight: 500;
+}
+
+.logoutBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  background: #fff;
+  border: 2px solid #e5e5e5;
+  border-radius: 8px;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  font-weight: 600;
+}
+
+.logoutBtn:hover {
+  border-color: #ff6b6b;
+  color: #ff6b6b;
+  background: #fff5f5;
+  transform: translateY(-2px);
+}
+
+.logoutBtn:active {
+  transform: translateY(0);
+}
+
+/* --- RESPONSIVE --- */
 @media (max-width: 768px) {
-  .navLinks {
-    display: none;
+  .navWrapper {
+    padding: 12px 16px;
   }
 
   .navMain {
-    justify-content: space-between;
-    padding: 0 15px;
+    gap: 20px;
   }
 
   .logo {
     font-size: 1.2rem;
+  }
+
+  .navLinks {
+    flex: none;
+    gap: 4px;
+  }
+
+  .navLink {
+    padding: 6px 12px;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .navWrapper {
+    padding: 10px 12px;
+  }
+
+  .navMain {
+    gap: 16px;
+  }
+
+  .navLinks {
+    display: none;
+  }
+
+  .logo {
+    font-size: 1.1rem;
   }
 }

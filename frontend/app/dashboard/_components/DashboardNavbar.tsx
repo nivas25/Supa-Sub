@@ -1,9 +1,17 @@
 "use client";
 import Link from "next/link";
-import { UserButton } from "@clerk/nextjs";
+import { useAuth } from "@/lib/auth-context";
+import { signOut } from "@/app/auth/actions";
+import { RiLogoutBoxLine } from "react-icons/ri";
 import styles from "./DashboardNavbar.module.css";
 
 export default function DashboardNavbar() {
+  const { user, isLoading } = useAuth();
+
+  const handleLogout = async () => {
+    await signOut();
+  };
+
   return (
     <nav className={styles.navWrapper}>
       <div className={styles.navMain}>
@@ -28,7 +36,18 @@ export default function DashboardNavbar() {
         </div>
 
         <div className={styles.actions}>
-          <UserButton afterSignOutUrl="/" />
+          {!isLoading && user && (
+            <>
+              <span className={styles.userEmail}>{user.email}</span>
+              <button
+                onClick={handleLogout}
+                className={styles.logoutBtn}
+                title="Sign out"
+              >
+                <RiLogoutBoxLine size={18} />
+              </button>
+            </>
+          )}
         </div>
       </div>
     </nav>

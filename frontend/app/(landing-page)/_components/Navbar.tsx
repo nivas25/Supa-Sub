@@ -1,9 +1,9 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import styles from "./Navbar.module.css";
 import { RiFlashlightFill } from "react-icons/ri";
+import AuthModal from "./AuthModal"; // Ensure this path matches your directory
 
 const NAV_ITEMS = [
   { id: "features", label: "Features" },
@@ -16,10 +16,11 @@ const NAV_ITEMS = [
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isAuthOpen, setIsAuthOpen] = useState(false); // Controls the floating login modal
   const [activeSection, setActiveSection] = useState("");
   const [isCollapsed, setIsCollapsed] = useState(false);
 
-  // Scroll Spy
+  // Scroll Spy to highlight active section
   useEffect(() => {
     const handleScroll = () => {
       const scrollPosition = window.scrollY + 200;
@@ -41,7 +42,7 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Collapse Logic
+  // Collapse Logic for the "Sticky" effect
   useEffect(() => {
     const handleCollapse = () => {
       setIsCollapsed(window.scrollY > 100);
@@ -68,113 +69,110 @@ export default function Navbar() {
   };
 
   return (
-    <div
-      className={`${styles.navWrapper} ${
-        isCollapsed ? styles.collapsedWrapper : ""
-      }`}
-    >
-      <nav
-        className={`${styles.navContainer} ${
-          isCollapsed ? styles.collapsed : ""
+    <>
+      <div
+        className={`${styles.navWrapper} ${
+          isCollapsed ? styles.collapsedWrapper : ""
         }`}
       >
-        {/* BRAND MARK */}
-        <Link
-          href="/"
-          className={styles.brandLogo}
-          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-        >
-          <span className={styles.wordSub}>Sub</span>
-          <span className={styles.wordStarter}>Starter</span>
-          <div className={styles.boltCircle}>
-            <RiFlashlightFill />
-          </div>
-        </Link>
-
-        {/* DESKTOP NAV */}
-        <div className={styles.desktopLinks}>
-          {NAV_ITEMS.map((item) => (
-            <a
-              key={item.id}
-              href={`#${item.id}`}
-              onClick={(e) => {
-                e.preventDefault();
-                scrollToSection(item.id);
-              }}
-              className={`${styles.navLink} ${
-                activeSection === item.id ? styles.activeLink : ""
-              }`}
-            >
-              {item.label}
-            </a>
-          ))}
-        </div>
-
-        {/* DESKTOP AUTH */}
-        <div className={styles.desktopAuth}>
-          <SignedOut>
-            <SignInButton mode="modal" forceRedirectUrl="/dashboard">
-              <button className={styles.loginBtn}>Login</button>
-            </SignInButton>
-          </SignedOut>
-          <SignedIn>
-            <Link href="/dashboard" className={styles.dashboardLink}>
-              Dashboard
-            </Link>
-            <UserButton afterSignOutUrl="/" />
-          </SignedIn>
-        </div>
-
-        {/* HAMBURGER TOGGLE */}
-        <button
-          className={`${styles.mobileToggle} ${isMenuOpen ? styles.open : ""}`}
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-          aria-label="Menu"
-        >
-          <span className={styles.bar} />
-          <span className={styles.bar} />
-          <span className={styles.bar} />
-        </button>
-
-        {/* MOBILE MENU */}
-        <div
-          className={`${styles.mobileMenu} ${
-            isMenuOpen ? styles.menuActive : ""
+        <nav
+          className={`${styles.navContainer} ${
+            isCollapsed ? styles.collapsed : ""
           }`}
         >
-          {NAV_ITEMS.map((item) => (
-            <a
-              key={item.id}
-              href={`#${item.id}`}
-              onClick={(e) => {
-                e.preventDefault();
-                scrollToSection(item.id);
-              }}
-              className={`${styles.mobileLink} ${
-                activeSection === item.id ? styles.activeLink : ""
-              }`}
-            >
-              {item.label}
-            </a>
-          ))}
-          <hr className={styles.divider} />
-
-          <SignedOut>
-            <SignInButton mode="modal" forceRedirectUrl="/dashboard">
-              <button className={styles.mobileAuthBtn}>Login / Sign Up</button>
-            </SignInButton>
-          </SignedOut>
-
-          <SignedIn>
-            <Link href="/dashboard" className={styles.mobileLink}>
-              Go to Dashboard
-            </Link>
-            <div style={{ padding: "8px 16px" }}>
-              <UserButton afterSignOutUrl="/" showName />
+          {/* BRAND MARK */}
+          <Link
+            href="/"
+            className={styles.brandLogo}
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          >
+            <span className={styles.wordSub}>Sub</span>
+            <span className={styles.wordStarter}>Starter</span>
+            <div className={styles.boltCircle}>
+              <RiFlashlightFill />
             </div>
-          </SignedIn>
-        </div>
-      </nav>
-    </div>
+          </Link>
+
+          {/* DESKTOP NAV */}
+          <div className={styles.desktopLinks}>
+            {NAV_ITEMS.map((item) => (
+              <a
+                key={item.id}
+                href={`#${item.id}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  scrollToSection(item.id);
+                }}
+                className={`${styles.navLink} ${
+                  activeSection === item.id ? styles.activeLink : ""
+                }`}
+              >
+                {item.label}
+              </a>
+            ))}
+          </div>
+
+          {/* DESKTOP AUTH - Triggers Modal */}
+          <div className={styles.desktopAuth}>
+            <button
+              onClick={() => setIsAuthOpen(true)}
+              className={styles.loginBtn}
+            >
+              Login
+            </button>
+          </div>
+
+          {/* HAMBURGER TOGGLE */}
+          <button
+            className={`${styles.mobileToggle} ${
+              isMenuOpen ? styles.open : ""
+            }`}
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-label="Menu"
+          >
+            <span className={styles.bar} />
+            <span className={styles.bar} />
+            <span className={styles.bar} />
+          </button>
+
+          {/* MOBILE MENU */}
+          <div
+            className={`${styles.mobileMenu} ${
+              isMenuOpen ? styles.menuActive : ""
+            }`}
+          >
+            {NAV_ITEMS.map((item) => (
+              <a
+                key={item.id}
+                href={`#${item.id}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  scrollToSection(item.id);
+                }}
+                className={`${styles.mobileLink} ${
+                  activeSection === item.id ? styles.activeLink : ""
+                }`}
+              >
+                {item.label}
+              </a>
+            ))}
+            <hr className={styles.divider} />
+
+            <button
+              onClick={() => {
+                setIsMenuOpen(false);
+                setIsAuthOpen(true);
+              }}
+              className={styles.mobileLoginBtn}
+            >
+              Login
+            </button>
+          </div>
+        </nav>
+      </div>
+
+      {/* FLOATING AUTH MODAL */}
+      <AuthModal isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} />
+    </>
   );
 }

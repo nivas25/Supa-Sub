@@ -1,0 +1,252 @@
+/* --- OVERLAY --- */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(12px);
+  display: flex;
+  align-items: flex-end; /* Mobile: slides from bottom */
+  justify-content: center;
+  z-index: 10000;
+  padding: 16px;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@media (min-width: 600px) {
+  .overlay {
+    align-items: center;
+  } /* Desktop: Centered */
+}
+
+/* --- MODAL --- */
+.modal {
+  background: #fff;
+  width: 100%;
+  max-width: 440px;
+  padding: 40px 32px;
+  border-radius: 32px 32px 0 0; /* Bottom-sheet feel on mobile */
+  position: relative;
+  box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.25);
+  animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (min-width: 600px) {
+  .modal {
+    border-radius: 32px;
+    border: 1px solid #eef0f2;
+  }
+}
+
+/* --- BRANDING (MATCHED TO NAVBAR) --- */
+.brandHeader {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.boltCircle {
+  width: 48px;
+  height: 48px;
+  background: #25d366;
+  color: #000;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  border: 2.5px solid #000;
+  margin: 0 auto 12px;
+  box-shadow: 4px 4px 0 #000;
+}
+
+.brandName {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0;
+}
+
+.wordSub {
+  font-family: var(--font-outfit, sans-serif);
+  font-size: 1.8rem;
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  color: #000;
+}
+
+.wordStarter {
+  font-family: var(--font-outfit, sans-serif);
+  font-size: 1.8rem;
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  color: #444;
+}
+
+.subtitle {
+  font-family: var(--font-outfit);
+  color: #6b7280;
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin-top: 4px;
+}
+
+/* --- UI ELEMENTS --- */
+.googleBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  padding: 14px;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 14px;
+  background: #fff;
+  font-weight: 700;
+  font-family: var(--font-outfit);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.googleBtn:hover {
+  background: #f9fafb;
+  border-color: #000;
+}
+
+.divider {
+  margin: 24px 0;
+  text-align: center;
+  position: relative;
+}
+
+.divider::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: #eee;
+}
+
+.divider span {
+  background: #fff;
+  padding: 0 12px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: #999;
+  position: relative;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.input {
+  width: 100%;
+  padding: 16px;
+  border: 2px solid #f3f4f6;
+  border-radius: 14px;
+  background: #f9fafb;
+  font-family: var(--font-outfit);
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.2s;
+  outline: none;
+  margin-bottom: 12px;
+}
+
+.input:focus {
+  border-color: #25d366;
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(37, 211, 102, 0.1);
+}
+
+/* --- OTP GRID --- */
+.otpGrid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+  margin: 24px 0;
+}
+
+.otpInput {
+  width: 100%;
+  aspect-ratio: 4 / 5.5;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 800;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  background: #f9fafb;
+  transition: all 0.2s;
+}
+
+.otpInput:focus {
+  border-color: #25d366;
+  background: #fff;
+  outline: none;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2);
+}
+
+/* --- BUTTONS --- */
+.mainBtn {
+  width: 100%;
+  padding: 16px;
+  background: #000;
+  color: #fff;
+  border-radius: 14px;
+  border: none;
+  font-weight: 800;
+  font-family: var(--font-outfit);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.mainBtn:hover:not(:disabled) {
+  background: #25d366;
+  color: #000;
+  transform: translateY(-2px);
+}
+
+.mainBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.closeBtn {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  background: #f3f4f6;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* --- ANIMATIONS --- */
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@media (min-width: 600px) {
+  @keyframes slideUp {
+    from {
+      transform: scale(0.95);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+}

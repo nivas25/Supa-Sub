@@ -1,9 +1,7 @@
 import "./globals.css";
 import { Metadata } from "next";
-import { ClerkProvider } from "@clerk/nextjs";
 import { Space_Grotesk, Outfit } from "next/font/google";
 import { Providers } from "./providers";
-import { clerkAppearance } from "@/lib/clerk-theme";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://supasub.com"),
@@ -44,12 +42,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProvider appearance={clerkAppearance}>
-      <html lang="en" className={`${spaceGrotesk.variable} ${outfit.variable}`}>
-        <body className="antialiased">
-          <Providers>{children}</Providers>
-        </body>
-      </html>
-    </ClerkProvider>
+    <html lang="en" className={`${spaceGrotesk.variable} ${outfit.variable}`}>
+      <body className="antialiased">
+        <Providers>{children}</Providers>
+      </body>
+    </html>
   );
 }
