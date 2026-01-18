@@ -4,20 +4,22 @@
 .heroWrapper {
   position: relative;
   width: 100%;
-  min-height: 90vh;
+  min-height: 95vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   background-color: #fff;
-  background-image: radial-gradient(#e5e5e5 1px, transparent 1px);
-  background-size: 20px 20px;
+  /* Premium square grid background */
+  background-image: linear-gradient(to right, #f0f0f0 1px, transparent 1px),
+    linear-gradient(to bottom, #f0f0f0 1px, transparent 1px);
+  background-size: 60px 60px;
   overflow: hidden;
-  padding: 120px 24px 80px;
+  padding: 220px 24px 80px; /* Large desktop top gap */
   z-index: 0;
 }
 
-/* --- COIN WRAPPER (Movement) --- */
+/* --- GUMROAD 3D COINS --- */
 .coinWrapper {
   position: absolute;
   z-index: 1;
@@ -26,7 +28,6 @@
   will-change: transform;
 }
 
-/* --- THE COIN VISUAL (Base 3D Style) --- */
 .coinVisual {
   width: 100%;
   height: 100%;
@@ -35,61 +36,45 @@
   align-items: center;
   justify-content: center;
   pointer-events: auto;
-  border: 3px solid #000;
+  border: 4px solid #000;
   transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
 }
 
 .coinVisual svg {
   color: #000;
   width: 50%;
   height: 50%;
-  filter: drop-shadow(1px 1px 0 rgba(255, 255, 255, 0.3));
 }
 
-.coinVisual:hover {
-  transform: scale(1.1) translateY(-10px) rotate(0deg) !important;
-  z-index: 10;
-  cursor: pointer;
-}
-
-/* --- COIN COLOR VARIANTS (Background + 3D Shadow Layers) --- */
-
-/* 1. GREEN (Brand) */
-.coinGreen {
-  background: #25d366;
-  box-shadow: 1px 1px 0 #15803d, 2px 2px 0 #15803d, 3px 3px 0 #15803d,
-    4px 4px 0 #15803d, 5px 5px 0 #15803d, 6px 6px 0 #15803d, 8px 8px 0 #000;
-}
-
-/* 2. PINK (Gumroad Style) */
+/* 3D Stacked Shadow Effect */
 .coinPink {
   background: #ff90e8;
-  box-shadow: 1px 1px 0 #c75c9e, 2px 2px 0 #c75c9e, 3px 3px 0 #c75c9e,
-    4px 4px 0 #c75c9e, 5px 5px 0 #c75c9e, 6px 6px 0 #c75c9e, 8px 8px 0 #000;
+  box-shadow: 1px 1px 0 #000, 2px 2px 0 #000, 3px 3px 0 #000, 4px 4px 0 #000,
+    5px 5px 0 #000, 6px 6px 0 #000, 7px 7px 0 #000, 8px 8px 0 #000;
 }
-
-/* 3. YELLOW */
+.coinGreen {
+  background: #25d366;
+  box-shadow: 1px 1px 0 #000, 2px 2px 0 #000, 3px 3px 0 #000, 4px 4px 0 #000,
+    5px 5px 0 #000, 6px 6px 0 #000, 7px 7px 0 #000, 8px 8px 0 #000;
+}
 .coinYellow {
   background: #ffc900;
-  box-shadow: 1px 1px 0 #cc9a00, 2px 2px 0 #cc9a00, 3px 3px 0 #cc9a00,
-    4px 4px 0 #cc9a00, 5px 5px 0 #cc9a00, 6px 6px 0 #cc9a00, 8px 8px 0 #000;
+  box-shadow: 1px 1px 0 #000, 2px 2px 0 #000, 3px 3px 0 #000, 4px 4px 0 #000,
+    5px 5px 0 #000, 6px 6px 0 #000, 7px 7px 0 #000, 8px 8px 0 #000;
 }
-
-/* 4. CYAN/BLUE */
 .coinBlue {
   background: #00d1ff;
-  box-shadow: 1px 1px 0 #0099bd, 2px 2px 0 #0099bd, 3px 3px 0 #0099bd,
-    4px 4px 0 #0099bd, 5px 5px 0 #0099bd, 6px 6px 0 #0099bd, 8px 8px 0 #000;
+  box-shadow: 1px 1px 0 #000, 2px 2px 0 #000, 3px 3px 0 #000, 4px 4px 0 #000,
+    5px 5px 0 #000, 6px 6px 0 #000, 7px 7px 0 #000, 8px 8px 0 #000;
 }
-
-/* 5. ORANGE */
 .coinOrange {
   background: #ff6b35;
-  box-shadow: 1px 1px 0 #cc4e22, 2px 2px 0 #cc4e22, 3px 3px 0 #cc4e22,
-    4px 4px 0 #cc4e22, 5px 5px 0 #cc4e22, 6px 6px 0 #cc4e22, 8px 8px 0 #000;
+  box-shadow: 1px 1px 0 #000, 2px 2px 0 #000, 3px 3px 0 #000, 4px 4px 0 #000,
+    5px 5px 0 #000, 6px 6px 0 #000, 7px 7px 0 #000, 8px 8px 0 #000;
 }
 
-/* --- POSITIONS & ANGLES --- */
+/* Desktop Coin Positions & Tilts */
 .pos1 {
   width: 110px;
   height: 110px;
@@ -97,9 +82,8 @@
   left: 5%;
 }
 .angle1 {
-  transform: rotate(-25deg);
+  transform: rotate(-15deg);
 }
-
 .pos2 {
   width: 180px;
   height: 180px;
@@ -107,9 +91,8 @@
   left: -2%;
 }
 .angle2 {
-  transform: rotate(15deg);
+  transform: rotate(10deg);
 }
-
 .pos3 {
   width: 90px;
   height: 90px;
@@ -117,9 +100,8 @@
   right: 8%;
 }
 .angle3 {
-  transform: rotate(30deg);
+  transform: rotate(-25deg);
 }
-
 .pos4 {
   width: 220px;
   height: 220px;
@@ -127,9 +109,8 @@
   right: -5%;
 }
 .angle4 {
-  transform: rotate(-15deg);
+  transform: rotate(15deg);
 }
-
 .pos5 {
   width: 70px;
   height: 70px;
@@ -137,14 +118,20 @@
   right: 15%;
 }
 .angle5 {
-  transform: rotate(45deg);
+  transform: rotate(20deg);
 }
 
-/* --- CENTERED CONTENT --- */
+.coinVisual:hover {
+  transform: translate(-4px, -4px) scale(1.05) !important;
+  z-index: 50;
+  cursor: pointer;
+}
+
+/* --- CONTENT --- */
 .container {
   position: relative;
   z-index: 10;
-  max-width: 900px;
+  max-width: 1200px;
   width: 100%;
   text-align: center;
   display: flex;
@@ -153,100 +140,87 @@
 }
 
 .headline {
-  font-family: inherit;
-  font-weight: 900;
-  font-size: clamp(2.5rem, 6vw, 4.2rem);
-  line-height: 1.2;
+  font-weight: 800;
+  font-size: clamp(2.5rem, 6vw, 5.2rem);
+  line-height: 1.1;
   color: #000;
-  letter-spacing: -2px;
+  letter-spacing: -3px;
   margin-bottom: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
 }
 
-/* --- ROTATOR --- */
+/* --- SLIDESHOW --- */
 .rotatingBadgeWrapper {
   display: inline-block;
-  background: #000;
-  color: #fff;
-  padding: 0 16px;
-  margin: 0 0 0 12px;
-  border-radius: 6px;
-  height: 70px;
+  height: 90px;
   overflow: hidden;
-  vertical-align: bottom;
-  transform: translateY(8px);
+  margin: 0 15px;
+  transform: translateY(4px);
+  width: max-content;
 }
 
-.wordSlider {
-  animation: slideVertical 12s cubic-bezier(0.85, 0, 0.15, 1) infinite;
+.platformSlider {
+  display: flex;
+  flex-direction: column;
+  width: max-content;
+  animation: slidePlatforms 8s cubic-bezier(0.8, 0, 0.2, 1) infinite;
 }
 
-.word {
-  height: 70px;
+.slideBox {
+  height: 90px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  text-transform: uppercase;
+  gap: 12px;
+  padding: 0 30px;
+  background: #000;
+  color: #fff;
+  border-radius: 12px;
+  border: 4px solid #000;
+  width: fit-content;
   font-weight: 900;
-  font-size: 0.6em;
-  line-height: 70px;
+  font-size: 0.5em;
+  white-space: nowrap;
+  text-transform: uppercase;
 }
 
-.pink {
-  color: #ff90e8;
-}
-.yellow {
-  color: #ffc900;
-}
-.green {
-  color: #00f5a0;
-}
-.orange {
-  color: #ff6b35;
-}
-.blue {
-  color: #00d1ff;
-}
-
-@keyframes slideVertical {
+@keyframes slidePlatforms {
   0%,
-  15% {
+  20% {
     transform: translateY(0);
   }
-  20%,
-  35% {
-    transform: translateY(-70px);
+  25%,
+  45% {
+    transform: translateY(-90px);
   }
-  40%,
-  55% {
-    transform: translateY(-140px);
+  50%,
+  70% {
+    transform: translateY(-180px);
   }
-  60%,
-  75% {
-    transform: translateY(-210px);
-  }
-  80%,
+  75%,
   95% {
-    transform: translateY(-280px);
+    transform: translateY(-270px);
   }
   100% {
-    transform: translateY(-350px);
+    transform: translateY(-270px);
   }
 }
 
 .subheadline {
-  font-family: inherit;
-  font-size: clamp(1.1rem, 2vw, 1.3rem);
+  font-size: clamp(1.1rem, 1.5vw, 1.25rem);
   line-height: 1.6;
-  color: #444;
-  max-width: 600px;
+  color: #555;
+  max-width: 800px;
   font-weight: 500;
-  margin-bottom: 50px;
+  margin-bottom: 48px;
 }
 
-/* --- INPUT CONTAINER --- */
+/* --- INPUT BOX --- */
 .ctaContainer {
   width: 100%;
-  max-width: 600px;
+  max-width: 650px;
   margin-bottom: 40px;
 }
 
@@ -254,29 +228,21 @@
   display: flex;
   align-items: center;
   background: #fff;
-  border: 3px solid #000;
+  border: 2px solid #000;
   border-radius: 100px;
   padding: 6px;
-  box-shadow: 8px 8px 0px #000;
-  transition: transform 0.2s;
-}
-
-.pillInputContainer:hover {
-  transform: translateY(-2px);
-  box-shadow: 10px 10px 0px #000;
 }
 
 .inputInternal {
   flex: 1;
   display: flex;
   align-items: center;
-  padding-left: 20px;
+  padding-left: 24px;
 }
 
 .prefix {
-  font-family: monospace;
-  font-size: 1.1rem;
-  font-weight: 700;
+  font-size: 1.2rem;
+  font-weight: 600;
   color: #000;
   white-space: nowrap;
 }
@@ -286,10 +252,10 @@
   border: none;
   background: transparent;
   outline: none;
-  font-size: 1.1rem;
-  font-weight: 700;
+  font-size: 1.2rem;
+  font-weight: 500;
   color: #000;
-  padding: 12px 6px;
+  padding: 12px 4px;
 }
 
 .pillButton {
@@ -297,145 +263,139 @@
   color: #fff;
   border: none;
   border-radius: 100px;
-  padding: 16px 32px;
+  padding: 14px 32px;
   cursor: pointer;
-  transition: all 0.2s;
-  font-family: inherit;
   font-size: 1rem;
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  font-weight: 700;
   white-space: nowrap;
+  transition: opacity 0.2s;
 }
 
 .pillButton:hover {
-  background: #25d366;
-  color: #000;
+  opacity: 0.85;
 }
 
-.inputHint {
-  font-size: 0.85rem;
-  color: #666;
-  margin-top: 16px;
-}
-
-/* --- MOBILE OPTIMIZATION --- */
+/* --- MOBILE SECTION --- */
 @media (max-width: 900px) {
   .heroWrapper {
-    padding-top: 100px;
+    padding-top: 150px; /* Original gap */
+    padding-bottom: 60px;
     min-height: auto;
   }
 
   .headline {
-    font-size: 2.6rem;
+    font-size: 3.2rem; /* Original size */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    letter-spacing: -1.5px;
   }
 
-  /* Adjust Rotator for Mobile */
   .rotatingBadgeWrapper {
     display: block;
-    margin: 10px auto;
-    width: fit-content;
-    height: 50px;
+    margin: 0 auto;
+    width: max-content;
+    height: 55px;
     transform: none;
   }
-  .word {
-    height: 50px;
-    line-height: 50px;
-    font-size: 0.7em;
+
+  .slideBox {
+    height: 55px;
+    font-size: 0.6em;
+    padding: 0 16px;
+    border-width: 3px;
   }
 
-  @keyframes slideVertical {
+  @keyframes slidePlatforms {
     0%,
-    15% {
+    20% {
       transform: translateY(0);
     }
-    20%,
-    35% {
-      transform: translateY(-50px);
+    25%,
+    45% {
+      transform: translateY(-55px);
     }
-    40%,
-    55% {
-      transform: translateY(-100px);
+    50%,
+    70% {
+      transform: translateY(-110px);
     }
-    60%,
-    75% {
-      transform: translateY(-150px);
-    }
-    80%,
+    75%,
     95% {
-      transform: translateY(-200px);
+      transform: translateY(-165px);
     }
     100% {
-      transform: translateY(-250px);
+      transform: translateY(-165px);
     }
   }
 
-  /* --- COMPACT INPUT FOR MOBILE --- */
+  .subheadline {
+    margin-top: 20px;
+    margin-bottom: 30px;
+    line-height: 1.6;
+  }
+
+  /* Mobile Username Box - Matching Desktop Pill Design */
   .pillInputContainer {
-    flex-direction: column;
-    border-radius: 16px; /* Tighter radius */
-    padding: 12px; /* Less padding */
-    gap: 10px;
-    box-shadow: 4px 4px 0px #000; /* Smaller shadow */
-    max-width: 90%; /* Prevent hitting edges */
+    flex-direction: row;
+    border-radius: 100px;
+    padding: 4px;
+    border: 2px solid #000;
+    max-width: 95%;
     margin: 0 auto;
+    display: flex;
+    align-items: center;
+    background: #fff;
   }
 
   .inputInternal {
-    width: 100%;
-    padding-left: 0;
-    justify-content: center;
-    border-bottom: 1px solid #ddd; /* Thinner separator */
-    padding-bottom: 8px;
-    margin-bottom: 4px;
+    flex: 1;
+    padding-left: 12px;
     display: flex;
-    flex-direction: column; /* Stack prefix and input */
-    gap: 4px;
+    align-items: center;
+    overflow: hidden;
   }
 
   .prefix {
-    font-size: 0.9rem;
-    color: #666;
+    font-size: 0.85rem;
+    font-weight: 700;
+    white-space: nowrap;
   }
 
   .inputField {
-    text-align: center;
     width: 100%;
-    font-size: 1rem;
-    padding: 4px 0;
+    font-size: 0.85rem;
+    padding: 10px 4px;
+    font-weight: 700;
+    min-width: 0;
   }
 
   .pillButton {
-    width: 100%;
-    padding: 12px 0; /* Slimmer button */
-    font-size: 0.95rem;
+    padding: 10px 16px;
+    font-size: 0.85rem;
+    border-radius: 100px;
+    white-space: nowrap;
   }
 
-  /* --- MOBILE COIN SIZES --- */
-  /* Top Left (Pink) */
+  /* Original Mobile Coin Sizes */
   .pos1 {
     width: 80px;
     height: 80px;
     top: 5%;
     left: -5%;
   }
-
-  /* Bottom Left (Green) */
   .pos2 {
     width: 110px;
     height: 110px;
     bottom: 0%;
     left: -10%;
   }
-
-  /* Bottom Right (Blue) */
   .pos4 {
     width: 130px;
     height: 130px;
     bottom: -2%;
     right: -10%;
   }
-
   .pos3,
   .pos5 {
     display: none;

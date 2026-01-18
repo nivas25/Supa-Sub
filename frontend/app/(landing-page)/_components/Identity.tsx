@@ -6,9 +6,6 @@ import {
   RiCheckLine,
   RiPieChart2Fill,
   RiUserStarLine,
-  RiWhatsappFill,
-  RiDiscordFill,
-  RiTelegramFill,
   RiShieldFlashLine,
 } from "react-icons/ri";
 
@@ -24,32 +21,36 @@ export default function Identity() {
             </div>
 
             <h2 className={styles.title}>
-              Automate your <br />
+              Easiest way to <br />
+              monetize your
               <div className={styles.sliderWindow}>
                 <div className={styles.wordSlider}>
-                  <div className={`${styles.slideBox} ${styles.whatsapp}`}>
-                    <RiWhatsappFill /> WHATSAPP
+                  <div className={`${styles.slideBox} ${styles.pink}`}>
+                    COURSES
                   </div>
-                  <div className={`${styles.slideBox} ${styles.telegram}`}>
-                    <RiTelegramFill /> TELEGRAM
+                  <div className={`${styles.slideBox} ${styles.yellow}`}>
+                    RESOURCES
                   </div>
-                  <div className={`${styles.slideBox} ${styles.discord}`}>
-                    <RiDiscordFill /> DISCORD
+                  <div className={`${styles.slideBox} ${styles.green}`}>
+                    EXPERTISE
+                  </div>
+                  <div className={`${styles.slideBox} ${styles.orange}`}>
+                    CONTENT
+                  </div>
+                  <div className={`${styles.slideBox} ${styles.blue}`}>
+                    SOLUTIONS
                   </div>
                   {/* Duplicate first item for smooth loop */}
-                  <div className={`${styles.slideBox} ${styles.whatsapp}`}>
-                    <RiWhatsappFill /> WHATSAPP
+                  <div className={`${styles.slideBox} ${styles.pink}`}>
+                    COURSES
                   </div>
                 </div>
               </div>
-              <span className={styles.bottomText}>COMMUNITY.</span>
             </h2>
 
             <p className={styles.description}>
-              Convert your social following into a recurring revenue stream. We
-              provide the
-              <strong> bot-automation and payment layers</strong> to run your
-              private groups on autopilot.
+              Build your digital storefront in minutes. We handle the tech and
+              payments. <strong>You focus on creating.</strong>
             </p>
 
             <div className={styles.benefitList}>
@@ -77,7 +78,6 @@ export default function Identity() {
                 rel="noopener noreferrer"
                 className={`${styles.brandLink} ${styles.linkDc}`}
               >
-                {/* CSS controls width/height responsiveness, we keep intrinsic ratio here */}
                 <Image
                   src="/images/Landing_page/discord.png"
                   width={140}

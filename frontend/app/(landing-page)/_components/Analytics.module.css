@@ -434,6 +434,10 @@
   .premiumBadge {
     margin: 0 auto 24px auto;
   }
+  .mainTitle {
+    font-size: 2.4rem;
+    line-height: 1.1;
+  }
   .storyTray {
     justify-content: center;
   }

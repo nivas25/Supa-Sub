@@ -15,23 +15,21 @@ export default function Footer() {
   return (
     <footer className={styles.wrapper}>
       <div className={styles.container}>
-        {/* TOP: LOGO & NEWSLETTER */}
         <div className={styles.topSection}>
-          {/* Brand Mark */}
           <div className={styles.brandContainer}>
+            {/* UNIFIED LOGO UNIT */}
             <div className={styles.brandLogo}>
-              <span className={styles.wordSub}>Sub</span>
-              <span className={styles.wordStarter}>Starter</span>
               <div className={styles.boltCircle}>
                 <RiFlashlightFill />
               </div>
+              <span className={styles.wordSub}>Sub</span>
+              <span className={styles.wordStarter}>Starter</span>
             </div>
             <p className={styles.tagline}>
-              The infrastructure for digital communities.
+              Infrastructure for the next generation of digital communities.
             </p>
           </div>
 
-          {/* Newsletter Input */}
           <div className={styles.newsletterBox}>
             <label className={styles.newsletterLabel}>
               <RiMailSendLine /> Product Updates
@@ -49,9 +47,7 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* BOTTOM: LINKS & LEGAL */}
         <div className={styles.bottomSection}>
-          {/* Navigation Grid */}
           <nav className={styles.nav}>
             <div className={styles.linkGroup}>
               <a href="#" className={styles.ctaLink}>
@@ -61,7 +57,6 @@ export default function Footer() {
                 Log in
               </a>
             </div>
-
             <div className={styles.linkGroup}>
               <a href="#" className={styles.navLink}>
                 Playbook
@@ -73,7 +68,6 @@ export default function Footer() {
                 Help
               </a>
             </div>
-
             <div className={styles.linkGroup}>
               <a href="#" className={styles.navLink}>
                 Terms
@@ -84,7 +78,6 @@ export default function Footer() {
             </div>
           </nav>
 
-          {/* Legal & Socials */}
           <div className={styles.legalCol}>
             <div className={styles.socialRow}>
               <a href="#" className={styles.socialIcon} aria-label="Twitter">

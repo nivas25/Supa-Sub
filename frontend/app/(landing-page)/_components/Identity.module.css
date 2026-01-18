@@ -4,7 +4,6 @@
   padding: 120px 0;
   background-color: transparent;
   position: relative;
-  /* changed from visible to clip to prevent horizontal scroll on mobile */
   overflow-x: clip;
   overflow-y: visible;
 }
@@ -38,7 +37,6 @@
 }
 
 .title {
-  /* Adjusted clamp for better mobile scaling */
   font-size: clamp(2.2rem, 5vw, 4.2rem);
   font-weight: 800;
   line-height: 1.1;
@@ -50,13 +48,15 @@
   height: 75px;
   overflow: hidden;
   margin: 12px 0;
-  /* REMOVED mask-image to keep edges sharp/hard */
+  display: inline-block; /* Makes it sit inline or block depending on layout */
+  vertical-align: bottom;
 }
 
 .wordSlider {
   display: flex;
   flex-direction: column;
-  animation: slideFix 9s cubic-bezier(0.85, 0, 0.15, 1) infinite;
+  /* Updated animation for 5 items */
+  animation: slideFive 10s cubic-bezier(0.85, 0, 0.15, 1) infinite;
 }
 
 .slideBox {
@@ -65,40 +65,57 @@
   align-items: center;
   gap: 12px;
   padding: 0 24px;
-  color: #fff;
+  color: #000; /* Text is black for readability on bright colors */
   border: 3px solid #000;
   width: fit-content;
-  font-weight: 800;
+  font-weight: 900;
   font-size: 0.75em;
-  white-space: nowrap; /* Prevent text wrap on small screens */
+  white-space: nowrap;
+  text-transform: uppercase;
+  background: #fff; /* Default fallback */
 }
 
-.whatsapp {
-  background: #1eb956;
+/* --- OLD HERO COLORS (Restored) --- */
+.pink {
+  background: #ff90e8;
 }
-.telegram {
-  background: #0077b5;
+.yellow {
+  background: #ffc900;
 }
-.discord {
-  background: #4752c4;
+.green {
+  background: #00f5a0;
+}
+.orange {
+  background: #ff6b35;
+}
+.blue {
+  background: #00d1ff;
 }
 
-/* Desktop Animation (75px steps) */
-@keyframes slideFix {
+/* Animation for 5 Unique Items (Total 6 frames with duplicate) */
+@keyframes slideFive {
   0%,
-  28% {
+  15% {
     transform: translateY(0);
   }
-  33%,
-  61% {
+  20%,
+  35% {
     transform: translateY(-75px);
   }
-  66%,
-  94% {
+  40%,
+  55% {
     transform: translateY(-150px);
   }
-  100% {
+  60%,
+  75% {
     transform: translateY(-225px);
+  }
+  80%,
+  95% {
+    transform: translateY(-300px);
+  }
+  100% {
+    transform: translateY(-375px);
   }
 }
 
@@ -136,7 +153,7 @@
   flex-shrink: 0;
 }
 
-/* --- THE REVENUE CARD --- */
+/* --- RIGHT CARD & ICONS (Kept same layout) --- */
 .modernCard {
   background: #fff;
   border: 4px solid #000;
@@ -149,7 +166,6 @@
   max-width: 100%;
 }
 
-/* --- BACKGROUND ICONS --- */
 .backgroundIcons {
   position: absolute;
   top: 0;
@@ -173,7 +189,6 @@
   z-index: 20;
 }
 
-/* Desktop Positions */
 .linkDc {
   top: -10%;
   left: -15%;
@@ -221,7 +236,6 @@
   line-height: 1;
   letter-spacing: -6px;
 }
-
 .percent {
   font-size: clamp(2rem, 4vw, 3rem);
   font-weight: 700;
@@ -240,6 +254,12 @@
   flex-wrap: wrap;
 }
 
+.statDetail {
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.5;
+}
+
 .ownershipBadge {
   background: #000;
   color: #fff;
@@ -254,42 +274,33 @@
   font-size: 0.9rem;
 }
 
-/* --- TABLET & MOBILE RESPONSIVENESS --- */
-
-/* Tablet Portrait & Small Laptops */
+/* --- RESPONSIVE --- */
 @media (max-width: 1024px) {
   .wrapper {
     padding: 80px 0;
   }
-
   .contentGrid {
     grid-template-columns: 1fr;
     gap: 60px;
     text-align: center;
   }
-
   .statusBadge {
     margin: 0 auto 25px auto;
   }
-
   .title {
     display: flex;
     flex-direction: column;
     align-items: center;
   }
-
   .sliderWindow {
     margin: 12px auto;
   }
-
   .description {
     margin: 30px auto;
   }
-
   .benefitList {
-    align-items: center;
+    alignitems: center;
   }
-
   .modernCard {
     margin-top: 40px;
     margin-left: auto;
@@ -297,6 +308,7 @@
     max-width: 500px;
   }
 
+  /* Icon adjustments for tablet */
   .linkDc {
     top: -40px;
     left: -30px;
@@ -314,38 +326,34 @@
   }
 }
 
-/* Mobile Devices */
 @media (max-width: 640px) {
   .wrapper {
     padding: 60px 0;
   }
-
   .container {
     padding: 0 20px;
   }
-
   .modernCard {
     padding: 50px 20px;
     border-radius: 24px;
     box-shadow: 8px 8px 0px #000;
   }
 
-  /* --- MOBILE SLIDER ADJUSTMENTS --- */
+  /* Mobile Slider Height */
   .sliderWindow {
     height: 55px;
   }
-
   .slideBox {
     height: 55px;
     font-size: 0.6em;
     padding: 0 16px;
   }
 
+  /* Mobile Animation */
   .wordSlider {
-    animation-name: slideFixMobile;
+    animation-name: slideFiveMobile;
   }
 
-  /* --- MOBILE ICON ADJUSTMENTS --- */
   .linkDc {
     width: 80px;
     top: -30px;
@@ -361,11 +369,9 @@
     bottom: -25px;
     right: -5px;
   }
-
   .number {
     letter-spacing: -3px;
   }
-
   .ownershipBadge {
     flex-direction: column;
     padding: 12px;
@@ -373,21 +379,29 @@
   }
 }
 
-/* Mobile Animation Keyframes */
-@keyframes slideFixMobile {
+/* Mobile Keyframes (55px height) */
+@keyframes slideFiveMobile {
   0%,
-  28% {
+  15% {
     transform: translateY(0);
   }
-  33%,
-  61% {
+  20%,
+  35% {
     transform: translateY(-55px);
   }
-  66%,
-  94% {
+  40%,
+  55% {
     transform: translateY(-110px);
   }
-  100% {
+  60%,
+  75% {
     transform: translateY(-165px);
+  }
+  80%,
+  95% {
+    transform: translateY(-220px);
+  }
+  100% {
+    transform: translateY(-275px);
   }
 }

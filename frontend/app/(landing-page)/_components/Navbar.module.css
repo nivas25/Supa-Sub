@@ -28,11 +28,8 @@
   background: #fff;
   background-image: linear-gradient(#fafafa 1px, transparent 1px);
   background-size: 20px 20px;
-
-  /* Border & Shadow settings from previous steps */
   border: 1px solid #d4d4d4;
   box-shadow: none;
-
   border-radius: 100px;
   padding: 8px 24px;
   display: flex;
@@ -45,7 +42,6 @@
   height: 60px;
 }
 
-/* --- COLLAPSED STATE (Desktop Pill) --- */
 .collapsed {
   width: auto;
   min-width: 0;
@@ -54,91 +50,66 @@
   height: 50px;
 }
 
-/* Hide Links & Auth in Pill Mode */
 .collapsed .desktopLinks,
 .collapsed .desktopAuth {
   display: none !important;
 }
 
-/* Show Hamburger in Pill Mode (Desktop) */
 .collapsed .mobileToggle {
   display: flex !important;
 }
 
-/* --- BRAND MARK (UPDATED TO MATCH FOOTER) --- */
+/* --- BRAND MARK (MATCHED TO FOOTER CSS) --- */
 .brandLogo {
-  text-decoration: none;
-  user-select: none;
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 8px; /* Slightly tighter than footer for navbar context */
+  gap: 0; /* Standardized tight gap for the unified font look */
+  cursor: pointer;
+  user-select: none;
+  text-decoration: none;
   flex-shrink: 0;
 }
 
-/* 1. "Sub" - Bold & Authoritative */
 .wordSub {
   font-family: var(--font-outfit, sans-serif);
-  font-size: 1.4rem; /* Scaled for Navbar */
-  font-weight: 800;
-  letter-spacing: -0.03em;
+  font-size: 1.5rem; /* Scaled down slightly from Footer for Navbar height */
+  font-weight: 800; /* Heavy bold anchor */
+  letter-spacing: -0.05em;
   color: #000;
   line-height: 1;
-
-  /* Resetting previous "sticker" styles */
-  background: transparent;
-  padding: 0;
-  border-radius: 0;
-  transform: none;
 }
 
-/* 2. "Starter" - Sleek & Fast */
 .wordStarter {
   font-family: var(--font-outfit, sans-serif);
-  font-size: 1.4rem; /* Match Sub */
-  font-weight: 500;
-  color: #1a1a1a;
-  letter-spacing: -0.02em;
+  font-size: 1.5rem; /* Match Sub */
+  font-weight: 300; /* Refined light finish */
+  letter-spacing: -0.03em;
+  color: #444; /* Premium charcoal */
   line-height: 1;
-  margin-left: -2px;
-
-  /* Resetting previous serif styles */
-  font-style: normal;
 }
 
-/* 3. The "Coin" (Green -> Black Logic) */
 .boltCircle {
-  /* Move to the LEFT automatically */
   order: -1;
-
-  width: 30px; /* Scaled for Navbar */
-  height: 30px;
-
-  /* INITIAL STATE: Green BG, Black Icon */
+  width: 28px; /* Scaled for Navbar */
+  height: 28px;
   background: #25d366;
   color: #000;
-
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-
-  /* Border & Shadow */
-  border: 2px solid #000;
-  box-shadow: 2px 2px 0 rgba(0, 0, 0, 1);
-
   font-size: 0.9rem;
-  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  border: 2px solid #000;
+  margin-right: 12px;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* HOVER STATE: Black BG, Green Icon */
 .brandLogo:hover .boltCircle {
   background: #000;
   color: #25d366;
-  border-color: #000;
-
-  /* Pop effect */
-  transform: translateY(-2px) rotate(15deg);
-  box-shadow: 3px 3px 0 rgba(37, 211, 102, 0.4);
+  transform: scale(1.1) rotate(-10deg);
+  box-shadow: 5px 5px 0 rgba(37, 211, 102, 0.2);
 }
 
 /* --- DESKTOP NAVIGATION --- */
@@ -155,7 +126,7 @@
   text-decoration: none;
   color: #111;
   font-family: var(--font-outfit, sans-serif);
-  font-weight: normal; /* Kept normal as requested */
+  font-weight: normal;
   white-space: nowrap;
   font-size: 0.95rem;
   padding: 8px 16px;
@@ -183,15 +154,6 @@
 
 .dashboardLink {
   text-decoration: none;
-
-  .mobileLink:focus {
-    outline: none;
-  }
-
-  .mobileLink:active {
-    color: #000;
-    background: #f0f2f5;
-  }
   color: #000;
   font-weight: 600;
   font-size: 0.9rem;

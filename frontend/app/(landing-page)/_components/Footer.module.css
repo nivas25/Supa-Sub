@@ -5,9 +5,7 @@
   color: #000;
   border-top: 1px solid #eaeaea;
   padding: 100px 0 60px;
-  /* Premium Noise Texture */
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
-  font-family: var(--font-inter, sans-serif);
 }
 
 .container {
@@ -27,7 +25,6 @@
   align-items: flex-end;
 }
 
-/* --- THE LOGO MARK (Refined) --- */
 .brandContainer {
   display: flex;
   flex-direction: column;
@@ -37,79 +34,62 @@
 .brandLogo {
   display: inline-flex;
   align-items: center;
-  gap: 12px;
-  cursor: default;
+  gap: 0; /* Standardized tight gap for the unified font look */
+  cursor: pointer;
   user-select: none;
+  text-decoration: none;
 }
 
-/* 1. "Sub" - Bold & Authoritative */
+/* FONT STYLE: PRESERVED FROM PREVIOUS */
 .wordSub {
   font-family: var(--font-outfit, sans-serif);
-  font-size: 2.5rem;
-  font-weight: 800;
-  letter-spacing: -0.03em;
+  font-size: 2.2rem;
+  font-weight: 800; /* Heavy bold anchor */
+  letter-spacing: -0.05em;
   color: #000;
   line-height: 1;
 }
 
-/* 2. "Starter" - Sleek & Fast */
 .wordStarter {
   font-family: var(--font-outfit, sans-serif);
-  font-size: 2.5rem;
-  font-weight: 500; /* Lighter weight for contrast */
-  color: #1a1a1a;
-  letter-spacing: -0.02em;
+  font-size: 2.2rem;
+  font-weight: 300; /* Refined light finish */
+  letter-spacing: -0.03em;
+  color: #444; /* Premium charcoal */
   line-height: 1;
-  margin-left: -2px;
 }
 
-/* 3. The "Coin" (Green -> Black Logic) */
 .boltCircle {
-  /* Position: Left side */
   order: -1;
-
-  width: 38px;
-  height: 38px;
-
-  /* INITIAL STATE: Green BG, Black Icon */
+  width: 32px;
+  height: 32px;
   background: #25d366;
   color: #000;
-
-  /* Perfect Circle */
   border-radius: 50%;
-
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.1rem;
-
-  /* Subtle inset border for "Coin" feel */
+  font-size: 1rem;
   border: 2px solid #000;
-
-  /* Shadow for depth */
+  margin-right: 12px;
   box-shadow: 3px 3px 0 rgba(0, 0, 0, 1);
-
-  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* HOVER STATE: Black BG, Green Icon */
 .brandLogo:hover .boltCircle {
   background: #000;
   color: #25d366;
-  border-color: #000;
-
-  /* Pop effect */
-  transform: translateY(-2px) rotate(15deg);
-  box-shadow: 5px 5px 0 rgba(37, 211, 102, 0.4);
+  transform: scale(1.1) rotate(-10deg);
+  box-shadow: 5px 5px 0 rgba(37, 211, 102, 0.2);
 }
 
 .tagline {
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 500;
-  color: #666;
-  max-width: 400px;
-  line-height: 1.5;
-  margin-left: 2px;
+  color: #777;
+  max-width: 300px;
+  line-height: 1.4;
+  margin-top: -4px;
 }
 
 /* --- NEWSLETTER --- */
@@ -136,13 +116,12 @@
   width: 100%;
   border-bottom: 2px solid #e5e5e5;
   padding-bottom: 6px;
-  transition: all 0.3s ease;
+  transition: border-color 0.3s ease;
 }
 
 .inputWrapper:hover,
 .inputWrapper:focus-within {
   border-color: #000;
-  padding-bottom: 10px; /* Slight expansion on focus */
 }
 
 .emailInput {
@@ -157,11 +136,6 @@
   font-family: var(--font-outfit, sans-serif);
 }
 
-.emailInput::placeholder {
-  color: #bbb;
-  font-weight: 400;
-}
-
 .subBtn {
   background: #000;
   color: #fff;
@@ -173,7 +147,7 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: all 0.3s ease;
   margin-left: 12px;
 }
 
@@ -181,7 +155,6 @@
   background: #25d366;
   color: #000;
   transform: scale(1.1);
-  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 /* --- BOTTOM ROW --- */
@@ -193,7 +166,6 @@
   padding-top: 60px;
 }
 
-/* Nav */
 .nav {
   display: flex;
   gap: 80px;
@@ -211,8 +183,7 @@
   font-weight: 500;
   font-size: 0.95rem;
   transition: color 0.2s;
-  display: inline-block;
-  white-space: nowrap; /* Prevents "How it Works" from breaking */
+  white-space: nowrap;
 }
 
 .navLink:hover {
@@ -225,8 +196,6 @@
   font-size: 1rem;
   text-decoration: none;
   position: relative;
-  display: inline-block;
-  white-space: nowrap;
 }
 
 .ctaLink::after {
@@ -237,13 +206,6 @@
   width: 100%;
   height: 2px;
   background: #25d366;
-  transition: width 0.3s;
-  width: 100%; /* Default underline */
-}
-
-.ctaLink:hover::after {
-  width: 60%; /* Retreat effect on hover */
-  background: #000;
 }
 
 /* Legal & Socials */
@@ -256,7 +218,6 @@
 
 .copyright {
   font-size: 0.85rem;
-  font-weight: 500;
   color: #999;
 }
 
@@ -274,9 +235,9 @@
   align-items: center;
   justify-content: center;
   color: #000;
-  font-size: 1.1rem;
   transition: all 0.3s;
   background: #fff;
+  font-size: 1.1rem;
 }
 
 .socialIcon:hover {
@@ -284,34 +245,24 @@
   background: #000;
   color: #fff;
   transform: translateY(-3px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 /* --- MOBILE --- */
 @media (max-width: 900px) {
   .topSection {
     grid-template-columns: 1fr;
-    gap: 50px;
-  }
-
-  .brandLogo {
-    gap: 12px;
+    gap: 40px;
   }
 
   .wordSub,
   .wordStarter {
-    font-size: 2rem;
+    font-size: 1.8rem;
   }
 
   .boltCircle {
-    width: 32px;
-    height: 32px;
-    font-size: 1rem;
-    box-shadow: 2px 2px 0 rgba(0, 0, 0, 1);
-  }
-
-  .emailInput {
-    font-size: 1.1rem;
+    width: 28px;
+    height: 28px;
+    margin-right: 10px;
   }
 
   .bottomSection {
@@ -322,15 +273,13 @@
 
   .nav {
     flex-wrap: wrap;
-    gap: 40px;
-    width: 100%;
+    gap: 30px;
     justify-content: space-between;
+    width: 100%;
   }
 
   .legalCol {
     align-items: flex-start;
-    width: 100%;
     flex-direction: column-reverse;
-    gap: 30px;
   }
 }
