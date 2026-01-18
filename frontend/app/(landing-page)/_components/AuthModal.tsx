@@ -1,5 +1,5 @@
 "use client";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { signInWithSocial, sendOTP, verifyOTP } from "@/app/auth/actions";
 import { RiGoogleFill, RiCloseLine, RiFlashlightFill } from "react-icons/ri";
 import styles from "./AuthModal.module.css";
@@ -27,11 +27,13 @@ export default function AuthModal({
     newOtp[index] = value.substring(value.length - 1);
     setOtp(newOtp);
 
+    // Auto-focus next box if a digit is entered
     if (value && index < 5) {
       inputRefs.current[index + 1]?.focus();
     }
   };
 
+  // Handle backspace to move focus back
   const handleKeyDown = (e: React.KeyboardEvent, index: number) => {
     if (e.key === "Backspace" && !otp[index] && index > 0) {
       inputRefs.current[index - 1]?.focus();
@@ -40,6 +42,7 @@ export default function AuthModal({
 
   const handleVerify = async () => {
     setLoading(true);
+    setError("");
     const fullOtp = otp.join("");
     const res = await verifyOTP(email, fullOtp);
     setLoading(false);
@@ -63,9 +66,7 @@ export default function AuthModal({
             <span className={styles.wordStarter}>Starter</span>
           </h2>
           <p className={styles.subtitle}>
-            {step === "email"
-              ? "Welcome back, SubStarer."
-              : "Verify your email"}
+            {step === "email" ? "Welcome back, Creator." : "Verify your email"}
           </p>
         </div>
 
@@ -122,6 +123,7 @@ export default function AuthModal({
                   const res = await sendOTP(email);
                   setLoading(false);
                   if (res.success) setStep("otp");
+                  else setError(res.error || "Failed to send code");
                 }}
                 className={styles.mainBtn}
               >
@@ -139,7 +141,10 @@ export default function AuthModal({
               {otp.map((digit, idx) => (
                 <input
                   key={idx}
-                  ref={(el) => (inputRefs.current[idx] = el)}
+                  /* FIXED: Wrapped in braces to return void, resolving the Vercel TS error */
+                  ref={(el) => {
+                    inputRefs.current[idx] = el;
+                  }}
                   type="text"
                   maxLength={1}
                   value={digit}
@@ -157,7 +162,10 @@ export default function AuthModal({
               {loading ? "Verifying..." : "Enter Dashboard"}
             </button>
             <button
-              onClick={() => setStep("email")}
+              onClick={() => {
+                setStep("email");
+                setError("");
+              }}
               className={styles.backLink}
             >
               Try another email
