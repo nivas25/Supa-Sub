@@ -25,15 +25,17 @@ export const metadata: Metadata = {
   },
 };
 
+// UPDATED: Added all weights so "Normal" text actually works
 const outfit = Outfit({
   subsets: ["latin"],
   variable: "--font-outfit",
-  weight: ["800", "900"],
+  weight: ["300", "400", "500", "600", "700", "800", "900"],
 });
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
   variable: "--font-space",
+  weight: ["300", "400", "500", "600", "700"],
 });
 
 export default function RootLayout({

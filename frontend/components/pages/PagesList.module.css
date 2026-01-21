@@ -1,0 +1,274 @@
+/* PagesList.module.css */
+
+/* --- GRID LAYOUT --- */
+.grid {
+  display: grid;
+  /* Smart sizing: Cards are never too small */
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+  padding-bottom: 60px;
+}
+
+/* =========================================
+   1. CREATE CARD (The Blueprint)
+   ========================================= */
+.createCard {
+  text-decoration: none;
+  background: #f8fafc; /* Very light grey */
+  border: 2px dashed #94a3b8; /* Dashed architectural look */
+  border-radius: 16px;
+  height: 280px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+  cursor: pointer;
+}
+
+.createCard:hover {
+  border-color: #000;
+  border-style: solid; /* Turns solid on hover */
+  background: #fff;
+  transform: translateY(-4px);
+  box-shadow: 4px 4px 0 #000;
+}
+
+.createIconBox {
+  width: 64px;
+  height: 64px;
+  border-radius: 12px;
+  background: #fff;
+  border: 2px solid #cbd5e1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #94a3b8;
+  transition: all 0.2s;
+}
+
+.createCard:hover .createIconBox {
+  border-color: #000;
+  color: #000;
+  transform: scale(1.1) rotate(90deg); /* Playful spin */
+}
+
+.createTextStack {
+  text-align: center;
+}
+
+.createTitle {
+  font-family: var(--font-outfit), sans-serif;
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: #0f172a;
+}
+
+.createSub {
+  font-size: 0.9rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+/* =========================================
+   2. PAGE CARD (The Product)
+   ========================================= */
+.pageCard {
+  text-decoration: none;
+  background: #fff;
+  border: 2px solid #000; /* Hard Borders */
+  border-radius: 16px;
+  height: 280px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0); /* Flat initially */
+}
+
+/* Hover: Lift & Hard Shadow */
+.pageCard:hover {
+  transform: translate(-4px, -4px);
+  box-shadow: 8px 8px 0 #000; /* Big Hard Shadow */
+}
+
+/* --- A. HEADER (Pattern) --- */
+.cardHeader {
+  height: 120px;
+  position: relative;
+  border-bottom: 2px solid #000;
+  background: #f1f5f9;
+  overflow: hidden;
+}
+
+/* CSS Pattern: Dot Matrix */
+.dotPattern {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: radial-gradient(#94a3b8 1.5px, transparent 1.5px);
+  background-size: 16px 16px; /* Dot spacing */
+  opacity: 0.5;
+  transition: transform 0.3s ease;
+}
+
+.pageCard:hover .dotPattern {
+  transform: scale(1.1); /* Pattern zooms slightly */
+}
+
+/* Status Sticker */
+.statusBadge {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  border: 2px solid #000;
+  z-index: 2;
+}
+
+.active {
+  background: #25d366; /* Brand Green */
+  color: #000;
+}
+
+.draft {
+  background: #fff;
+  color: #000;
+}
+
+/* External Link Icon */
+.externalLink {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  background: #000;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  opacity: 0;
+  transform: scale(0.5);
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: 2;
+}
+
+.pageCard:hover .externalLink {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* --- B. BODY (Content) --- */
+.cardBody {
+  flex: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.slugContainer {
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+}
+
+.slash {
+  font-size: 1.2rem;
+  color: #94a3b8;
+  font-weight: 400;
+}
+
+.slugText {
+  font-family: var(--font-outfit), sans-serif;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #000;
+  letter-spacing: -0.5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Stats Grid */
+.statsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.statBox {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.pageCard:hover .statBox {
+  border-color: #000; /* Borders turn black on hover */
+  background: #fff;
+}
+
+.statLabel {
+  font-size: 0.75rem;
+  color: #64748b;
+  font-weight: 600;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.miniIcon {
+  font-size: 0.9rem;
+}
+
+.statValue {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #000;
+}
+
+/* =========================================
+   MOBILE OPTIMIZATION
+   ========================================= */
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr; /* Single column stack */
+    gap: 16px;
+  }
+
+  .createCard {
+    height: 140px; /* Compact "Create" button on mobile */
+    flex-direction: row; /* Horizontal layout */
+    border-style: solid; /* Solid border is easier to see */
+  }
+
+  .createIconBox {
+    width: 48px;
+    height: 48px;
+  }
+
+  .createTextStack {
+    text-align: left;
+  }
+
+  .pageCard {
+    height: auto; /* Let content define height */
+    min-height: 240px;
+  }
+}

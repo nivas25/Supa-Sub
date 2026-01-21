@@ -2,6 +2,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
+import type { User } from "@supabase/supabase-js";
 
 /**
  * Handles Social Login (Google)
@@ -14,7 +15,8 @@ export async function signInWithSocial(provider: "google") {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider,
       options: {
-        redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
+        // CHANGED: Added ?next=/pages to ensure it goes to the right place
+        redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback?next=/pages`,
       },
     });
     if (error) throw error;
@@ -36,7 +38,8 @@ export async function sendOTP(email: string) {
     const { error } = await supabase.auth.signInWithOtp({
       email,
       options: {
-        emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
+        // CHANGED: Added ?next=/pages
+        emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback?next=/pages`,
       },
     });
     return { success: !error, error: error?.message };
@@ -66,7 +69,8 @@ export async function verifyOTP(email: string, token: string) {
 
   if (isSuccessful) {
     revalidatePath("/", "layout");
-    redirect("/dashboard");
+    // CHANGED: Redirect to /pages instead of /home
+    redirect("/pages");
   }
 }
 
@@ -78,4 +82,17 @@ export async function signOut() {
   await supabase.auth.signOut();
   revalidatePath("/", "layout");
   redirect("/");
+}
+
+/**
+ * Returns the currently authenticated user (server-side)
+ */
+export async function getCurrentUser(): Promise<User | null> {
+  const supabase = await createClient();
+  const { data, error } = await supabase.auth.getUser();
+  if (error) {
+    console.error("getCurrentUser error:", error.message);
+    return null;
+  }
+  return data.user ?? null;
 }

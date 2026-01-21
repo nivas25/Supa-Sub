@@ -1,0 +1,71 @@
+/* --- PAGE WRAPPER --- */
+.payoutsWrapper {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 60px 40px;
+  font-family: var(--font-outfit), "Inter", sans-serif;
+  color: #000;
+  animation: fadeUp 0.4s ease-out;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --- GRID LAYOUT --- */
+.gridContainer {
+  display: grid;
+  /* DESKTOP: 2 Columns (Content is wider) */
+  grid-template-columns: 1.8fr 1fr;
+  /* DESKTOP: 2 Rows */
+  grid-template-areas:
+    "wallet  method"
+    "history method";
+  gap: 32px;
+  align-items: start; /* Prevents sidebar from stretching unnaturally */
+}
+
+/* --- GRID AREAS --- */
+.areaWallet {
+  grid-area: wallet;
+}
+
+.areaMethod {
+  grid-area: method;
+  position: sticky; /* Keep settings handy on desktop */
+  top: 40px;
+}
+
+.areaHistory {
+  grid-area: history;
+}
+
+/* --- MOBILE OPTIMIZATION --- */
+@media (max-width: 900px) {
+  .payoutsWrapper {
+    padding: 30px 20px;
+  }
+
+  .gridContainer {
+    grid-template-columns: 1fr; /* Single Column */
+    grid-template-rows: auto;
+    /* MOBILE ORDER: Wallet -> Method -> History */
+    grid-template-areas:
+      "wallet"
+      "method"
+      "history";
+    gap: 24px;
+  }
+
+  .areaMethod {
+    position: static; /* Remove sticky on mobile */
+  }
+}

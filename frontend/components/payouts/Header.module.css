@@ -1,0 +1,105 @@
+/* --- CONTAINER --- */
+.headerContainer {
+  display: flex;
+  align-items: center;
+  /* Match Pages/Coupons Gap */
+  gap: 24px;
+  /* Match Pages/Coupons Spacing */
+  margin-bottom: 56px;
+  padding-bottom: 24px;
+  border-bottom: 2px solid #f1f5f9;
+}
+
+/* --- THE ICON BOX --- */
+.iconBox {
+  /* Match Pages/Coupons Icon Size */
+  width: 56px;
+  height: 56px;
+  background: #fff;
+
+  /* The Signature Look */
+  border: 2px solid #000;
+  border-radius: 12px;
+  box-shadow: 4px 4px 0 #000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+  flex-shrink: 0;
+}
+
+.headerContainer:hover .iconBox {
+  transform: translate(-2px, -2px) rotate(-3deg);
+  box-shadow: 6px 6px 0 #000;
+  background: #25d366; /* Brand Green Pop */
+}
+
+.icon {
+  font-size: 1.8rem; /* Scaled to fit 56px box */
+  color: #000;
+  transition: color 0.2s;
+}
+
+/* --- TYPOGRAPHY --- */
+.textStack {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pageTitle {
+  font-family: var(--font-outfit), "Inter", sans-serif;
+  font-size: 2.8rem;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1;
+  letter-spacing: -1.5px;
+  margin: 0;
+}
+
+.accentDot {
+  color: #25d366;
+}
+
+.subLabel {
+  font-family: var(--font-outfit), "Inter", sans-serif;
+  font-size: 1rem; /* Match Pages (1rem) */
+  font-weight: 500;
+  color: #64748b;
+  letter-spacing: -0.2px;
+  margin: 0;
+}
+
+/* --- MOBILE RESPONSIVE (Matches Pages/Coupons) --- */
+@media (max-width: 768px) {
+  .headerContainer {
+    flex-direction: row; /* Keep row layout like Pages */
+    align-items: center;
+    gap: 16px; /* Tighter gap for mobile */
+
+    margin-bottom: 32px;
+    margin-top: 12px; /* Breathing room top */
+
+    /* Clean look on mobile */
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .iconBox {
+    width: 48px; /* Standard Mobile Icon Size */
+    height: 48px;
+  }
+
+  .icon {
+    font-size: 1.5rem;
+  }
+
+  .pageTitle {
+    font-size: 2.2rem; /* Scaled down to prevent wrap */
+  }
+
+  .subLabel {
+    font-size: 0.9rem;
+  }
+}

@@ -1,0 +1,449 @@
+/* --- MODAL WRAPPER --- */
+.modalBackdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(15, 23, 42, 0.75); /* Darker, premium overlay */
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 16px;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.modalCard {
+  width: 100%;
+  max-width: 440px; /* Compact width */
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow:
+    0 25px 50px -12px rgba(0, 0, 0, 0.25),
+    0 0 0 1px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh; /* Prevents overflow */
+  font-family: var(--font-outfit), sans-serif;
+  animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* --- HEADER --- */
+.modalHeader {
+  padding: 24px 28px;
+  background: #ffffff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #f1f5f9;
+  position: relative;
+  flex-shrink: 0;
+}
+
+/* Green Accent Bar */
+.modalHeader::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 28px;
+  right: 28px;
+  height: 4px;
+  background: #25d366; /* Brand Green */
+  border-radius: 0 0 4px 4px;
+}
+
+.headerTitle h2 {
+  font-family: var(--font-outfit);
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.headerTitle p {
+  font-family: var(--font-outfit);
+  font-size: 0.9rem;
+  color: #64748b;
+  margin: 0;
+  font-weight: 500;
+}
+
+.closeBtn {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  color: #64748b;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.closeBtn:hover {
+  background: #000;
+  color: #fff;
+  border-color: #000;
+}
+
+/* --- FORM BODY --- */
+.modalForm {
+  padding: 24px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px; /* Tighter spacing for compactness */
+  overflow-y: auto;
+}
+
+.row {
+  display: flex;
+  gap: 16px;
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+/* Labels */
+.fieldLabel {
+  font-family: var(--font-outfit);
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #334155;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-left: 2px;
+}
+
+.labelRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Generate Button */
+.generateBtn {
+  background: transparent;
+  border: none;
+  color: #2563eb;
+  font-family: var(--font-outfit);
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: background 0.2s;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+.generateBtn:hover {
+  background: #eff6ff;
+}
+
+/* --- INPUTS --- */
+.inputContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Shared Input Styles */
+.input,
+.inputCode,
+.select {
+  width: 100%;
+  padding: 12px 14px;
+  font-family: var(--font-outfit); /* Force Outfit */
+  font-size: 1rem;
+  font-weight: 600;
+  color: #0f172a;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.input::placeholder {
+  color: #cbd5e1;
+  font-weight: 500;
+}
+
+.input:focus,
+.inputCode:focus,
+.select:focus {
+  background: #fff;
+  border-color: #0f172a;
+  box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.05);
+}
+
+/* Specific Code Input Style */
+.inputCode {
+  font-family: monospace, var(--font-outfit); /* Hybrid stack */
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-weight: 700;
+  text-align: center;
+  background: #f1f5f9;
+}
+
+.suffixIcon {
+  position: absolute;
+  right: 14px;
+  color: #64748b;
+  font-weight: 800;
+  font-size: 0.9rem;
+  pointer-events: none;
+  background: #e2e8f0;
+  padding: 2px 6px;
+  border-radius: 6px;
+  font-family: var(--font-outfit);
+}
+
+/* --- STATUS TOGGLE --- */
+.statusContainer {
+  display: flex;
+  background: #f1f5f9;
+  padding: 4px;
+  border-radius: 10px;
+  gap: 4px;
+}
+
+.statusOption {
+  flex: 1;
+  border: none;
+  padding: 8px;
+  font-family: var(--font-outfit);
+  font-size: 0.85rem;
+  font-weight: 700;
+  border-radius: 8px;
+  cursor: pointer;
+  color: #64748b;
+  background: transparent;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.statusOption:hover {
+  color: #0f172a;
+}
+
+/* Active (Green) */
+.statusActive {
+  flex: 1;
+  border: 1px solid #dcfce7;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: default;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: #fff;
+  color: #16a34a; /* Brand Green Text */
+  font-family: var(--font-outfit);
+  font-weight: 800;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+}
+
+/* Expired (Red) */
+.statusExpired {
+  flex: 1;
+  border: 1px solid #fee2e2;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: default;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: #fff;
+  color: #ef4444;
+  font-family: var(--font-outfit);
+  font-weight: 800;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+}
+
+.editMeta {
+  margin-top: 10px;
+  padding: 10px;
+  background: #f8fafc;
+  border: 1px dashed #cbd5e1;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-outfit);
+  font-size: 0.8rem;
+  color: #64748b;
+  font-weight: 500;
+}
+.editMeta strong {
+  color: #0f172a;
+}
+
+/* --- FOOTER --- */
+.modalFooter {
+  padding: 20px 28px 28px 28px;
+  background: #ffffff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+  flex-shrink: 0;
+}
+
+.actionsRight {
+  display: flex;
+  gap: 12px;
+  margin-left: auto;
+}
+
+.cancelBtn {
+  padding: 12px 20px;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  color: #64748b;
+  font-family: var(--font-outfit);
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.cancelBtn:hover {
+  background: #f8fafc;
+  color: #0f172a;
+  border-color: #cbd5e1;
+}
+
+.saveBtn {
+  padding: 12px 24px;
+  background: #000;
+  border: 2px solid #000;
+  border-radius: 10px;
+  color: #ffffff;
+  font-family: var(--font-outfit);
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.saveBtn:hover {
+  background: #25d366; /* Brand Green */
+  border-color: #25d366;
+  color: #000;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 12px rgba(37, 211, 102, 0.2);
+}
+
+.deleteBtn {
+  background: #fff0f0;
+  border: none;
+  color: #ef4444;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+.deleteBtn:hover {
+  background: #fee2e2;
+  transform: scale(1.05);
+}
+
+/* --- MOBILE OPTIMIZATION (Compact) --- */
+@media (max-width: 600px) {
+  .modalBackdrop {
+    padding: 0;
+    align-items: flex-end; /* Bottom sheet */
+  }
+
+  .modalCard {
+    width: 100%;
+    max-width: 100%;
+    border-radius: 20px 20px 0 0;
+    max-height: 85vh;
+    border-bottom: none;
+  }
+
+  .modalHeader {
+    padding: 16px 20px;
+  }
+  .modalForm {
+    padding: 16px 20px;
+    gap: 16px;
+  }
+  .modalFooter {
+    padding: 16px 20px;
+    padding-bottom: 24px;
+  }
+
+  /* Stack buttons on mobile */
+  .modalFooter {
+    flex-direction: column-reverse;
+    gap: 12px;
+  }
+  .actionsRight {
+    width: 100%;
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 12px;
+  }
+  .saveBtn,
+  .cancelBtn {
+    width: 100%;
+    justify-content: center;
+    padding: 14px;
+  }
+  .deleteBtn {
+    width: 100%;
+    background: transparent;
+    padding: 12px;
+    height: auto;
+    text-decoration: underline;
+  }
+  .deleteBtn:hover {
+    background: transparent;
+  }
+}

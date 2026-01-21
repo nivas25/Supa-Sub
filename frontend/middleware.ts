@@ -6,12 +6,7 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Protected routes that require authentication
-  const protectedRoutes = [
-    "/dashboard",
-    "/dashboard/earnings",
-    "/dashboard/content",
-    "/dashboard/settings",
-  ];
+  const protectedRoutes = ["/home"];
 
   // Auth routes that should redirect to dashboard if already logged in
   const authRoutes = ["/auth/login"];
@@ -54,9 +49,9 @@ export async function middleware(request: NextRequest) {
       data: { session },
     } = await supabase.auth.getSession();
 
-    // If user is authenticated and trying to access auth routes, redirect to dashboard
+    // If user is authenticated and trying to access auth routes, redirect to home
     if (session && isAuthRoute) {
-      return NextResponse.redirect(new URL("/dashboard", request.url));
+      return NextResponse.redirect(new URL("/home", request.url));
     }
 
     // If user is not authenticated and trying to access protected routes, redirect to home

@@ -1,0 +1,390 @@
+/* --- CONTAINER --- */
+.previewWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 24px;
+  font-family: var(--font-outfit), "Inter", sans-serif;
+  overflow: hidden; /* Prevent parent scroll */
+}
+
+/* =========================================
+   1. MOBILE FRAME (Fluid & Responsive)
+   ========================================= */
+.mobileFrame {
+  width: 100%;
+  max-width: 360px; /* Standard Mobile Width */
+  height: 100%;
+  max-height: 740px; /* Cap height for realism */
+  background: #fff;
+  border: 10px solid #1a1a1a;
+  border-radius: 40px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+}
+
+/* Updated Mobile Header (Address Bar Style) */
+.mobileHeader {
+  flex-shrink: 0;
+  height: 48px;
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid #f1f5f9;
+  z-index: 10;
+}
+
+.addressPill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #f1f5f9;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #475569;
+}
+
+/* =========================================
+   2. DESKTOP FRAME (Fluid & Responsive)
+   ========================================= */
+.desktopFrame {
+  width: 100%;
+  max-width: 1000px;
+  height: 100%;
+  max-height: 800px;
+  background: #fff;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+/* Header */
+.browserHeader {
+  flex-shrink: 0;
+  height: 44px;
+  background: #f1f5f9;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  gap: 16px;
+}
+
+.trafficLights {
+  display: flex;
+  gap: 8px;
+  width: 54px;
+}
+.dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+}
+.red {
+  background: #ff5f57;
+  border: 1px solid #e0443e;
+}
+.yellow {
+  background: #febc2e;
+  border: 1px solid #dba524;
+}
+.green {
+  background: #28c840;
+  border: 1px solid #1aab29;
+}
+
+.urlBar {
+  flex: 1;
+  background: #fff;
+  height: 28px;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  color: #1e293b;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.desktopInner {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+}
+
+/* =========================================
+   3. CONTENT STYLING (Internal Scroll)
+   ========================================= */
+.scrollContainer {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden; /* No horizontal scroll */
+  background: #fff;
+  padding-bottom: 90px; /* Space for sticky footer */
+  width: 100%;
+}
+
+.scrollContainer::-webkit-scrollbar {
+  width: 5px;
+}
+.scrollContainer::-webkit-scrollbar-thumb {
+  background: #e2e8f0;
+  border-radius: 10px;
+}
+
+/* Banner */
+.coverArea {
+  width: 100%;
+  height: 160px;
+  position: relative;
+  background: #f8fafc;
+  flex-shrink: 0;
+}
+.bannerImg {
+  object-fit: cover;
+}
+.defaultBanner {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(120deg, #f1f5f9 0%, #e2e8f0 100%);
+}
+
+/* Profile Section */
+.profileBody {
+  padding: 0 24px;
+  text-align: center;
+  margin-top: -50px;
+  position: relative;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.avatarWrapper {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 4px solid #fff;
+  background: #fff;
+  margin-bottom: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  position: relative;
+  flex-shrink: 0;
+}
+
+.avatarImg {
+  object-fit: cover;
+}
+.avatarFallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  color: #cbd5e1;
+  background: #f8fafc;
+}
+
+/* Typography Optimized */
+.displayName {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 6px;
+  line-height: 1.2;
+}
+.verifiedIcon {
+  color: #25d366;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.bioText {
+  font-size: 0.95rem;
+  color: #475569;
+  line-height: 1.5;
+  font-weight: 400;
+  max-width: 460px;
+  margin: 0 auto;
+  word-wrap: break-word;
+}
+
+/* Stats */
+.cleanStats {
+  display: flex;
+  flex-wrap: wrap; /* Allow wrapping on very small screens */
+  justify-content: center;
+  gap: 8px;
+  margin: 20px 0;
+}
+.statPill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #fff;
+  padding: 6px 14px;
+  border-radius: 100px;
+  border: 1px solid #e2e8f0;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #334155;
+  white-space: nowrap;
+}
+
+/* Links List */
+.accessList {
+  width: 100%;
+  max-width: 500px;
+  margin: 24px auto 0;
+  text-align: left;
+}
+
+.listHeader {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #94a3b8;
+  margin-bottom: 12px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  border-bottom: 1px solid #f1f5f9;
+  padding-bottom: 6px;
+}
+
+.platformGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.miniPlatformCard {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  padding: 10px 14px;
+  border-radius: 10px;
+  transition: all 0.2s;
+}
+
+.miniIconBox {
+  width: 36px;
+  height: 36px;
+  background: #f1f5f9;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  color: #0f172a;
+  flex-shrink: 0;
+}
+.miniInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  overflow: hidden;
+}
+.miniTitle {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #0f172a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.miniTag {
+  font-size: 0.7rem;
+  color: #64748b;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 30px;
+  border: 2px dashed #e2e8f0;
+  border-radius: 10px;
+  color: #94a3b8;
+  font-size: 0.85rem;
+}
+
+/* =========================================
+   4. BOTTOM ACTION BAR (Refined)
+   ========================================= */
+.actionDock {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  padding: 16px 24px; /* Tighter padding */
+  border-top: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  z-index: 20;
+}
+
+/* Price Row Layout */
+.priceContainer {
+  display: flex;
+  align-items: baseline; /* Align text bottom */
+  gap: 6px;
+}
+.priceValue {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1;
+}
+.priceFrequency {
+  font-size: 0.85rem;
+  color: #64748b;
+  font-weight: 600;
+}
+
+/* Button */
+.joinButton {
+  background: #000;
+  color: #fff;
+  height: 44px;
+  padding: 0 28px;
+  border-radius: 8px;
+  border: none;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  white-space: nowrap;
+}
+.joinButton:hover {
+  opacity: 0.9;
+}

@@ -1,0 +1,261 @@
+/* --- CONTAINER --- */
+.methodCard {
+  background: #fff;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+
+  margin-bottom: 24px;
+  font-family: var(--font-outfit), "Inter", sans-serif;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.methodCard:hover {
+  border-color: #94a3b8;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+}
+
+/* --- HEADER --- */
+.header {
+  /* BACKGROUND: Soft Mint Green */
+  background: #dcfce7;
+  /* Border to separate header from body */
+  border-bottom: 1px solid #86efac;
+
+  padding: 12px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.titleGroup {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 800;
+  font-size: 0.9rem;
+  /* TEXT: Solid Black */
+  color: #000;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.iconBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* ICON: Solid Black */
+  color: #000;
+  font-size: 1.1rem;
+}
+
+/* Active Status Badge */
+.statusBadge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #15803d;
+  background: #fff;
+  padding: 4px 10px;
+  border: 1px solid #bbf7d0;
+  border-radius: 100px;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  background: #22c55e;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px #dcfce7;
+}
+
+/* --- BODY --- */
+.body {
+  padding: 24px;
+}
+
+/* --- STATE A: CONNECTED --- */
+.connectedState {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.infoBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.idDisplay {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  padding: 8px 12px;
+  border-radius: 6px;
+}
+
+.codeText {
+  font-family: "Courier New", monospace;
+  font-weight: 600;
+  color: #0f172a;
+  font-size: 0.95rem;
+}
+
+.checkIcon {
+  color: #22c55e;
+  font-size: 1.1rem;
+}
+
+.disconnectBtn {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-family: var(--font-outfit), sans-serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: #64748b;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s;
+}
+
+.disconnectBtn:hover {
+  border-color: #ef4444;
+  color: #ef4444;
+  background: #fef2f2;
+}
+
+/* --- STATE B: FORM --- */
+.connectForm {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.inputStack {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.inputLabel {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #334155;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.input {
+  width: 100%;
+  padding: 12px 16px;
+  font-family: "Courier New", monospace;
+  font-size: 0.95rem;
+  color: #0f172a;
+  background: #fff;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.input:focus {
+  border-color: #94a3b8;
+  box-shadow: 0 0 0 3px #f1f5f9;
+}
+
+.actionRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 4px;
+}
+
+.connectBtn {
+  background: #0f172a;
+  color: #fff;
+  border: 1px solid #0f172a;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-family: var(--font-outfit), sans-serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s;
+}
+
+.connectBtn:hover:not(:disabled) {
+  background: #25d366;
+  border-color: #25d366;
+  color: #000;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2);
+}
+
+.connectBtn:disabled {
+  background: #f1f5f9;
+  border-color: #e2e8f0;
+  color: #94a3b8;
+  cursor: not-allowed;
+}
+
+.helpLink {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  color: #64748b;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.helpLink:hover {
+  color: #0f172a;
+  text-decoration: underline;
+}
+
+/* --- MOBILE --- */
+@media (max-width: 600px) {
+  .connectedState {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  .disconnectBtn {
+    width: 100%;
+    justify-content: center;
+  }
+  .actionRow {
+    flex-direction: column-reverse;
+    gap: 16px;
+    align-items: stretch;
+  }
+  .connectBtn {
+    justify-content: center;
+  }
+  .helpLink {
+    justify-content: center;
+  }
+}

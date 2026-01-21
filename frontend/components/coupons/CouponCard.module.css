@@ -1,0 +1,392 @@
+/* --- TICKET CONTAINER --- */
+.couponCard {
+  display: flex;
+  flex-direction: row;
+  background: #fff;
+  border: 3px solid #000;
+  border-radius: 12px;
+  box-shadow: 6px 6px 0 #000;
+  min-height: 220px;
+  cursor: pointer;
+  transition:
+    transform 0.1s,
+    box-shadow 0.1s;
+  overflow: hidden;
+  position: relative;
+  font-family: var(--font-outfit), sans-serif;
+
+  /* Paper Noise Texture */
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+}
+
+.couponCard:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 10px 10px 0 #000;
+}
+
+.couponCard:active {
+  transform: translate(2px, 2px);
+  box-shadow: 4px 4px 0 #000;
+}
+
+/* --- COLOR THEMES --- */
+/* 1. Pink */
+.theme0 {
+  background-color: #fff0fa;
+}
+.theme0 .accentBg {
+  background: #ff90e8;
+}
+
+/* 2. Yellow */
+.theme1 {
+  background-color: #fffdf0;
+}
+.theme1 .accentBg {
+  background: #ffc900;
+}
+
+/* 3. Cyan */
+.theme2 {
+  background-color: #f0fbff;
+}
+.theme2 .accentBg {
+  background: #00e5ff;
+}
+
+/* 4. Lime */
+.theme3 {
+  background-color: #f6fff0;
+}
+.theme3 .accentBg {
+  background: #ccff00;
+}
+
+/* 5. Purple */
+.theme4 {
+  background-color: #f8f0ff;
+}
+.theme4 .accentBg {
+  background: #d4a5ff;
+}
+
+/* Expired State (Overrides themes) */
+.cardExpired {
+  opacity: 0.7;
+  background-color: #f1f5f9;
+  border-color: #64748b;
+  box-shadow: 6px 6px 0 #64748b;
+  filter: grayscale(1);
+}
+.cardExpired:hover {
+  transform: none;
+  box-shadow: 6px 6px 0 #64748b;
+  cursor: not-allowed;
+}
+
+/* --- LEFT SECTION --- */
+.cardMain {
+  flex: 1.6;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.topRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Status Badge */
+.statusBadgeActive {
+  font-size: 0.7rem;
+  font-weight: 900;
+  padding: 6px 10px;
+  border: 2px solid #000;
+  color: #000;
+  text-transform: uppercase;
+  box-shadow: 2px 2px 0 #000;
+  display: inline-block;
+}
+
+.statusBadgeExpired {
+  font-size: 0.7rem;
+  font-weight: 900;
+  padding: 6px 10px;
+  border: 2px solid #64748b;
+  color: #64748b;
+  text-transform: uppercase;
+  text-decoration: line-through;
+  background: transparent;
+}
+
+.typeLabel {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: #000;
+  opacity: 0.5;
+  text-transform: uppercase;
+}
+
+/* Discount */
+.discountRow {
+  margin: 12px 0;
+  display: flex;
+  align-items: center;
+}
+
+.discountValue {
+  font-size: 4rem;
+  font-weight: 900;
+  line-height: 0.9;
+  letter-spacing: -2px;
+  color: #000;
+}
+
+.discountSymbol {
+  font-size: 1rem;
+  font-weight: 800;
+  line-height: 1.1;
+  margin-left: 10px;
+  color: #000;
+  text-transform: uppercase;
+}
+
+/* Progress Bar */
+.usageSection {
+  margin-top: auto;
+}
+
+.progressBarContainer {
+  width: 100%;
+  height: 14px;
+  background: #fff;
+  border: 2px solid #000;
+  border-radius: 100px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.progressBarFill {
+  height: 100%;
+  border-right: 2px solid #000;
+  transition: width 0.3s ease;
+}
+
+.usageMeta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #64748b;
+}
+.usageMeta strong {
+  color: #000;
+}
+
+/* --- TEAR LINE --- */
+.tearLine {
+  position: relative;
+  width: 28px;
+  display: flex;
+  justify-content: center;
+  background: transparent;
+  z-index: 5;
+}
+
+.dashedBorder {
+  height: 88%;
+  border-left: 3px dashed #cbd5e1;
+}
+
+.notchStart,
+.notchEnd {
+  position: absolute;
+  width: 20px;
+  height: 10px;
+  background: #fff; /* Match Page BG */
+  border: 3px solid #000;
+  z-index: 10;
+}
+
+.notchStart {
+  top: -3px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-top: none;
+  border-radius: 0 0 20px 20px;
+}
+
+.notchEnd {
+  bottom: -3px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-bottom: none;
+  border-radius: 20px 20px 0 0;
+  border-top: 3px solid #000;
+}
+
+/* --- RIGHT STUB --- */
+.cardStub {
+  flex: 0.8;
+  background: rgba(0, 0, 0, 0.03);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 16px;
+  position: relative;
+}
+
+.punchHole {
+  width: 12px;
+  height: 12px;
+  background: #fff;
+  border: 2px solid #cbd5e1;
+  border-radius: 50%;
+  position: absolute;
+  top: 12px;
+  right: 12px;
+}
+
+.barcodeArea {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin-top: 10px;
+}
+
+.barcode {
+  width: 100%;
+  height: 40px;
+  background: repeating-linear-gradient(
+    90deg,
+    #000 0px,
+    #000 3px,
+    transparent 3px,
+    transparent 5px,
+    #000 5px,
+    #000 8px,
+    transparent 8px,
+    transparent 10px,
+    #000 10px,
+    #000 11px,
+    transparent 11px,
+    transparent 15px
+  );
+  opacity: 0.8;
+}
+
+.fakeSerial {
+  font-family: monospace;
+  font-size: 0.5rem;
+  color: #94a3b8;
+  letter-spacing: 2px;
+}
+
+.stubContent {
+  width: 100%;
+  text-align: center;
+}
+
+.codeLabel {
+  font-size: 0.6rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: #64748b;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.codeBox {
+  font-family: monospace;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #000;
+  border: 2px dashed #000;
+  padding: 8px 4px;
+  background: #fff;
+  border-radius: 6px;
+  width: 100%;
+  word-break: break-all;
+}
+
+/* --- MOBILE RESPONSIVE FIX (Keep Horizontal) --- */
+@media (max-width: 600px) {
+  /* Keep Row Layout but shrink height */
+  .couponCard {
+    flex-direction: row;
+    min-height: 170px; /* Smaller height for mobile */
+  }
+
+  /* Shrink Left Section */
+  .cardMain {
+    padding: 16px 12px; /* Less padding */
+    gap: 0;
+  }
+
+  .discountValue {
+    font-size: 2.8rem; /* Smaller text */
+  }
+
+  .discountSymbol {
+    font-size: 0.8rem;
+    margin-left: 6px;
+  }
+
+  .statusBadgeActive,
+  .statusBadgeExpired {
+    padding: 4px 6px;
+    font-size: 0.6rem;
+  }
+
+  .progressBarContainer {
+    height: 10px;
+  }
+
+  /* Tear Line: Make Thinner */
+  .tearLine {
+    width: 20px;
+  }
+  .dashedBorder {
+    border-left-width: 2px;
+  }
+  /* Keep notches top/bottom, just smaller */
+  .notchStart {
+    width: 14px;
+    height: 7px;
+    border-radius: 0 0 14px 14px;
+  }
+  .notchEnd {
+    width: 14px;
+    height: 7px;
+    border-radius: 14px 14px 0 0;
+  }
+
+  /* Shrink Right Stub */
+  .cardStub {
+    padding: 16px 10px;
+    flex: 0.7; /* Make stub slightly narrower */
+  }
+
+  .barcode {
+    height: 28px; /* Shorter barcode */
+  }
+
+  .codeBox {
+    font-size: 0.9rem; /* Smaller Code */
+    padding: 6px 2px;
+  }
+
+  .punchHole {
+    width: 8px;
+    height: 8px;
+    top: 6px;
+    right: 6px;
+  }
+}

@@ -1,0 +1,371 @@
+/* HomeNavbar.module.css */
+
+/* --- CORE LAYOUT --- */
+.navWrapper {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  background: #ffffff;
+  border-bottom: 2px solid #000000;
+  z-index: 1000;
+  padding: 0 24px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+}
+
+.navMain {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+/* --- BRAND --- */
+.brandSection {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  flex-shrink: 0;
+}
+
+.brandLogo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  cursor: pointer;
+  text-decoration: none;
+  user-select: none;
+}
+
+.wordSub {
+  font-family: var(--font-outfit), sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800; /* Bold */
+  letter-spacing: -0.05em;
+  color: #000;
+  line-height: 1;
+}
+
+.wordStarter {
+  font-family: var(--font-outfit), sans-serif;
+  font-size: 1.5rem;
+  font-weight: 300; /* Light */
+  letter-spacing: -0.03em;
+  color: #444;
+  line-height: 1;
+}
+
+.boltCircle {
+  order: -1;
+  width: 28px;
+  height: 28px;
+  background: #25d366;
+  border: 2px solid #000;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000;
+  margin-right: 8px;
+  box-shadow: 2px 2px 0 #000;
+}
+
+/* --- DESKTOP NAV --- */
+.desktopNav {
+  display: none;
+  align-items: center;
+  gap: 4px;
+}
+
+.navLink {
+  text-decoration: none;
+  color: #555;
+  font-weight: 400; /* Normal weight */
+  font-size: 0.95rem;
+  padding: 8px 16px;
+  border-radius: 20px;
+  transition: all 0.2s ease;
+  font-family: var(--font-outfit), sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.linkIcon {
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  opacity: 0.7;
+}
+
+.navLink:hover {
+  color: #000;
+  background: #f1f5f9;
+}
+
+.activeLink {
+  color: #000;
+  background: #eef2f6;
+  border: 1px solid #000;
+  font-weight: 500;
+}
+
+/* --- ACTIONS --- */
+.navActions {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+/* --- PROPER NEUMORPHIC TOGGLE (Desktop) --- */
+.modeSwitcher {
+  /* FIXED: Ensure it is hidden by default on mobile */
+  display: none;
+  background: #e0e5ec;
+  padding: 6px;
+  border-radius: 50px;
+  gap: 8px;
+  /* Deep Pressed Track Effect */
+  box-shadow:
+    inset 5px 5px 10px #a3b1c6,
+    inset -5px -5px 10px #ffffff;
+}
+
+.modeBtn {
+  border: none;
+  background: transparent;
+  color: #7d899b;
+  font-family: var(--font-outfit);
+  font-weight: 600;
+  font-size: 0.85rem;
+  padding: 10px 24px;
+  border-radius: 40px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  letter-spacing: 0.5px;
+}
+
+.modeBtn:hover {
+  color: #4a5568;
+}
+
+.modeBtnActive {
+  color: #25d366; /* Brand Green */
+  background: #e0e5ec;
+  /* Floating Pop */
+  box-shadow:
+    6px 6px 12px #a3b1c6,
+    -6px -6px 12px #ffffff;
+  transform: scale(1.02);
+  font-weight: 700;
+}
+
+/* --- PROFILE --- */
+.profileWrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.profileCircle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid #000;
+  background: #f1f5f9;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.avatarPlaceholder {
+  color: #000;
+}
+
+.logoutBtn {
+  display: none;
+  background: #fff;
+  border: 2px solid #000;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 2px 2px 0 #000;
+  transition: all 0.1s;
+}
+.logoutBtn:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0 #000;
+}
+.logoutBtn:active {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0 #000;
+}
+
+.hamburger {
+  display: flex;
+  background: #fff;
+  border: 2px solid #000;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 3px 3px 0 #000;
+  cursor: pointer;
+}
+
+/* --- MEDIA QUERIES --- */
+@media (min-width: 900px) {
+  .hamburger {
+    display: none;
+  }
+  .desktopNav {
+    display: flex;
+  }
+  .logoutBtn {
+    display: flex;
+  }
+  .mobileMenu {
+    display: none;
+  }
+
+  /* FIXED: Only show modeSwitcher on desktop */
+  .modeSwitcher {
+    display: flex;
+    align-items: center;
+  }
+}
+
+/* --- MOBILE DRAWER --- */
+.mobileOverlay {
+  position: fixed;
+  top: 72px;
+  left: 0;
+  width: 100%;
+  height: calc(100vh - 72px);
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 998;
+}
+
+.mobileMenu {
+  position: fixed;
+  top: 72px;
+  right: -100%;
+  width: 85%;
+  max-width: 300px;
+  height: calc(100vh - 72px);
+  background: #fff;
+  border-left: 2px solid #000;
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  transition: right 0.3s ease;
+  z-index: 999;
+}
+.menuOpen {
+  right: 0;
+}
+
+.mobileUserCard {
+  background: #f8fafc;
+  border: 2px solid #000;
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  box-shadow: 4px 4px 0 #000;
+}
+
+.mobileNavList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.mobileNavLink {
+  padding: 12px;
+  font-weight: 400; /* Normal weight */
+  color: #000;
+  text-decoration: none;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: background 0.2s;
+}
+.mobileNavLink:active {
+  background: #f1f5f9;
+}
+
+.mobileSwitcherContainer {
+  margin-top: auto;
+  border-top: 2px solid #f1f5f9;
+  padding-top: 20px;
+}
+
+/* --- MOBILE NEUMORPHIC TOGGLE --- */
+.mobileSwitcherBtns {
+  display: flex;
+  background: #e0e5ec;
+  padding: 6px;
+  border-radius: 16px;
+  gap: 8px;
+  margin-bottom: 20px;
+  /* Deep Track */
+  box-shadow:
+    inset 4px 4px 8px #a3b1c6,
+    inset -4px -4px 8px #ffffff;
+}
+
+.mSwitchBtn {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  background: transparent;
+  border-radius: 12px;
+  font-weight: 600;
+  color: #7d899b;
+  cursor: pointer;
+  font-family: var(--font-outfit), sans-serif;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  transition: all 0.2s;
+}
+
+.mSwitchBtnActive {
+  background: #e0e5ec;
+  color: #25d366;
+  /* Floating Pop */
+  box-shadow:
+    5px 5px 10px #a3b1c6,
+    -5px -5px 10px #ffffff;
+  transform: scale(1.02);
+}
+
+.mobileLogoutBtn {
+  width: 100%;
+  padding: 14px;
+  background: #fee2e2;
+  color: #ef4444;
+  border: 2px solid #ef4444;
+  border-radius: 8px;
+  font-weight: 800;
+  cursor: pointer;
+  text-transform: uppercase;
+}

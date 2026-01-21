@@ -1,0 +1,232 @@
+/* Container Layout */
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* --- THE MAIN CARD --- */
+.ledgerCard {
+  background: #fff;
+  /* CLEAN FLAT BORDER - NO SHADOW */
+  border: 2px solid #000;
+  border-radius: 12px;
+  box-shadow: none;
+
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  transition: border-color 0.2s;
+}
+
+/* Optional: Subtle hover effect on the border only */
+.ledgerCard:hover {
+  border-color: #333;
+}
+
+/* --- 1. STATS HEADER --- */
+.statsHeader {
+  display: flex;
+  padding: 24px;
+  background: #f8fafc;
+  /* Separator line */
+  border-bottom: 2px solid #000;
+}
+
+.statBlock {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.statLabel {
+  font-family: var(--font-outfit), sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.statValue {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-outfit), sans-serif;
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -1px;
+}
+
+.greenText {
+  color: #16a34a;
+}
+
+.trendIcon {
+  font-size: 1.2rem;
+  color: #16a34a;
+}
+.trendIconGray {
+  font-size: 1.2rem;
+  color: #94a3b8;
+}
+
+.verticalDivider {
+  width: 1px;
+  background: #cbd5e1;
+  margin: 0 24px;
+}
+
+/* --- 2. FEED LIST --- */
+.feedList {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px; /* Tighter gap */
+  flex: 1;
+}
+
+.listLabel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-outfit), sans-serif;
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+
+.feedItem {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px;
+  border-radius: 8px;
+  transition: background 0.2s;
+  /* Optional: very subtle separator */
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.feedItem:last-child {
+  border-bottom: none;
+}
+
+.feedItem:hover {
+  background: #f8fafc;
+}
+
+/* Icon Styles */
+.iconCircle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.iconGreen {
+  background: #dcfce7;
+  color: #16a34a;
+  /* Removed border for cleaner look */
+}
+
+.iconBlack {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+/* Text Details */
+.itemDetails {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.itemTitle {
+  font-family: var(--font-outfit), sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.itemDate {
+  font-size: 0.75rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+/* Right Side */
+.itemRight {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.itemAmount {
+  font-family: var(--font-outfit), sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.textGreen {
+  color: #16a34a;
+}
+.textBlack {
+  color: #0f172a;
+}
+
+.statusBadge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #94a3b8;
+  letter-spacing: 0.5px;
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+  color: #d97706;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* --- FOOTER BUTTON --- */
+.viewAllBtn {
+  width: 100%;
+  padding: 18px;
+  background: #fff;
+  border: none;
+  border-top: 2px solid #000; /* Separator matching border */
+  font-family: var(--font-outfit), sans-serif;
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.viewAllBtn:hover {
+  background: #000;
+  color: #fff;
+}

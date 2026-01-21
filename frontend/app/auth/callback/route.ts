@@ -5,18 +5,16 @@ export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get("code");
 
-  // 'next' allows you to redirect to a specific page after login if needed
-  const next = searchParams.get("next") ?? "/dashboard";
+  // CHANGED: Default to "/pages" instead of "/home"
+  const next = searchParams.get("next") ?? "/pages";
 
   if (code) {
     const supabase = await createClient();
 
     // Exchange the code for a session
-    // This is what officially logs the user in
     const { error } = await supabase.auth.exchangeCodeForSession(code);
 
     if (!error) {
-      // We use a permanent redirect logic to clean up browser history
       const forwardTo = new URL(next, origin);
       return NextResponse.redirect(forwardTo);
     }

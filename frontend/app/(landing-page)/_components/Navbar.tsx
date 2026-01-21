@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import styles from "./Navbar.module.css";
 import { RiFlashlightFill } from "react-icons/ri";
-import AuthModal from "./AuthModal"; // Ensure this path matches your directory
+import AuthModal from "./AuthModal"; // RESTORED THIS IMPORT
 
 const NAV_ITEMS = [
   { id: "features", label: "Features" },
@@ -16,11 +16,11 @@ const NAV_ITEMS = [
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isAuthOpen, setIsAuthOpen] = useState(false); // Controls the floating login modal
+  const [isAuthOpen, setIsAuthOpen] = useState(false); // RESTORED STATE
   const [activeSection, setActiveSection] = useState("");
   const [isCollapsed, setIsCollapsed] = useState(false);
 
-  // Scroll Spy to highlight active section
+  // Scroll Spy Logic
   useEffect(() => {
     const handleScroll = () => {
       const scrollPosition = window.scrollY + 200;
@@ -42,7 +42,7 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Collapse Logic for the "Sticky" effect
+  // Sticky Collapse Logic
   useEffect(() => {
     const handleCollapse = () => {
       setIsCollapsed(window.scrollY > 100);
@@ -61,24 +61,17 @@ export default function Navbar() {
       const offset = 120;
       const elementPosition =
         element.getBoundingClientRect().top + window.scrollY;
-      window.scrollTo({
-        top: elementPosition - offset,
-        behavior: "smooth",
-      });
+      window.scrollTo({ top: elementPosition - offset, behavior: "smooth" });
     }
   };
 
   return (
     <>
       <div
-        className={`${styles.navWrapper} ${
-          isCollapsed ? styles.collapsedWrapper : ""
-        }`}
+        className={`${styles.navWrapper} ${isCollapsed ? styles.collapsedWrapper : ""}`}
       >
         <nav
-          className={`${styles.navContainer} ${
-            isCollapsed ? styles.collapsed : ""
-          }`}
+          className={`${styles.navContainer} ${isCollapsed ? styles.collapsed : ""}`}
         >
           {/* BRAND MARK */}
           <Link
@@ -103,16 +96,14 @@ export default function Navbar() {
                   e.preventDefault();
                   scrollToSection(item.id);
                 }}
-                className={`${styles.navLink} ${
-                  activeSection === item.id ? styles.activeLink : ""
-                }`}
+                className={`${styles.navLink} ${activeSection === item.id ? styles.activeLink : ""}`}
               >
                 {item.label}
               </a>
             ))}
           </div>
 
-          {/* DESKTOP AUTH - Triggers Modal */}
+          {/* DESKTOP AUTH - RESTORED: Opens Modal */}
           <div className={styles.desktopAuth}>
             <button
               onClick={() => setIsAuthOpen(true)}
@@ -124,9 +115,7 @@ export default function Navbar() {
 
           {/* HAMBURGER TOGGLE */}
           <button
-            className={`${styles.mobileToggle} ${
-              isMenuOpen ? styles.open : ""
-            }`}
+            className={`${styles.mobileToggle} ${isMenuOpen ? styles.open : ""}`}
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label="Menu"
           >
@@ -137,9 +126,7 @@ export default function Navbar() {
 
           {/* MOBILE MENU */}
           <div
-            className={`${styles.mobileMenu} ${
-              isMenuOpen ? styles.menuActive : ""
-            }`}
+            className={`${styles.mobileMenu} ${isMenuOpen ? styles.menuActive : ""}`}
           >
             {NAV_ITEMS.map((item) => (
               <a
@@ -149,21 +136,20 @@ export default function Navbar() {
                   e.preventDefault();
                   scrollToSection(item.id);
                 }}
-                className={`${styles.mobileLink} ${
-                  activeSection === item.id ? styles.activeLink : ""
-                }`}
+                className={`${styles.mobileLink} ${activeSection === item.id ? styles.activeLink : ""}`}
               >
                 {item.label}
               </a>
             ))}
             <hr className={styles.divider} />
 
+            {/* MOBILE AUTH - RESTORED: Opens Modal */}
             <button
+              className={styles.mobileLoginBtn}
               onClick={() => {
                 setIsMenuOpen(false);
                 setIsAuthOpen(true);
               }}
-              className={styles.mobileLoginBtn}
             >
               Login
             </button>
@@ -171,7 +157,7 @@ export default function Navbar() {
         </nav>
       </div>
 
-      {/* FLOATING AUTH MODAL */}
+      {/* RESTORED: Floating Auth Modal Component */}
       <AuthModal isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} />
     </>
   );

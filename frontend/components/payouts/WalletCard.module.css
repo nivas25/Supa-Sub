@@ -1,0 +1,249 @@
+/* --- CONTAINER --- */
+.statementCard {
+  background: #fff;
+  /* Solid Black Border */
+  border: 2px solid #000;
+  border-radius: 12px;
+  /* Flat at rest */
+  box-shadow: none;
+
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  font-family: var(--font-outfit), "Inter", sans-serif;
+  margin-bottom: 24px;
+  transition:
+    transform 0.2s cubic-bezier(0.25, 1, 0.5, 1),
+    box-shadow 0.2s;
+}
+
+/* HOVER STATE: Pop Effect */
+.statementCard:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 #000;
+}
+
+/* --- 1. HEADER (The "Colour Bro" Update) --- */
+.headerStrip {
+  /* CHANGED: Mint Green Background */
+  background: #dcfce7;
+  /* Solid Black Divider */
+  border-bottom: 2px solid #000;
+  padding: 12px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.brandGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 800;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+  color: #000; /* Black Text on Green */
+  text-transform: uppercase;
+}
+
+.icon {
+  font-size: 1.1rem;
+  color: #000;
+}
+
+.dateLabel {
+  font-family: "Courier New", monospace;
+  font-weight: 700;
+  font-size: 0.8rem;
+  color: #000; /* Sharper Black for date too */
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+/* --- 2. BODY --- */
+.cardBody {
+  display: flex;
+  align-items: stretch;
+  min-height: 140px;
+}
+
+/* --- LEFT: VALUE --- */
+.valueSection {
+  flex: 1;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* Subtle dot pattern background */
+  background-image: radial-gradient(#e2e8f0 1.5px, transparent 1.5px);
+  background-size: 20px 20px;
+}
+
+.moneyRow {
+  display: flex;
+  align-items: baseline;
+  line-height: 1;
+  margin-bottom: 12px;
+  color: #000;
+}
+
+.symbol {
+  font-family: var(--font-outfit), sans-serif;
+  font-size: 2.2rem;
+  font-weight: 500;
+  margin-right: 4px;
+  color: #64748b;
+  transform: translateY(-4px);
+}
+
+.amount {
+  font-family: var(--font-outfit), sans-serif;
+  font-size: 4rem;
+  font-weight: 800;
+  letter-spacing: -2px;
+  color: #000;
+  font-variant-numeric: tabular-nums;
+}
+
+.cents {
+  font-family: var(--font-outfit), sans-serif;
+  font-size: 2.2rem;
+  font-weight: 600;
+  color: #94a3b8;
+}
+
+/* Status Badge */
+.statusRow {
+  display: flex;
+}
+
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border: 2px solid #000;
+  border-radius: 100px;
+  font-weight: 700;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: #fff;
+}
+
+.verified {
+  background: #fff;
+  color: #15803d;
+}
+
+.dotGreen {
+  width: 6px;
+  height: 6px;
+  background: #22c55e;
+  border-radius: 50%;
+  border: 1px solid #000;
+}
+
+.warning {
+  background: #fff;
+  color: #b91c1c;
+  border-color: #ef4444;
+}
+
+/* --- RIGHT: ACTION --- */
+.actionSection {
+  padding: 24px;
+  /* Solid Black Divider */
+  border-left: 2px solid #000;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* The Button */
+.withdrawBtn {
+  height: 52px;
+  padding: 0 24px;
+  background: #25d366; /* Brand Green */
+  color: #000;
+  border: 2px solid #000;
+  border-radius: 8px;
+
+  font-family: var(--font-outfit), sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-transform: none;
+
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.2s ease;
+}
+
+.btnIcon {
+  font-size: 1.2rem;
+}
+
+.withdrawBtn:hover:not(:disabled) {
+  transform: translate(-2px, -2px);
+  box-shadow: 4px 4px 0 #000; /* Pop Effect */
+  background: #22c55e;
+}
+
+.withdrawBtn:active:not(:disabled) {
+  transform: translate(0, 0);
+  box-shadow: none;
+}
+
+.withdrawBtn:disabled {
+  background: #f1f5f9;
+  border-color: #e2e8f0;
+  color: #94a3b8;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.spin {
+  font-size: 1.2rem;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* --- MOBILE --- */
+@media (max-width: 700px) {
+  .cardBody {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .valueSection {
+    border-bottom: 2px solid #000;
+    padding: 20px;
+    align-items: center;
+  }
+
+  .moneyRow {
+    margin-bottom: 16px;
+  }
+
+  .actionSection {
+    border-left: none;
+    padding: 20px;
+  }
+
+  .withdrawBtn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .amount {
+    font-size: 3.5rem;
+  }
+}
