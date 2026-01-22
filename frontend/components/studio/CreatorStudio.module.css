@@ -10,7 +10,7 @@
 }
 
 /* =========================================
-   LEFT COLUMN: EDITOR
+   LEFT COLUMN: EDITOR FORM
    ========================================= */
 .editorPane {
   /* Increased width for a bigger, friendlier form */
@@ -19,17 +19,15 @@
   height: 100%;
   overflow-y: auto;
   border-right: 1px solid #e2e8f0;
-
-  /* Increased padding to let the form breathe */
   padding: 48px;
-
   background: #fff;
   display: flex;
   flex-direction: column;
-  gap: 48px; /* More space between sections */
-  padding-bottom: 150px;
+  gap: 48px; /* Space between big sections */
+  padding-bottom: 150px; /* Space for scrolling past bottom */
 }
 
+/* Scrollbar styling */
 .editorPane::-webkit-scrollbar {
   width: 6px;
 }
@@ -42,7 +40,6 @@
 .paneHeader {
   margin-bottom: 12px;
 }
-
 .headerRow {
   display: flex;
   align-items: center;
@@ -50,25 +47,22 @@
 }
 
 .headerIconBox {
-  width: 56px; /* Slightly bigger */
+  width: 56px;
   height: 56px;
   background: #000;
-  border-radius: 16px; /* softer corners */
+  border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.1);
   flex-shrink: 0;
   transform: rotate(-3deg);
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); /* Bouncy transition */
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
-
 .paneHeader:hover .headerIconBox {
   transform: rotate(3deg) scale(1.1);
-  background: #25d366; /* Pop of color on hover */
-  box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.2);
+  background: #25d366;
 }
-
 .headerIcon {
   color: #fff;
   font-size: 1.8rem;
@@ -79,7 +73,6 @@
   flex-direction: column;
   gap: 4px;
 }
-
 .headerTitle {
   font-size: 2.2rem;
   font-weight: 800;
@@ -87,11 +80,9 @@
   line-height: 0.95;
   letter-spacing: -1.5px;
 }
-
 .accentDot {
   color: #25d366;
 }
-
 .headerSubtitle {
   font-size: 1rem;
   color: #64748b;
@@ -100,7 +91,7 @@
 }
 
 /* =========================================
-   SECTIONS & INPUTS
+   SECTIONS & INPUTS (The part that looked awkward)
    ========================================= */
 .configSection {
   display: flex;
@@ -135,7 +126,7 @@
   color: #000;
 }
 
-/* Inputs */
+/* Input Stacks */
 .inputStack {
   display: flex;
   flex-direction: column;
@@ -151,11 +142,10 @@
   letter-spacing: 0.05em;
 }
 
-/* --- OPTIMIZED INPUTS --- */
+/* --- THE CLEAN INPUT STYLES --- */
 .cleanInput,
 .cleanTextArea {
   width: 100%;
-  /* Bigger padding for chunky feel */
   padding: 16px 20px;
   background: #fff;
   border: 2px solid #e2e8f0;
@@ -165,26 +155,21 @@
   font-weight: 500;
   color: #0f172a;
   outline: none;
-  /* Bouncy transition */
   transition: all 0.25s cubic-bezier(0.25, 1, 0.5, 1);
 }
-
-/* Focus State: Moves UP only (no left cutting), Deep Shadow */
 .cleanInput:focus,
 .cleanTextArea:focus {
   border-color: #000;
-  /* Shadow goes bottom-right, looks like it pops up */
   box-shadow: 6px 6px 0 #000;
-  transform: translateY(-3px); /* Move UP only */
+  transform: translateY(-3px);
 }
-
 .cleanTextArea {
   min-height: 120px;
   resize: vertical;
   line-height: 1.5;
 }
 
-/* URL Input Wrapper */
+/* URL Input */
 .urlInputWrapper {
   display: flex;
   align-items: center;
@@ -192,18 +177,15 @@
   border: 2px solid #e2e8f0;
   border-radius: 14px;
   padding: 0 20px;
-  height: 60px; /* Taller */
+  height: 60px;
   transition: all 0.25s cubic-bezier(0.25, 1, 0.5, 1);
-  font-family: inherit;
 }
-
 .urlInputWrapper:focus-within {
   border-color: #000;
   background: #fff;
   box-shadow: 6px 6px 0 #000;
-  transform: translateY(-3px); /* Move UP only */
+  transform: translateY(-3px);
 }
-
 .urlPrefix {
   color: #94a3b8;
   font-weight: 600;
@@ -222,14 +204,14 @@
   margin-left: 4px;
 }
 
-/* Visuals Buttons */
+/* Visuals Grid */
 .visualGrid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
 }
 .uploadBtn {
-  height: 140px; /* Bigger target */
+  height: 140px;
   background: #f8fafc;
   border: 2px dashed #cbd5e1;
   border-radius: 18px;
@@ -254,7 +236,7 @@
   box-shadow: 4px 4px 0 #cbd5e1;
 }
 
-/* Access Toggles */
+/* Platform Toggles */
 .platformStack {
   display: flex;
   flex-direction: column;
@@ -319,7 +301,7 @@
   bottom: 4px;
   background-color: white;
   border-radius: 50%;
-  transition: 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: 0.3s;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 input:checked + .slider {
@@ -329,6 +311,7 @@ input:checked + .slider:before {
   transform: translateX(22px);
 }
 
+/* Expanded Link Input */
 .platExpand {
   margin-top: 20px;
   padding-top: 20px;
@@ -341,7 +324,6 @@ input:checked + .slider:before {
   border: 2px solid #e2e8f0;
   border-radius: 10px;
   outline: none;
-  font-family: inherit;
   transition: all 0.2s;
 }
 .miniInput:focus {
@@ -370,7 +352,6 @@ input:checked + .slider:before {
   box-shadow: 6px 6px 0 #000;
   transform: translateY(-2px);
 }
-
 .currency {
   font-weight: 800;
   font-size: 1.5rem;
@@ -393,7 +374,7 @@ input:checked + .slider:before {
   letter-spacing: 0.05em;
 }
 
-/* --- FINAL LAUNCH BUTTON --- */
+/* Launch Button */
 .launchPageActionBtn {
   margin-top: 40px;
   width: 100%;
@@ -410,23 +391,16 @@ input:checked + .slider:before {
   justify-content: center;
   gap: 12px;
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: all 0.2s;
   font-family: inherit;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  position: relative;
   z-index: 10;
 }
-
 .launchPageActionBtn:hover {
-  background: #25d366; /* Green */
+  background: #25d366;
   color: #000;
   transform: translateY(-4px) scale(1.01);
   box-shadow: 0 14px 24px -10px rgba(37, 211, 102, 0.6);
-}
-
-.launchPageActionBtn:active {
-  transform: translateY(2px) scale(0.98);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* =========================================
@@ -469,7 +443,6 @@ input:checked + .slider:before {
   color: #64748b;
   cursor: pointer;
   transition: all 0.2s;
-  font-family: inherit;
 }
 .deviceActive {
   background: #000;
@@ -484,9 +457,7 @@ input:checked + .slider:before {
   justify-content: center;
   padding: 80px 40px 40px;
   transform: scale(0.95);
-  transition: transform 0.3s ease;
 }
-
 @media (max-width: 1400px) {
   .scaleWrapper {
     transform: scale(0.85);
@@ -494,7 +465,7 @@ input:checked + .slider:before {
 }
 
 /* =========================================
-   MOBILE & RESPONSIVE
+   MOBILE RESPONSIVE
    ========================================= */
 .mobileNav {
   display: none;
@@ -506,7 +477,6 @@ input:checked + .slider:before {
     height: auto;
     overflow: visible;
   }
-
   .editorPane {
     width: 100%;
     min-width: 0;
@@ -515,81 +485,56 @@ input:checked + .slider:before {
     height: auto;
     overflow: visible;
     padding-bottom: 40px;
-    gap: 32px;
   }
-
-  .headerIconBox {
-    width: 48px;
-    height: 48px;
-  }
-  .headerTitle {
-    font-size: 1.8rem;
-  }
-
   .previewPane {
     width: 100%;
-    height: 90vh; /* Dedicated height */
+    height: 90vh;
     min-height: 700px;
     border-top: 1px solid #cbd5e1;
     background: #f1f5f9;
   }
-
-  /* Hide Desktop Toggle on Mobile */
   .deviceSwitcher {
     display: none;
   }
-
-  /* Force Mobile Preview Scale/Position */
   .scaleWrapper {
     padding: 20px;
     transform: scale(1);
-    align-items: center;
     margin-top: 0;
   }
 
-  /* --- MODERN MOBILE NAV --- */
+  /* Mobile Tabs */
   .mobileNav {
     display: flex;
     position: sticky;
-    top: 24px; /* Space from top of screen */
+    top: 24px;
     z-index: 100;
-    margin: 24px 24px 32px; /* Margins for float effect */
-    background: rgba(255, 255, 255, 0.85); /* Glassy background */
+    margin: 24px;
+    background: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.5);
     padding: 6px;
-    border-radius: 100px; /* Pill shape */
-    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.08); /* Soft floating shadow */
+    border-radius: 100px;
     gap: 6px;
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.08);
   }
-
   .mobileNav button {
     flex: 1;
     padding: 12px 20px;
     border: none;
     background: transparent;
-    font-family: inherit;
     font-weight: 600;
-    font-size: 0.95rem;
     color: #64748b;
     border-radius: 100px;
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 8px;
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    cursor: pointer;
-    letter-spacing: -0.01em;
   }
-
   .activeMobileTab {
     background: #0f172a !important;
     color: #fff !important;
     box-shadow: 0 4px 12px rgba(15, 23, 42, 0.2);
-    transform: scale(1.02);
   }
-
   .hideOnMobile {
     display: none !important;
   }

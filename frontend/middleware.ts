@@ -6,7 +6,7 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Protected routes that require authentication
-  const protectedRoutes = ["/home"];
+  const protectedRoutes = ["/dashboard"];
 
   // Auth routes that should redirect to dashboard if already logged in
   const authRoutes = ["/auth/login"];
@@ -15,7 +15,7 @@ export async function middleware(request: NextRequest) {
   const publicRoutes = ["/", "/auth/callback", "/auth/auth-code-error"];
 
   const isProtectedRoute = protectedRoutes.some((route) =>
-    pathname.startsWith(route)
+    pathname.startsWith(route),
   );
   const isAuthRoute = authRoutes.includes(pathname);
   const isPublicRoute = publicRoutes.includes(pathname);
@@ -34,14 +34,14 @@ export async function middleware(request: NextRequest) {
           setAll(cookiesToSet) {
             try {
               cookiesToSet.forEach(({ name, value, options }) =>
-                cookieStore.set(name, value, options)
+                cookieStore.set(name, value, options),
               );
             } catch {
               // Silently ignore
             }
           },
         },
-      }
+      },
     );
 
     // Get the current session
@@ -49,9 +49,9 @@ export async function middleware(request: NextRequest) {
       data: { session },
     } = await supabase.auth.getSession();
 
-    // If user is authenticated and trying to access auth routes, redirect to home
+    // If user is authenticated and trying to access auth routes, redirect to dashboard
     if (session && isAuthRoute) {
-      return NextResponse.redirect(new URL("/home", request.url));
+      return NextResponse.redirect(new URL("/dashboard/coupons", request.url));
     }
 
     // If user is not authenticated and trying to access protected routes, redirect to home

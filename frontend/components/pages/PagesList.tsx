@@ -8,10 +8,11 @@ import {
 } from "react-icons/ri";
 import styles from "./PagesList.module.css";
 
-// Real-world data interface
+// Updated Interface
 interface PageData {
   id: string;
-  slug: string;
+  slug: string; // The Link (/nivas)
+  title: string; // The Name (My VIP Group)
   subscribers: number;
   visits: number;
   status: "active" | "draft";
@@ -20,7 +21,7 @@ interface PageData {
 export default function PagesList({ pages }: { pages: PageData[] }) {
   return (
     <div className={styles.grid}>
-      {/* 1. CREATE NEW CARD (Dashed Blueprint Style) */}
+      {/* 1. CREATE NEW CARD */}
       <Link href="/editor/new" className={styles.createCard}>
         <div className={styles.createIconBox}>
           <RiAddLine size={32} />
@@ -31,7 +32,7 @@ export default function PagesList({ pages }: { pages: PageData[] }) {
         </div>
       </Link>
 
-      {/* 2. PAGE CARDS (Solid Studio Style) */}
+      {/* 2. PAGE CARDS */}
       {pages.map((page) => (
         <Link
           key={page.id}
@@ -53,13 +54,18 @@ export default function PagesList({ pages }: { pages: PageData[] }) {
 
           {/* B. CONTENT BODY */}
           <div className={styles.cardBody}>
-            <div className={styles.slugContainer}>
-              <span className={styles.slash}>/</span>
-              <span className={styles.slugText}>{page.slug}</span>
+            <div className={styles.infoStack}>
+              {/* PAGE NAME (Title) */}
+              <h3 className={styles.pageTitle}>{page.title}</h3>
+
+              {/* LINK (Slug) */}
+              <div className={styles.slugContainer}>
+                <span className={styles.slash}>substarter.com/</span>
+                <span className={styles.slugText}>{page.slug}</span>
+              </div>
             </div>
 
             <div className={styles.statsGrid}>
-              {/* Subscribers */}
               <div className={styles.statBox}>
                 <span className={styles.statLabel}>
                   <RiUser3Line className={styles.miniIcon} /> Subs
@@ -69,7 +75,6 @@ export default function PagesList({ pages }: { pages: PageData[] }) {
                 </span>
               </div>
 
-              {/* Visits */}
               <div className={styles.statBox}>
                 <span className={styles.statLabel}>
                   <RiEyeLine className={styles.miniIcon} /> Views

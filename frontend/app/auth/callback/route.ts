@@ -5,21 +5,19 @@ export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get("code");
 
-  // CHANGED: Default to "/pages" instead of "/home"
+  // FIX: The path is just '/pages' or '/coupons', not '/dashboard/...'
   const next = searchParams.get("next") ?? "/pages";
 
   if (code) {
     const supabase = await createClient();
-
-    // Exchange the code for a session
     const { error } = await supabase.auth.exchangeCodeForSession(code);
 
     if (!error) {
-      const forwardTo = new URL(next, origin);
-      return NextResponse.redirect(forwardTo);
+      // Clean redirect to the correct dashboard page
+      return NextResponse.redirect(`${origin}${next}`);
     }
   }
 
-  // If there's an error or no code, send them to the error page
+  // Login failed
   return NextResponse.redirect(`${origin}/auth/auth-code-error`);
 }

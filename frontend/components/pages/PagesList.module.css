@@ -178,6 +178,27 @@
   justify-content: space-between;
 }
 
+/* --- UPDATED: INFO STACK (Title + Link) --- */
+.infoStack {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+
+/* New: Big Page Name */
+.pageTitle {
+  font-family: var(--font-outfit), sans-serif;
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #000;
+  line-height: 1.1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Updated: Link Container (Smaller now) */
 .slugContainer {
   display: flex;
   align-items: baseline;
@@ -185,23 +206,23 @@
 }
 
 .slash {
-  font-size: 1.2rem;
+  font-size: 0.85rem; /* Smaller */
   color: #94a3b8;
-  font-weight: 400;
+  font-weight: 500;
 }
 
 .slugText {
   font-family: var(--font-outfit), sans-serif;
-  font-size: 1.4rem;
-  font-weight: 800;
-  color: #000;
-  letter-spacing: -0.5px;
+  font-size: 0.9rem; /* Smaller */
+  font-weight: 600;
+  color: #64748b; /* Grey color for secondary text */
+  letter-spacing: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-/* Stats Grid */
+/* --- STATS GRID --- */
 .statsGrid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -269,6 +290,6 @@
 
   .pageCard {
     height: auto; /* Let content define height */
-    min-height: 240px;
+    min-height: 260px; /* Increased slightly for new text lines */
   }
 }

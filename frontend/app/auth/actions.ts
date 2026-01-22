@@ -2,12 +2,15 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
-import type { User } from "@supabase/supabase-js";
 
 /**
  * Handles Social Login (Google)
+ * Updated to accept a dynamic redirect path
  */
-export async function signInWithSocial(provider: "google") {
+export async function signInWithSocial(
+  provider: "google",
+  nextPath: string = "/pages",
+) {
   const supabase = await createClient();
   let authUrl: string | null = null;
 
@@ -15,8 +18,8 @@ export async function signInWithSocial(provider: "google") {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider,
       options: {
-        // CHANGED: Added ?next=/pages to ensure it goes to the right place
-        redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback?next=/pages`,
+        // Dynamically set the redirect URL based on where they clicked "Join"
+        redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback?next=${encodeURIComponent(nextPath)}`,
       },
     });
     if (error) throw error;
@@ -29,16 +32,16 @@ export async function signInWithSocial(provider: "google") {
   if (authUrl) redirect(authUrl);
 }
 
-/**
- * Sends a 6-digit OTP code to the email
- */
+// ... (Rest of file: sendOTP, verifyOTP, signOut can stay the same for now)
+// Note: Email OTP will still default to /pages unless we update verifyOTP too,
+// but Google is the primary flow for guests.
+
 export async function sendOTP(email: string) {
   const supabase = await createClient();
   try {
     const { error } = await supabase.auth.signInWithOtp({
       email,
       options: {
-        // CHANGED: Added ?next=/pages
         emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback?next=/pages`,
       },
     });
@@ -48,9 +51,6 @@ export async function sendOTP(email: string) {
   }
 }
 
-/**
- * Verifies the 6-digit OTP code
- */
 export async function verifyOTP(email: string, token: string) {
   const supabase = await createClient();
   let isSuccessful = false;
@@ -69,14 +69,10 @@ export async function verifyOTP(email: string, token: string) {
 
   if (isSuccessful) {
     revalidatePath("/", "layout");
-    // CHANGED: Redirect to /pages instead of /home
     redirect("/pages");
   }
 }
 
-/**
- * The Missing Sign Out Function
- */
 export async function signOut() {
   const supabase = await createClient();
   await supabase.auth.signOut();
@@ -87,12 +83,17 @@ export async function signOut() {
 /**
  * Returns the currently authenticated user (server-side)
  */
-export async function getCurrentUser(): Promise<User | null> {
+export async function getCurrentUser() {
   const supabase = await createClient();
-  const { data, error } = await supabase.auth.getUser();
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.getUser();
+
   if (error) {
     console.error("getCurrentUser error:", error.message);
     return null;
   }
-  return data.user ?? null;
+
+  return user;
 }

@@ -1,0 +1,237 @@
+/* app/auth/login/page.module.css */
+
+/* --- PAGE CONTAINER (Replaces Overlay) --- */
+.pageContainer {
+  min-height: 100vh;
+  width: 100%;
+  background: #f8fafc; /* Light grey background */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  font-family: var(--font-outfit), sans-serif;
+}
+
+/* --- CARD (Replaces Modal) --- */
+.loginCard {
+  background: #fff;
+  width: 100%;
+  max-width: 440px;
+  padding: 40px 32px;
+  border-radius: 32px;
+  border: 1px solid #eef0f2;
+  box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* --- BRANDING (Exact copy from AuthModal) --- */
+.brandHeader {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.boltCircle {
+  width: 48px;
+  height: 48px;
+  background: #25d366;
+  color: #000;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  border: 2.5px solid #000;
+  margin: 0 auto 12px;
+  box-shadow: 4px 4px 0 #000;
+}
+
+.brandName {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0;
+}
+.wordSub {
+  font-size: 1.8rem;
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  color: #000;
+}
+.wordStarter {
+  font-size: 1.8rem;
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  color: #444;
+}
+.subtitle {
+  color: #6b7280;
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin-top: 4px;
+}
+
+/* --- UI ELEMENTS --- */
+.contentStack {
+  display: flex;
+  flex-direction: column;
+}
+
+.googleBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  padding: 14px;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 14px;
+  background: #fff;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+  font-size: 1rem;
+}
+.googleBtn:hover {
+  background: #f9fafb;
+  border-color: #000;
+}
+
+.divider {
+  margin: 24px 0;
+  text-align: center;
+  position: relative;
+}
+.divider::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: #eee;
+}
+.divider span {
+  background: #fff;
+  padding: 0 12px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: #999;
+  position: relative;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.input {
+  width: 100%;
+  padding: 16px;
+  border: 2px solid #f3f4f6;
+  border-radius: 14px;
+  background: #f9fafb;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.2s;
+  outline: none;
+}
+.input:focus {
+  border-color: #25d366;
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(37, 211, 102, 0.1);
+}
+
+.mainBtn {
+  width: 100%;
+  padding: 16px;
+  background: #000;
+  color: #fff;
+  border-radius: 14px;
+  border: none;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+.mainBtn:hover:not(:disabled) {
+  background: #25d366;
+  color: #000;
+  transform: translateY(-2px);
+}
+.mainBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.errorBox {
+  background: #fee2e2;
+  color: #ef4444;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* --- OTP SPECIFIC --- */
+.otpNote {
+  text-align: center;
+  color: #4b5563;
+  margin-bottom: 20px;
+  font-size: 0.95rem;
+}
+.otpGrid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+  margin-bottom: 24px;
+}
+.otpInput {
+  width: 100%;
+  aspect-ratio: 4 / 5.5;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 800;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  background: #f9fafb;
+  transition: all 0.2s;
+}
+.otpInput:focus {
+  border-color: #25d366;
+  background: #fff;
+  outline: none;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2);
+}
+
+.backLink {
+  margin-top: 16px;
+  background: none;
+  border: none;
+  color: #6b7280;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+  font-family: inherit;
+  width: 100%;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -65,6 +65,7 @@ const PreviewContent = ({
               alt="Banner"
               fill
               className={styles.bannerImg}
+              unoptimized // <--- FIXES THE IMAGE ERROR
             />
           ) : (
             <div className={styles.defaultBanner} />
@@ -80,6 +81,7 @@ const PreviewContent = ({
                 alt="Avatar"
                 fill
                 className={styles.avatarImg}
+                unoptimized // <--- FIXES THE IMAGE ERROR
               />
             ) : (
               <div className={styles.avatarFallback}>

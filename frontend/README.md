@@ -1,6 +1,6 @@
-# SupaSub - Creator Marketplace & Community Automation Engine
+# SubStarter - Community Automation & Management Platform
 
-SupaSub is a specialized platform that solves a major problem for Telegram creators (traders, fitness coaches, educators) who currently have to manually manage payments and member lists. SupaSub does for Telegram what Shopify did for physical stores: It gives creators a professional storefront and automates the "back office."
+SubStarter is a specialized community automation platform that solves the critical problem for creators on WhatsApp, Telegram, and Discord who need to manually manage payments, member onboarding, and subscription expiration. SubStarter automates the entire "back office" so creators can focus purely on content.
 
 ---
 
@@ -9,9 +9,8 @@ SupaSub is a specialized platform that solves a major problem for Telegram creat
 - [Core Vision](#core-vision)
 - [The Three User Experiences](#the-three-user-experiences)
 - [Key Technical Features](#key-technical-features)
+- [How It Works](#how-it-works)
 - [Design Specifications](#design-specifications)
-- [Development Roadmap](#development-roadmap)
-- [Why SupaSub is Better](#why-supasub-is-better)
 - [Getting Started](#getting-started)
 - [Tech Stack](#tech-stack)
 
@@ -19,13 +18,14 @@ SupaSub is a specialized platform that solves a major problem for Telegram creat
 
 ## 🎯 Core Vision
 
-**SupaSub** is a Creator Marketplace and Community Automation Engine built specifically for Telegram creators. The platform eliminates manual payment management and member list administration by providing:
+**SubStarter** is a Community Automation & Management Engine built specifically for creators on WhatsApp, Telegram, and Discord. The platform eliminates manual payment management and member administration by providing:
 
-- A **professional, brandable storefront** for creators
-- **Automated payment processing** for subscribers
-- **Secure content vault** for exclusive video hosting
-- **Telegram group automation** (auto-add and auto-kick functionality)
-- **Discovery marketplace** to help creators reach new customers
+- **Zero-touch payment sync** from Stripe → community platforms
+- **Automated member onboarding** (one-time secure join links)
+- **Automated member removal** (on subscription expiration)
+- **99% revenue retention** (flat 5% transaction fee only)
+- **Military-grade link protection** (one-time use access links)
+- **Multi-platform support** (WhatsApp, Telegram, Discord)
 
 ---
 
@@ -33,89 +33,184 @@ SupaSub is a specialized platform that solves a major problem for Telegram creat
 
 ### 1. **Creators** 👨‍💼
 
-What they do on SupaSub:
+What they do on SubStarter:
 
-- Access a professional dashboard to set subscription prices
-- Upload and manage "Vault" content (private, exclusive videos)
-- Link their Telegram groups directly to the platform
-- Monitor subscriber activity and payments in real-time
-- Receive automated member management (no more manual work)
+- Connect their existing WhatsApp, Telegram, or Discord groups
+- Set subscription pricing tiers
+- Configure automated member access rules
+- Monitor real-time subscription status and revenue
+- Receive daily payouts directly to bank account
+- Let the system handle all member onboarding/offboarding
 
-### 2. **Subscribers** 👤
+### 2. **Community Members** 👤
 
-What they do on SupaSub:
+What they do on SubStarter:
 
-- Browse the marketplace to discover new creators
-- View featured creator cards with pricing information
+- Discover creators and their membership tiers
 - Pay securely for subscription access
-- Get instantly invited to private Telegram groups via unique join links
-- Access exclusive content in the web-based vault
-- View unblurred, high-quality videos only after payment confirmation
+- Get instantly added to private communities via unique join links
+- Receive access notifications
+- Access exclusive content behind paywall
+- Cancel anytime with automatic removal from group
 
-### 3. **The Admin (Backend System)** 🔧
+### 3. **The Automation Engine** 🤖
 
-What the backend handles:
+What SubStarter handles automatically:
 
-- Monitor the Telegram bot activity and health
-- Process and manage all payment transactions
-- Maintain the global marketplace and creator listings
-- Handle authentication and security
-- Manage subscription status and expiration
-- Coordinate auto-add and auto-kick operations
+- Real-time payment processing via Stripe
+- Instant member verification and addition
+- Unique one-time-use join link generation
+- Daily subscription expiration checks
+- Automatic member removal on expiration
+- Revenue settlement and payout scheduling
+- Fraud detection and link security
 
 ---
 
 ## 🚀 Key Technical Features
 
-### **1. Custom Video Vault**
+### **1. Zero-Touch Payment Sync**
 
-A "Fanfix-style" secure area on the website:
+Real-time synchronization between payment processor and community platforms:
 
-- Creators can host exclusive videos instead of just using Telegram
-- Custom-coded video player with dynamic unblur functionality
-- Videos remain blurred until the database confirms "Paid" status
-- Only authenticated subscribers can access content
-- High-quality streaming with security controls
-
-### **2. The Telegram Gatekeeper (Custom Bot)**
-
-A custom-coded bot using the Telegram API:
-
-- Monitors group membership requests
-- Validates payments before granting access
-- Sends unique, one-time-use join links to subscribers
-- Handles group invitations automatically
-- Tracks subscription status in real-time
-
-### **3. Auto-Add Functionality**
-
-Automatic member addition on payment:
-
-- Subscriber pays for access
-- System generates a unique, one-time-use Telegram group join link
-- Link is immediately sent to the subscriber
-- They're instantly added to the creator's private group
+- Stripe payment received
+- SubStarter instantly confirms payment
+- Member automatically added to WhatsApp/Telegram/Discord
 - No manual intervention required
+- Transaction logged and revenue tracked
 
-### **4. Auto-Kick Functionality**
+### **2. Secure Onboarding Links**
 
-Automated subscription expiration management:
+Military-grade member access system:
 
-- System checks the database every 24 hours
-- Identifies expired subscriptions
-- Automatically removes expired subscribers from Telegram groups
-- Sends notification to user (optional)
+- Unique one-time-use join links generated per subscriber
+- Links expire after single use
+- Prevents unauthorized access
+- Prevents link sharing/reselling
+- Secure SMS/email delivery to members
+- Automatic cleanup of used links
+
+### **3. Automated Member Removal**
+
+Subscription expiration management:
+
+- System checks subscription status every 24 hours
+- Identifies expired/cancelled subscriptions
+- Automatically removes expired members from communities
+- Optional notification to removed user
 - Prevents unauthorized access to exclusive content
+- Logs all removal events for audit trail
 
-### **5. Marketplace Discovery**
+### **4. Multi-Platform Support**
 
-A high-end homepage with creator discovery:
+Unified management across three major platforms:
 
-- "Featured Creator" cards showcase popular creators
-- Fans can discover new groups and creators
-- Browse by category or trending
-- Makes the platform more valuable than standalone bots
-- Drives organic growth for creators
+- **WhatsApp** - Bot-powered automatic member management
+- **Telegram** - Native API integration for seamless onboarding
+- **Discord** - Webhook-based role assignment
+- Single dashboard controls all platforms
+- Consistent member data across platforms
+
+### **5. Revenue Dashboard**
+
+Real-time analytics and financial tracking:
+
+- Live revenue tracking per platform
+- Subscriber count and growth metrics
+- Churn rate monitoring
+- Transaction history with details
+- Daily payout scheduling
+- 95% revenue retention (flat 5% fee)
+
+---
+
+## 🎨 Design Specifications
+
+To avoid the "AI-generated" look and create a premium, custom experience:
+
+### **Bento-Grid Layouts**
+
+- Asymmetric box designs to display features and creator stats
+- Dynamic spacing and sizing for visual interest
+- Mobile-responsive grid system
+- Feature cards with mixed aspect ratios
+
+### **Glassmorphism Effects**
+
+- Backdrop blur effects (`backdrop-filter: blur(10px)`)
+- Semi-transparent borders with subtle gradients
+- Creates a "futuristic" and premium feel
+- Layered depth with transparency
+
+### **Micro-Animations**
+
+- Hand-coded CSS `@keyframes` for smooth interactions
+- Subtle button glow effects on hover
+- Card entrance animations
+- Smooth state transitions
+- Loading states with custom spinners
+
+### **Custom Typography**
+
+- Mix of high-end sans-serif fonts
+- Different font weights and sizes for visual hierarchy
+- Custom heading styles
+- Readable body text with optimized line-height
+- Distinct sections through typography differentiation
+
+---
+
+## � How It Works
+
+### **Step 1: Connect Community**
+
+Creator links their WhatsApp, Telegram, or Discord group to SubStarter dashboard. Ownership verification confirms they manage the community.
+
+### **Step 2: Configure Pricing**
+
+Set subscription tiers, pricing amounts, and access rules. Creator defines what benefits each tier unlocks.
+
+### **Step 3: Member Pays**
+
+Community member discovers the creator and selects a tier. They pay securely via Stripe (or supported payment processor).
+
+### **Step 4: Automatic Onboarding**
+
+SubStarter instantly:
+
+- Confirms payment
+- Generates unique one-time join link
+- Sends link to member via SMS/email
+- Waits for member to use link
+- Auto-adds to community group
+- Logs transaction and confirms access
+
+### **Step 5: Ongoing Management**
+
+SubStarter continuously:
+
+- Monitors subscription status
+- Checks for renewals/cancellations
+- Calculates daily revenue
+- Generates payouts
+
+### **Step 6: Automatic Offboarding**
+
+When subscription expires:
+
+- SubStarter detects expiration
+- Removes member from community
+- Sends optional exit notification
+- Updates analytics
+
+### **Step 7: Daily Settlement**
+
+Payouts are calculated and settled:
+
+- Gross revenue collected
+- 5% platform fee deducted
+- Creator receives 95% to bank account
+- Next-day settlement
 
 ---
 
@@ -164,12 +259,12 @@ To avoid the "AI-generated" look and create a premium, custom experience:
 #### Deliverables:
 
 - Landing page with hero section
-- Marketplace homepage with featured creator cards
+- Creator and member dashboards
 - Bento-grid layouts for features
 - Glassmorphism design elements
 - Responsive design for mobile and desktop
 - Custom CSS animations and micro-interactions
-- Creator profile cards with pricing
+- Settings and management interfaces
 
 **Tech Stack:**
 
@@ -180,77 +275,84 @@ To avoid the "AI-generated" look and create a premium, custom experience:
 
 ---
 
-### **Phase 2: The Brain** (Logic & Authentication)
+### **Phase 2: The Brain** (Backend Logic & Authentication)
 
-**Goal:** Implement creator dashboard and authentication system
+**Goal:** Implement authentication and creator/member management system
 
 #### Deliverables:
 
-- Creator dashboard interface
-- Subscription management UI
-- Content upload/management interface
-- Login with Telegram authentication
+- Creator authentication system
+- Community group linking & verification
+- Pricing tier configuration backend
+- Member subscription tracking
 - User session management
-- Creator profile setup flow
-- Subscriber account management
+- Creator profile management
+- Member profile management
+- Real-time subscription status queries
 
 **Features to Build:**
 
-- Telegram OAuth integration
-- Creator registration workflow
-- Subscriber dashboard
-- Account settings and preferences
+- OAuth authentication (Google, OAuth2)
+- Community ownership verification
+- Database schema for creators, members, subscriptions
+- Session management
+- Dashboard data endpoints
 
 ---
 
-### **Phase 3: The Engine** (Automation & Payments)
+### **Phase 3: The Engine** (Automation, Payments & Bots)
 
-**Goal:** Connect payment processing and automate bot operations
+**Goal:** Connect payment processing and automate all community operations
 
 #### Deliverables:
 
-- Stripe and/or Crypto payment integration
-- Payment webhook handlers
-- Custom Telegram Bot script
-- Auto-add join link generation and delivery
-- Auto-kick scheduled job system
-- Subscription status tracking
-- Payment history and receipts
-- Admin dashboard for monitoring
+- Stripe payment integration & webhooks
+- Payment confirmation system
+- One-time link generation engine
+- Multi-platform bot integration:
+  - Telegram Bot API integration
+  - WhatsApp Business API integration
+  - Discord Webhook integration
+- Scheduled auto-kick system
+- Subscription expiration checks
+- Revenue settlement & payout system
+- Admin monitoring dashboard
 
 **Features to Build:**
 
 - Payment processing pipeline
-- Telegram Bot API integration
-- Database schema for memberships
-- Scheduled jobs for auto-kick
-- Admin monitoring dashboard
-- Subscription management backend
+- Telegram/WhatsApp/Discord bot scripts
+- Link generation & security system
+- Scheduled background jobs
+- Member management automation
+- Revenue tracking & settlement
+- Admin panel for monitoring
 
 ---
 
-## 💪 Why SupaSub is Better
+## 💪 Why SubStarter is Better
 
 ### **vs. MyMembers.io and Similar Competitors**
 
-| Feature             | SupaSub                                    | Competitors                                          |
-| ------------------- | ------------------------------------------ | ---------------------------------------------------- |
-| **Identity**        | Brandable storefront for creators          | Just a bot, no brand identity                        |
-| **Video Hosting**   | Web-based content vault with custom player | Telegram-only access                                 |
-| **Discovery**       | Marketplace for new customer acquisition   | No discovery - creators manage existing members only |
-| **Automation**      | Full auto-add/auto-kick system             | Limited automation features                          |
-| **Customization**   | Fully customizable design and branding     | Limited customization                                |
-| **Security**        | Encrypted vault with access control        | Standard Telegram security                           |
-| **User Experience** | Premium UI with micro-animations           | Basic, functional UI                                 |
-| **Creator Tools**   | Advanced dashboard with analytics          | Basic management tools                               |
+| Feature                    | SubStarter                                   | Competitors                         |
+| -------------------------- | -------------------------------------------- | ----------------------------------- |
+| **Multi-Platform Support** | WhatsApp, Telegram, Discord (unified)        | Usually single platform             |
+| **Automation**             | Full auto-add/auto-kick system               | Limited or manual automation        |
+| **Security**               | Military-grade one-time join links           | Standard link sharing               |
+| **Revenue Retention**      | 95% (flat 5% fee)                            | 70-80% (30% platform cut)           |
+| **Setup Time**             | < 60 seconds to go live                      | 2-3 days setup                      |
+| **User Experience**        | Premium UI with micro-animations             | Basic, functional interface         |
+| **Creator Tools**          | Advanced analytics & management              | Basic tools                         |
+| **Payout Speed**           | Daily settlements                            | Weekly/Monthly                      |
+| **Link Security**          | One-time use, expired links, fraud detection | Reusable links, link sharing issues |
 
 **Key Differentiators:**
 
-1. **Not just a bot** - SupaSub is a complete ecosystem
-2. **Content beyond Telegram** - Video vault is the crown jewel
-3. **Growth engine** - Marketplace helps creators discover new customers
-4. **Premium feel** - Custom design that reflects creator professionalism
-5. **Full automation** - Truly hands-off operation
+1. **True Automation** - Not just a bot, complete automation system
+2. **Multi-Platform** - Manage WhatsApp, Telegram, Discord from one dashboard
+3. **Creator Retention** - 95% revenue keeps creators loyal
+4. **Lightning Fast** - Zero setup friction, go live in 60 seconds
+5. **Rock-Solid Security** - Military-grade link protection prevents reselling
 
 ---
 
@@ -261,6 +363,7 @@ To avoid the "AI-generated" look and create a premium, custom experience:
 - Node.js 18+
 - npm or yarn
 - Git
+- Supabase account (for authentication)
 
 ### Installation
 
@@ -272,6 +375,11 @@ cd frontend
 # Install dependencies
 npm install
 
+# Create .env.local with Supabase credentials
+# NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+# NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_key
+# NEXT_PUBLIC_SITE_URL=http://localhost:3000
+
 # Run the development server
 npm run dev
 ```
@@ -280,32 +388,41 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ### Development
 
-The page auto-updates as you edit files. Start editing `app/page.tsx` to see changes in real-time.
+The page auto-updates as you edit files. Start editing components in `app/` and `components/` directories to see changes in real-time.
 
 ---
 
 ## 🏗️ Tech Stack
 
-### Frontend
+### Frontend (Current - This Repo)
 
-- **Framework:** Next.js 14+
+- **Framework:** Next.js 16.1.1
 - **Language:** TypeScript
-- **Styling:** Vanilla CSS with custom animations
+- **Styling:** CSS Modules with custom animations
+- **Authentication:** Supabase SSR with OAuth & OTP
 - **UI Patterns:** Bento-grid, Glassmorphism, Micro-animations
+- **Icons:** React Icons
+- **Theme Support:** Next Themes (dark mode)
 
-### Planned Backend
+### Backend (To Be Built)
 
-- **Runtime:** Node.js / Python
-- **Database:** PostgreSQL / MongoDB
-- **Authentication:** Telegram OAuth
-- **Payments:** Stripe API / Crypto payments
-- **Telegram Integration:** Telegram Bot API
+- **Runtime:** Node.js / Python / Go
+- **Database:** PostgreSQL
+- **Authentication:** Supabase Auth
+- **Payments:** Stripe API
+- **Bot Integration:**
+  - Telegram Bot API
+  - WhatsApp Business API
+  - Discord Webhooks
+- **Message Queue:** Redis / Bull (for scheduled tasks)
+- **Job Scheduler:** Node-cron / APScheduler
 
 ### Deployment
 
 - **Frontend Hosting:** Vercel (recommended for Next.js)
 - **Backend Hosting:** AWS / Railway / Heroku
-- **Database:** Managed cloud database service
+- **Database:** Supabase / AWS RDS
+- **Bot Services:** Telegram/WhatsApp/Discord APIs
 
 ---
 
@@ -313,10 +430,13 @@ The page auto-updates as you edit files. Start editing `app/page.tsx` to see cha
 
 To learn more about the technologies used:
 
-- [Next.js Documentation](https://nextjs.org/docs) - Learn about Next.js features
-- [Telegram Bot API](https://core.telegram.org/bots/api) - Bot integration guide
-- [Stripe Documentation](https://stripe.com/docs) - Payment processing
-- [TypeScript Handbook](https://www.typescriptlang.org/docs/) - Type safety guide
+- [Next.js Documentation](https://nextjs.org/docs) - Framework guide
+- [Supabase Documentation](https://supabase.com/docs) - Authentication & database
+- [Stripe API](https://stripe.com/docs/api) - Payment processing
+- [Telegram Bot API](https://core.telegram.org/bots/api) - Telegram integration
+- [WhatsApp Business API](https://developers.facebook.com/docs/whatsapp) - WhatsApp integration
+- [Discord Webhooks](https://discord.com/developers/docs/resources/webhook) - Discord integration
+- [TypeScript Handbook](https://www.typescriptlang.org/docs/) - Type safety
 
 ---
 
@@ -328,11 +448,13 @@ The easiest way to deploy your Next.js frontend is using [Vercel](https://vercel
 2. Connect your repository to Vercel
 3. Vercel will automatically detect Next.js and deploy with optimal settings
 
-For backend deployment, consider AWS, Railway, or Heroku depending on your tech stack choice.
+For backend deployment, consider AWS Lambda, Railway, or Heroku depending on your tech stack choice.
 
 ---
 
 ## 📝 License
+
+SubStarter is proprietary software. All rights reserved.
 
 SupaSub is proprietary software. All rights reserved.
 
