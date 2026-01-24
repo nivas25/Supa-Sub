@@ -158,12 +158,11 @@ export async function POST(req: Request) {
           `Member: ${payload.slice(0, 6)}`,
         );
 
-        // --- FIX: SAFE PAGE NAME EXTRACTION ---
-        // TypeScript Error Fix: Handle 'pages' as Array OR Object safely
-        // @ts-ignore
-        const pageName = Array.isArray(membership.pages)
-          ? membership.pages[0]?.name
-          : membership.pages?.name;
+        // --- FIX IS HERE: Force type to 'any' to bypass TS 'never' error ---
+        const pagesData = membership.pages as any;
+        const pageName = Array.isArray(pagesData)
+          ? pagesData[0]?.name
+          : pagesData?.name;
 
         if (!inviteResult.ok) {
           await sendMessage(
