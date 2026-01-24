@@ -597,12 +597,11 @@ export default function CreatorStudio({ user }: any) {
                               >
                                 <li>Open your Telegram Group.</li>
                                 <li>
-                                  Add <strong>@substarter_offical_bot</strong>{" "}
-                                  as a member.
+                                  Add <strong>@mysubstarterbot</strong> to your
+                                  group.
                                 </li>
                                 <li>
-                                  <strong>Promote to Admin</strong> (Must have
-                                  "Invite Users" permission).
+                                  Promote the bot to <strong>Admin</strong>.
                                 </li>
                                 <li>Copy and paste this command:</li>
                               </ol>
