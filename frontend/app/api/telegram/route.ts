@@ -58,8 +58,6 @@ export async function POST(req: Request) {
 
     // --- HANDLE /start OR /connect ---
     if (text.startsWith("/start") || text.startsWith("/connect")) {
-      // Clean up the command to get the ID
-      // Supports: "/start 123", "/connect 123", "/start@BotName 123"
       const parts = text.split(" ");
       const payload = parts[1]?.trim();
 
@@ -75,7 +73,6 @@ export async function POST(req: Request) {
       }
 
       // 2. CHECK IF IT IS A PAGE (Creator Setup)
-      // We check this FIRST to catch Creators testing in private chat
       const { data: page } = await supabaseAdmin
         .from("pages")
         .select("id, name")
@@ -83,10 +80,7 @@ export async function POST(req: Request) {
         .single();
 
       if (page) {
-        // FOUND A PAGE!
-
         if (chatType === "private") {
-          // ERROR: Creator is in Private Chat
           await sendMessage(
             chatId,
             `👋 Hi! I see you want to connect **${page.name}**.\n\n⚠️ **You are in Private Chat.**\n\nPlease add me to the **Telegram Group** you want to use, and I will connect automatically.`,
@@ -118,7 +112,6 @@ export async function POST(req: Request) {
       }
 
       // 3. CHECK IF IT IS A MEMBERSHIP (Subscriber Join)
-      // If it wasn't a page, maybe it's a member?
       const { data: membership } = await supabaseAdmin
         .from("memberships")
         .select(`id, status, user_id, page_id, pages(name)`)
@@ -165,16 +158,22 @@ export async function POST(req: Request) {
           `Member: ${payload.slice(0, 6)}`,
         );
 
+        // --- FIX: SAFE PAGE NAME EXTRACTION ---
+        // TypeScript Error Fix: Handle 'pages' as Array OR Object safely
+        // @ts-ignore
+        const pageName = Array.isArray(membership.pages)
+          ? membership.pages[0]?.name
+          : membership.pages?.name;
+
         if (!inviteResult.ok) {
           await sendMessage(
             chatId,
             "❌ **I cannot generate a link.**\n\n(Creators: Make sure I am an **Admin** in the group!)",
           );
         } else {
-          // @ts-ignore
           await sendMessage(
             chatId,
-            `🎉 **Welcome to ${membership.pages?.name}!**\n\nTap to join:\n${inviteResult.result.invite_link}`,
+            `🎉 **Welcome to ${pageName || "Community"}!**\n\nTap to join:\n${inviteResult.result.invite_link}`,
           );
         }
         return NextResponse.json({ ok: true });
