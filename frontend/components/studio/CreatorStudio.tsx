@@ -15,79 +15,156 @@ import {
   RiArrowRightSLine,
   RiMagicLine,
   RiLoader4Fill,
+  RiAddLine,
+  RiDeleteBinLine,
+  RiCloseLine,
+  RiLayoutTopLine,
+  RiLinkM,
+  RiFileCopyLine,
+  RiCheckDoubleLine,
 } from "react-icons/ri";
 import LivePreview from "./LivePreview";
 import styles from "./CreatorStudio.module.css";
 
-export default function CreatorStudio({ user, profile }: any) {
+type IntervalType = "weekly" | "monthly" | "yearly" | "lifetime";
+
+type PriceOption = {
+  amount: string;
+  interval: IntervalType | "";
+};
+
+const ALL_INTERVALS: IntervalType[] = [
+  "weekly",
+  "monthly",
+  "yearly",
+  "lifetime",
+];
+
+const INTERVAL_LABELS: Record<IntervalType, string> = {
+  weekly: "Weekly (7 Days)",
+  monthly: "Monthly (30 Days)",
+  yearly: "Yearly (365 Days)",
+  lifetime: "Lifetime (Forever)",
+};
+
+export default function CreatorStudio({ user }: any) {
   const router = useRouter();
   const supabase = createClient();
   const [activeTab, setActiveTab] = useState<"edit" | "preview">("edit");
   const [previewDevice, setPreviewDevice] = useState<"mobile" | "desktop">(
     "mobile",
   );
-  const [isLaunching, setIsLaunching] = useState(false);
-  const [uploading, setUploading] = useState(false);
 
-  // Hidden Input Refs
+  // States
+  const [isLaunching, setIsLaunching] = useState(false);
+  const [isLaunched, setIsLaunched] = useState(false); // New state to track success
+  const [uploading, setUploading] = useState(false);
+  const [pageId, setPageId] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false); // For clipboard feedback
+
+  const [newFeature, setNewFeature] = useState("");
   const avatarInputRef = useRef<HTMLInputElement>(null);
   const bannerInputRef = useRef<HTMLInputElement>(null);
 
   const [formData, setFormData] = useState({
-    // FIX: Start fresh (empty strings) so previous details don't appear
+    pageTitle: "",
     handle: "",
-    displayName: "",
-    bio: "",
-    price: "10",
+    description: "",
     avatarUrl: "",
     bannerUrl: "",
+    prices: [{ amount: "10", interval: "monthly" }] as PriceOption[],
+    features: [] as string[],
+    welcomeMessage: "",
+    terms: "",
     platforms: {
-      telegram: { enabled: false, link: "", title: "VIP Telegram" },
+      telegram: { enabled: false, link: "", chatId: "", title: "VIP Telegram" },
       discord: { enabled: false, link: "", title: "Pro Discord" },
       whatsapp: { enabled: false, link: "", title: "Member Chat" },
     },
   });
 
-  // --- IMAGE UPLOAD LOGIC ---
+  // --- FEATURES ---
+  const addFeature = () => {
+    if (!newFeature.trim()) return;
+    setFormData((prev) => ({
+      ...prev,
+      features: [...prev.features, newFeature.trim()],
+    }));
+    setNewFeature("");
+  };
+
+  const removeFeature = (idx: number) => {
+    setFormData((prev) => ({
+      ...prev,
+      features: prev.features.filter((_, i) => i !== idx),
+    }));
+  };
+
+  // --- PRICING ---
+  const addPriceOption = () => {
+    const usedIntervals = formData.prices.map((p) => p.interval);
+    const nextAvailable = ALL_INTERVALS.find((i) => !usedIntervals.includes(i));
+    if (nextAvailable) {
+      setFormData((prev) => ({
+        ...prev,
+        prices: [...prev.prices, { amount: "", interval: nextAvailable }],
+      }));
+    } else {
+      alert("You have already added all available plan types.");
+    }
+  };
+
+  const removePriceOption = (index: number) => {
+    if (formData.prices.length === 1) return;
+    setFormData((prev) => ({
+      ...prev,
+      prices: prev.prices.filter((_, i) => i !== index),
+    }));
+  };
+
+  const updatePrice = (
+    index: number,
+    field: keyof PriceOption,
+    value: string,
+  ) => {
+    const newPrices = [...formData.prices];
+    // @ts-ignore
+    newPrices[index][field] = value;
+    setFormData((prev) => ({ ...prev, prices: newPrices }));
+  };
+
+  // --- IMAGE UPLOAD ---
   const handleImageUpload = async (
     e: React.ChangeEvent<HTMLInputElement>,
     type: "avatar" | "banner",
   ) => {
     if (!e.target.files || e.target.files.length === 0) return;
-
     const file = e.target.files[0];
     const fileExt = file.name.split(".").pop();
     const fileName = `${user.id}-${Math.random()}.${fileExt}`;
-    const filePath = `${type}s/${fileName}`; // e.g. avatars/123.png
+    const filePath = `page-assets/${fileName}`;
 
     setUploading(true);
     try {
-      // Upload to 'images' bucket (lowercase)
       const { error: uploadError } = await supabase.storage
         .from("images")
         .upload(filePath, file);
-
       if (uploadError) throw uploadError;
-
-      // Get public URL from 'images' bucket
       const { data } = supabase.storage.from("images").getPublicUrl(filePath);
-      const publicUrl = data.publicUrl;
-
-      // Update State (Live Preview updates instantly)
       setFormData((prev) => ({
         ...prev,
-        [type === "avatar" ? "avatarUrl" : "bannerUrl"]: publicUrl,
+        [type === "avatar" ? "avatarUrl" : "bannerUrl"]: data.publicUrl,
       }));
-    } catch (error) {
-      console.error("Upload failed:", error);
-      alert("Failed to upload image. Check console for details.");
+    } catch (error: any) {
+      alert("Upload failed: " + error.message);
     } finally {
       setUploading(false);
     }
   };
 
-  const togglePlatform = (key: "telegram" | "discord" | "whatsapp") => {
-    setFormData((prev) => ({
+  // --- PLATFORM TOGGLES ---
+  const togglePlatform = (key: string) => {
+    setFormData((prev: any) => ({
       ...prev,
       platforms: {
         ...prev.platforms,
@@ -99,11 +176,8 @@ export default function CreatorStudio({ user, profile }: any) {
     }));
   };
 
-  const updatePlatformLink = (
-    key: "telegram" | "discord" | "whatsapp",
-    val: string,
-  ) => {
-    setFormData((prev) => ({
+  const updatePlatformLink = (key: string, val: string) => {
+    setFormData((prev: any) => ({
       ...prev,
       platforms: {
         ...prev.platforms,
@@ -112,62 +186,105 @@ export default function CreatorStudio({ user, profile }: any) {
     }));
   };
 
-  const handleLaunch = async () => {
-    if (!user) return alert("You must be logged in.");
-    if (!formData.handle) return alert("Please pick a handle (username).");
+  // --- CLIPBOARD HELPER ---
+  const handleCopyCommand = () => {
+    if (!pageId) return;
+    navigator.clipboard.writeText(`/connect ${pageId}`);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
+  // --- LAUNCH LOGIC ---
+  const handleLaunch = async () => {
+    if (!user || !formData.handle) return alert("Please set a Page URL.");
+    if (!formData.pageTitle) return alert("Please set a Page Name.");
+    if (!formData.prices || formData.prices.length === 0)
+      return alert("Please add at least one pricing plan.");
+
+    // Check if at least one platform is enabled
     const activePlatformEntry = Object.entries(formData.platforms).find(
       ([_, data]) => data.enabled,
     );
-    if (!activePlatformEntry)
-      return alert("Please enable at least one platform.");
+    if (!activePlatformEntry) return alert("Enable at least one platform.");
 
     setIsLaunching(true);
 
     try {
-      // 1. Update Creator (Banner + Handle + Bio)
-      const { error: creatorError } = await supabase
-        .from("creators")
-        .update({
-          username: formData.handle,
-          bio: formData.bio,
+      // 1. Create PAGE
+      const { data: pageData, error: pageError } = await supabase
+        .from("pages")
+        .insert({
+          owner_id: user.id,
+          name: formData.pageTitle,
+          slug: formData.handle,
+          icon_url: formData.avatarUrl,
           banner_url: formData.bannerUrl,
+          description: formData.description,
+          features: formData.features,
+          terms: formData.terms,
+          welcome_message: formData.welcomeMessage,
+          status: "active",
+          views: 0,
         })
-        .eq("id", user.id);
+        .select()
+        .single();
 
-      if (creatorError) throw creatorError;
+      if (pageError) throw pageError;
 
-      // 2. Update Profile (Avatar)
-      const { error: profileError } = await supabase
-        .from("profiles")
-        .update({
-          display_name: formData.displayName,
-          avatar_url: formData.avatarUrl,
-        })
-        .eq("id", user.id);
+      const newPageId = pageData.id;
+      setPageId(newPageId); // Save ID locally
 
-      if (profileError) throw profileError;
+      // 2. Insert Platform Configs
+      const { telegram, discord, whatsapp } = formData.platforms;
 
-      // 3. Create/Update Group
-      const [platformName, platformData] = activePlatformEntry;
-      const { error: groupError } = await supabase.from("groups").insert({
-        creator_id: user.id,
-        name: formData.displayName,
-        description: formData.bio,
-        platform: platformName,
-        price: parseFloat(formData.price) || 0,
-        telegram_link: platformData.link,
-        status: "active",
-        views: 0,
-      });
+      if (telegram.enabled) {
+        await supabase
+          .from("page_telegram_config")
+          .insert({ page_id: newPageId, chat_id: telegram.chatId });
+      }
+      if (discord.enabled) {
+        await supabase
+          .from("page_discord_config")
+          .insert({ page_id: newPageId, invite_link: discord.link });
+      }
+      if (whatsapp.enabled) {
+        await supabase
+          .from("page_whatsapp_config")
+          .insert({ page_id: newPageId, invite_link: whatsapp.link });
+      }
 
-      if (groupError) throw groupError;
+      // 3. Insert Prices
+      const priceInserts = formData.prices.map((p) => ({
+        page_id: newPageId,
+        amount: parseFloat(p.amount),
+        interval: p.interval || "monthly",
+      }));
 
-      router.push("/pages");
-      router.refresh();
+      const { error: priceError } = await supabase
+        .from("page_prices")
+        .insert(priceInserts);
+      if (priceError) throw priceError;
+
+      // SUCCESS!
+      setIsLaunched(true);
+
+      // If Telegram is NOT enabled, we can redirect.
+      // If Telegram IS enabled, stay here so they can see the ID.
+      if (!telegram.enabled) {
+        router.push("/pages");
+      } else {
+        alert(
+          "Page Created! Now copy the command to connect your Telegram group.",
+        );
+      }
     } catch (error: any) {
       console.error("Launch Error:", error);
-      alert("Error launching page: " + error.message);
+      alert(
+        "Launch failed: " +
+          (error.message?.includes("slug")
+            ? "This URL is taken."
+            : error.message),
+      );
     } finally {
       setIsLaunching(false);
     }
@@ -202,56 +319,64 @@ export default function CreatorStudio({ user, profile }: any) {
               <h1 className={styles.headerTitle}>
                 Creator Studio<span className={styles.accentDot}>.</span>
               </h1>
-              <p className={styles.headerSubtitle}>
-                Design your membership page
-              </p>
+              <p className={styles.headerSubtitle}>Create your product page</p>
             </div>
           </div>
         </header>
 
-        {/* 1. IDENTITY */}
+        {/* 1. PAGE IDENTITY */}
         <section className={styles.configSection}>
           <div className={styles.sectionHeader}>
             <div className={styles.stepNum}>1</div>
-            <h3>Identity</h3>
+            <h3>Page Identity</h3>
           </div>
           <div className={styles.inputStack}>
             <div className={styles.inputGroup}>
-              <label>Public Handle</label>
-              <div className={styles.urlInputWrapper}>
-                <span className={styles.urlPrefix}>substarter.com/</span>
-                <input
-                  type="text"
-                  className={styles.urlInput}
-                  value={formData.handle}
-                  onChange={(e) =>
-                    setFormData({ ...formData, handle: e.target.value })
-                  }
-                  placeholder="username"
-                />
-              </div>
-            </div>
-            <div className={styles.inputGroup}>
-              <label>Display Name</label>
+              <label>
+                <RiLayoutTopLine style={{ marginBottom: -2, marginRight: 4 }} />{" "}
+                Page Name
+              </label>
               <input
                 className={styles.cleanInput}
                 type="text"
-                value={formData.displayName}
+                placeholder="e.g. VIP Crypto Signals"
+                value={formData.pageTitle}
                 onChange={(e) =>
-                  setFormData({ ...formData, displayName: e.target.value })
+                  setFormData({ ...formData, pageTitle: e.target.value })
                 }
               />
             </div>
             <div className={styles.inputGroup}>
-              <label>Bio</label>
+              <label>
+                <RiLinkM style={{ marginBottom: -2, marginRight: 4 }} /> Page
+                URL
+              </label>
+              <div className={styles.urlInputWrapper}>
+                <span className={styles.urlPrefix}>substarter.com/</span>
+                <input
+                  className={styles.urlInput}
+                  type="text"
+                  value={formData.handle}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      handle: e.target.value.toLowerCase().replace(/\s+/g, "-"),
+                    })
+                  }
+                  placeholder="vip-signals"
+                />
+              </div>
+            </div>
+            <div className={styles.inputGroup}>
+              <label>Description</label>
               <textarea
                 className={styles.cleanTextArea}
                 rows={3}
-                value={formData.bio}
+                value={formData.description}
                 onChange={(e) =>
-                  setFormData({ ...formData, bio: e.target.value })
+                  setFormData({ ...formData, description: e.target.value })
                 }
-                placeholder="What is your community about?"
+                placeholder="What will members get?"
               />
             </div>
           </div>
@@ -264,7 +389,6 @@ export default function CreatorStudio({ user, profile }: any) {
             <h3>Visuals</h3>
           </div>
           <div className={styles.visualGrid}>
-            {/* AVATAR UPLOAD */}
             <input
               type="file"
               ref={avatarInputRef}
@@ -290,10 +414,8 @@ export default function CreatorStudio({ user, profile }: any) {
               ) : (
                 <RiCameraLine size={28} />
               )}
-              <span>{uploading ? "Uploading..." : "Upload Avatar"}</span>
+              <span>{uploading ? "Uploading..." : "Page Icon"}</span>
             </button>
-
-            {/* BANNER UPLOAD */}
             <input
               type="file"
               ref={bannerInputRef}
@@ -318,15 +440,80 @@ export default function CreatorStudio({ user, profile }: any) {
               ) : (
                 <RiImageAddLine size={28} />
               )}
-              <span>{uploading ? "Uploading..." : "Upload Banner"}</span>
+              <span>{uploading ? "Uploading..." : "Page Banner"}</span>
             </button>
           </div>
         </section>
 
-        {/* 3. ACCESS */}
+        {/* 3. DETAILS */}
         <section className={styles.configSection}>
           <div className={styles.sectionHeader}>
             <div className={styles.stepNum}>3</div>
+            <h3>Details</h3>
+          </div>
+          <div className={styles.inputStack}>
+            <div className={styles.inputGroup}>
+              <label>Features</label>
+              <div className={styles.featureInputRow}>
+                <input
+                  type="text"
+                  className={styles.cleanInput}
+                  placeholder="e.g. Daily Analysis"
+                  value={newFeature}
+                  onChange={(e) => setNewFeature(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && addFeature()}
+                />
+                <button className={styles.addFeatureBtn} onClick={addFeature}>
+                  <RiAddLine size={24} />
+                </button>
+              </div>
+              {formData.features.length > 0 && (
+                <div className={styles.featureList}>
+                  {formData.features.map((feat, idx) => (
+                    <div key={idx} className={styles.featureItem}>
+                      <span>{feat}</span>
+                      <button
+                        className={styles.removeFeatureBtn}
+                        onClick={() => removeFeature(idx)}
+                      >
+                        <RiCloseLine size={20} />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+            <div className={styles.inputGroup}>
+              <label>Welcome Message</label>
+              <textarea
+                className={styles.cleanTextArea}
+                rows={3}
+                placeholder="A public message..."
+                value={formData.welcomeMessage}
+                onChange={(e) =>
+                  setFormData({ ...formData, welcomeMessage: e.target.value })
+                }
+              />
+            </div>
+            <div className={styles.inputGroup}>
+              <label>Terms</label>
+              <textarea
+                className={styles.cleanTextArea}
+                rows={3}
+                placeholder="Refund policy..."
+                value={formData.terms}
+                onChange={(e) =>
+                  setFormData({ ...formData, terms: e.target.value })
+                }
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* 4. ACCESS */}
+        <section className={styles.configSection}>
+          <div className={styles.sectionHeader}>
+            <div className={styles.stepNum}>4</div>
             <h3>Access</h3>
           </div>
           <div className={styles.platformStack}>
@@ -370,22 +557,136 @@ export default function CreatorStudio({ user, profile }: any) {
                       <input
                         type="checkbox"
                         checked={isEnabled}
-                        onChange={() => togglePlatform(plat.id as any)}
+                        onChange={() => togglePlatform(plat.id)}
                       />
                       <span className={styles.slider}></span>
                     </label>
                   </div>
                   {isEnabled && (
                     <div className={styles.platExpand}>
-                      <input
-                        type="text"
-                        placeholder={`Paste your ${plat.label} invite link...`}
-                        className={styles.miniInput}
-                        onChange={(e) =>
-                          updatePlatformLink(plat.id as any, e.target.value)
-                        }
-                        value={(formData.platforms as any)[plat.id].link}
-                      />
+                      {plat.id === "telegram" ? (
+                        <div
+                          style={{
+                            background: "#f8fafc",
+                            padding: 16,
+                            borderRadius: 12,
+                            border: "1px solid #e2e8f0",
+                          }}
+                        >
+                          {/* MANUAL CONNECTION UI */}
+                          {pageId ? (
+                            <>
+                              <div
+                                style={{
+                                  fontSize: "0.9rem",
+                                  fontWeight: 600,
+                                  color: "#166534",
+                                  marginBottom: 12,
+                                }}
+                              >
+                                ✅ Page Created! Connect your group now:
+                              </div>
+                              <ol
+                                style={{
+                                  paddingLeft: 20,
+                                  margin: "0 0 16px 0",
+                                  fontSize: "0.85rem",
+                                  color: "#475569",
+                                  lineHeight: "1.6",
+                                }}
+                              >
+                                <li>Open your Telegram Group.</li>
+                                <li>
+                                  Add <strong>@substarter_offical_bot</strong>{" "}
+                                  as a member.
+                                </li>
+                                <li>
+                                  <strong>Promote to Admin</strong> (Must have
+                                  "Invite Users" permission).
+                                </li>
+                                <li>Copy and paste this command:</li>
+                              </ol>
+
+                              <div
+                                onClick={handleCopyCommand}
+                                style={{
+                                  background: "#0f172a",
+                                  color: "#4ade80",
+                                  padding: "10px 14px",
+                                  borderRadius: 8,
+                                  fontFamily: "monospace",
+                                  fontSize: "0.9rem",
+                                  display: "flex",
+                                  alignItems: "center",
+                                  justifyContent: "space-between",
+                                  cursor: "pointer",
+                                  border: "1px solid #334155",
+                                }}
+                              >
+                                <span>/connect {pageId}</span>
+                                {copied ? (
+                                  <RiCheckDoubleLine />
+                                ) : (
+                                  <RiFileCopyLine />
+                                )}
+                              </div>
+                              {copied && (
+                                <div
+                                  style={{
+                                    fontSize: "0.75rem",
+                                    color: "#16a34a",
+                                    marginTop: 4,
+                                  }}
+                                >
+                                  Copied to clipboard!
+                                </div>
+                              )}
+
+                              <button
+                                onClick={() => router.push("/pages")}
+                                style={{
+                                  marginTop: 15,
+                                  width: "100%",
+                                  padding: 10,
+                                  background: "#cbd5e1",
+                                  border: "none",
+                                  borderRadius: 6,
+                                  fontWeight: 600,
+                                  cursor: "pointer",
+                                  color: "#475569",
+                                }}
+                              >
+                                I have connected the bot → Go to Dashboard
+                              </button>
+                            </>
+                          ) : (
+                            <div
+                              style={{
+                                color: "#e11d48",
+                                fontWeight: 600,
+                                fontSize: "0.9rem",
+                                display: "flex",
+                                alignItems: "center",
+                                gap: 8,
+                              }}
+                            >
+                              <RiLoader4Fill />
+                              Please "Launch Page" below to generate your
+                              Connect ID.
+                            </div>
+                          )}
+                        </div>
+                      ) : (
+                        <input
+                          type="text"
+                          placeholder={`Paste ${plat.label} invite link...`}
+                          className={styles.miniInput}
+                          onChange={(e) =>
+                            updatePlatformLink(plat.id, e.target.value)
+                          }
+                          value={(formData.platforms as any)[plat.id].link}
+                        />
+                      )}
                     </div>
                   )}
                 </div>
@@ -394,44 +695,106 @@ export default function CreatorStudio({ user, profile }: any) {
           </div>
         </section>
 
-        {/* 4. PRICING */}
+        {/* 5. PRICING */}
         <section className={styles.configSection}>
           <div className={styles.sectionHeader}>
-            <div className={styles.stepNum}>4</div>
-            <h3>Pricing</h3>
+            <div className={styles.stepNum}>5</div>
+            <h3>Pricing Plans</h3>
           </div>
-          <div className={styles.priceWrapper}>
-            <div className={styles.priceInputBox}>
-              <span className={styles.currency}>$</span>
-              <input
-                className={styles.priceField}
-                type="number"
-                value={formData.price}
-                onChange={(e) =>
-                  setFormData({ ...formData, price: e.target.value })
-                }
-              />
-            </div>
-            <span className={styles.priceFrequency}>per 30 days</span>
+          <div className={styles.platformStack}>
+            {formData.prices.map((price, idx) => (
+              <div
+                key={idx}
+                className={styles.platformRow}
+                style={{ padding: "16px" }}
+              >
+                <div
+                  style={{ display: "flex", gap: "12px", alignItems: "center" }}
+                >
+                  <div
+                    className={styles.priceInputBox}
+                    style={{ width: "140px", height: "56px" }}
+                  >
+                    <span
+                      className={styles.currency}
+                      style={{ fontSize: "1.2rem" }}
+                    >
+                      $
+                    </span>
+                    <input
+                      className={styles.priceField}
+                      style={{ fontSize: "1.4rem" }}
+                      type="number"
+                      value={price.amount}
+                      placeholder="0"
+                      onChange={(e) =>
+                        updatePrice(idx, "amount", e.target.value)
+                      }
+                    />
+                  </div>
+                  <div className={styles.selectWrapper}>
+                    <select
+                      className={styles.customSelect}
+                      value={price.interval}
+                      onChange={(e) =>
+                        updatePrice(idx, "interval", e.target.value as any)
+                      }
+                    >
+                      <option value="" disabled>
+                        Select Duration
+                      </option>
+                      {ALL_INTERVALS.map((int) => (
+                        <option
+                          key={int}
+                          value={int}
+                          disabled={formData.prices.some(
+                            (p, i) => i !== idx && p.interval === int,
+                          )}
+                        >
+                          {INTERVAL_LABELS[int]}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  {formData.prices.length > 1 && (
+                    <button
+                      onClick={() => removePriceOption(idx)}
+                      className={styles.deleteBtn}
+                    >
+                      <RiDeleteBinLine size={20} />
+                    </button>
+                  )}
+                </div>
+              </div>
+            ))}
+            {formData.prices.length < 4 && (
+              <button onClick={addPriceOption} className={styles.addPlanBtn}>
+                <RiAddLine size={20} /> Add Another Plan
+              </button>
+            )}
           </div>
         </section>
 
-        <button
-          className={styles.launchPageActionBtn}
-          onClick={handleLaunch}
-          disabled={isLaunching || uploading}
-          style={{ opacity: isLaunching ? 0.7 : 1 }}
-        >
-          {isLaunching ? (
-            <>
-              <RiLoader4Fill className="animate-spin" /> Launching...
-            </>
-          ) : (
-            <>
-              Launch Page <RiArrowRightSLine />
-            </>
-          )}
-        </button>
+        {/* LAUNCH BUTTON */}
+        {!isLaunched && (
+          <button
+            className={styles.launchPageActionBtn}
+            onClick={handleLaunch}
+            disabled={isLaunching || uploading}
+            style={{ opacity: isLaunching ? 0.7 : 1 }}
+          >
+            {isLaunching ? (
+              <>
+                <RiLoader4Fill className="animate-spin" /> Launching...
+              </>
+            ) : (
+              <>
+                <span style={{ marginRight: "8px" }}>Launch Page</span>{" "}
+                <RiArrowRightSLine />
+              </>
+            )}
+          </button>
+        )}
       </div>
 
       <div
@@ -451,12 +814,13 @@ export default function CreatorStudio({ user, profile }: any) {
             <RiMacbookLine /> Desktop
           </button>
         </div>
-
         <div className={styles.scaleWrapper}>
           <LivePreview
-            name={formData.displayName}
-            bio={formData.bio}
-            price={formData.price}
+            name={formData.pageTitle || "Page Name"}
+            bio={formData.description || "Page description..."}
+            prices={formData.prices}
+            features={formData.features}
+            welcomeMessage={formData.welcomeMessage}
             handle={formData.handle}
             avatarUrl={formData.avatarUrl}
             bannerUrl={formData.bannerUrl}

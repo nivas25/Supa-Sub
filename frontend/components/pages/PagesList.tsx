@@ -8,14 +8,14 @@ import {
 } from "react-icons/ri";
 import styles from "./PagesList.module.css";
 
-// Updated Interface
+// 1. Define the Interface to match the Database/Server Data
 interface PageData {
   id: string;
-  slug: string; // The Link (/nivas)
-  title: string; // The Name (My VIP Group)
-  subscribers: number;
-  visits: number;
-  status: "active" | "draft";
+  slug: string;
+  name: string; // Correct: Matches DB 'name'
+  subscribers: number; // Correct: Matches the calculated count
+  views: number; // Correct: Matches DB 'views'
+  status: string;
 }
 
 export default function PagesList({ pages }: { pages: PageData[] }) {
@@ -36,10 +36,10 @@ export default function PagesList({ pages }: { pages: PageData[] }) {
       {pages.map((page) => (
         <Link
           key={page.id}
-          href={`/editor/${page.id}`}
+          href={`/pages/${page.id}`} // Clicking card goes to Editor
           className={styles.pageCard}
         >
-          {/* A. PATTERN HEADER */}
+          {/* A. HEADER */}
           <div className={styles.cardHeader}>
             <div className={styles.dotPattern} />
             <div
@@ -47,25 +47,36 @@ export default function PagesList({ pages }: { pages: PageData[] }) {
             >
               {page.status === "active" ? "LIVE" : "DRAFT"}
             </div>
-            <div className={styles.externalLink}>
+
+            {/* External Link Button (Opens Live Page) */}
+            <div
+              className={styles.externalLink}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                window.open(`/${page.slug}`, "_blank");
+              }}
+            >
               <RiArrowRightUpLine />
             </div>
           </div>
 
-          {/* B. CONTENT BODY */}
+          {/* B. BODY */}
           <div className={styles.cardBody}>
             <div className={styles.infoStack}>
-              {/* PAGE NAME (Title) */}
-              <h3 className={styles.pageTitle}>{page.title}</h3>
+              {/* Page Name */}
+              <h3 className={styles.pageTitle}>{page.name}</h3>
 
-              {/* LINK (Slug) */}
+              {/* Page URL */}
               <div className={styles.slugContainer}>
                 <span className={styles.slash}>substarter.com/</span>
                 <span className={styles.slugText}>{page.slug}</span>
               </div>
             </div>
 
+            {/* C. REAL STATS */}
             <div className={styles.statsGrid}>
+              {/* Subscribers Count */}
               <div className={styles.statBox}>
                 <span className={styles.statLabel}>
                   <RiUser3Line className={styles.miniIcon} /> Subs
@@ -75,14 +86,15 @@ export default function PagesList({ pages }: { pages: PageData[] }) {
                 </span>
               </div>
 
+              {/* Views Count */}
               <div className={styles.statBox}>
                 <span className={styles.statLabel}>
                   <RiEyeLine className={styles.miniIcon} /> Views
                 </span>
                 <span className={styles.statValue}>
-                  {page.visits > 1000
-                    ? `${(page.visits / 1000).toFixed(1)}k`
-                    : page.visits}
+                  {page.views > 1000
+                    ? `${(page.views / 1000).toFixed(1)}k`
+                    : page.views}
                 </span>
               </div>
             </div>

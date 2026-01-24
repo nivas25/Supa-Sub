@@ -1,5 +1,6 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { getProfile, updateProfile } from "@/app/auth/actions";
 import {
   RiUser3Line,
   RiEditBoxLine,
@@ -9,24 +10,61 @@ import {
   RiCameraLensLine,
   RiSave3Line,
   RiCloseLine,
+  RiLoader4Fill,
 } from "react-icons/ri";
 import styles from "./Profile.module.css";
 
 export default function Profile() {
   const [mode, setMode] = useState<"view" | "edit">("view");
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
 
+  // Default State
   const [formData, setFormData] = useState({
-    firstName: "Niwas",
-    lastName: "Kumar",
-    email: "nivas3347r@gmail.com",
-    timezone: "Asia - Calcutta",
-    role: "Creator",
-    joinDate: "Jan 2024",
+    firstName: "",
+    lastName: "",
+    email: "",
+    timezone: "Asia - Calcutta", // We can default this or add a column in DB
+    avatarUrl: "",
+    role: "Member",
+    joinDate: "",
   });
 
-  const toggleMode = () => {
-    setMode(mode === "view" ? "edit" : "view");
+  // 1. FETCH DATA ON LOAD
+  useEffect(() => {
+    async function loadData() {
+      const data = await getProfile();
+      if (data) {
+        setFormData((prev) => ({
+          ...prev,
+          firstName: data.first_name || "",
+          lastName: data.last_name || "",
+          email: data.email || "",
+          avatarUrl: data.avatar_url || "",
+          joinDate: new Date(data.created_at).toLocaleDateString("en-US", {
+            month: "short",
+            year: "numeric",
+          }),
+        }));
+      }
+      setLoading(false);
+    }
+    loadData();
+  }, []);
+
+  const handleSave = async () => {
+    setSaving(true);
+    // 2. SAVE DATA TO DB
+    await updateProfile({
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+    });
+    setSaving(false);
+    setMode("view");
   };
+
+  if (loading)
+    return <div className={styles.container}>Loading profile...</div>;
 
   return (
     <div className={styles.container}>
@@ -48,7 +86,7 @@ export default function Profile() {
 
         <button
           className={mode === "view" ? styles.editBtn : styles.cancelBtn}
-          onClick={toggleMode}
+          onClick={() => setMode(mode === "view" ? "edit" : "view")}
         >
           {mode === "view" ? (
             <>
@@ -68,17 +106,27 @@ export default function Profile() {
         {mode === "view" && (
           <div className={`${styles.viewCard} ${styles.fadeUp}`}>
             <div className={styles.cardBody}>
-              {/* LEFT: AVATAR */}
               <div className={styles.avatarSection}>
                 <div className={styles.avatarCircle}>
-                  <RiUser3Line size={56} />
+                  {formData.avatarUrl ? (
+                    <img
+                      src={formData.avatarUrl}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        borderRadius: "50%",
+                        objectFit: "cover",
+                      }}
+                    />
+                  ) : (
+                    <RiUser3Line size={56} />
+                  )}
                 </div>
                 <div className={styles.roleBadge}>
                   <RiShieldStarLine /> {formData.role}
                 </div>
               </div>
 
-              {/* RIGHT: INFO */}
               <div className={styles.infoSection}>
                 <h2 className={styles.fullName}>
                   {formData.firstName}{" "}
@@ -119,20 +167,6 @@ export default function Profile() {
             </div>
 
             <div className={styles.formBody}>
-              {/* Photo Upload */}
-              <div className={styles.uploadRow}>
-                <div className={styles.miniAvatar}>
-                  <RiUser3Line />
-                </div>
-                <div className={styles.uploadActions}>
-                  <span className={styles.uploadLabel}>Profile Photo</span>
-                  <button className={styles.uploadBtn}>
-                    <RiCameraLensLine /> Change Photo
-                  </button>
-                </div>
-              </div>
-
-              {/* Inputs */}
               <div className={styles.inputGrid}>
                 <div className={styles.fieldGroup}>
                   <label>First Name</label>
@@ -167,27 +201,22 @@ export default function Profile() {
                     Contact support to change email.
                   </span>
                 </div>
-
-                <div className={styles.fieldGroupFull}>
-                  <label>Timezone</label>
-                  <select
-                    className={styles.select}
-                    value={formData.timezone}
-                    onChange={(e) =>
-                      setFormData({ ...formData, timezone: e.target.value })
-                    }
-                  >
-                    <option>Asia - Calcutta</option>
-                    <option>America - New York</option>
-                    <option>Europe - London</option>
-                  </select>
-                </div>
               </div>
             </div>
 
             <div className={styles.formFooter}>
-              <button className={styles.saveBtn} onClick={toggleMode}>
-                Save Changes <RiSave3Line />
+              <button
+                className={styles.saveBtn}
+                onClick={handleSave}
+                disabled={saving}
+              >
+                {saving ? (
+                  <RiLoader4Fill className="animate-spin" />
+                ) : (
+                  <>
+                    <RiSave3Line /> Save Changes
+                  </>
+                )}
               </button>
             </div>
           </div>

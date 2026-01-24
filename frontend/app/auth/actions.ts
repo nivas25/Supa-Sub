@@ -4,8 +4,7 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 
 /**
- * Handles Social Login (Google)
- * Updated to accept a dynamic redirect path
+ * SOCIAL LOGIN
  */
 export async function signInWithSocial(
   provider: "google",
@@ -18,7 +17,6 @@ export async function signInWithSocial(
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider,
       options: {
-        // Dynamically set the redirect URL based on where they clicked "Join"
         redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback?next=${encodeURIComponent(nextPath)}`,
       },
     });
@@ -32,10 +30,9 @@ export async function signInWithSocial(
   if (authUrl) redirect(authUrl);
 }
 
-// ... (Rest of file: sendOTP, verifyOTP, signOut can stay the same for now)
-// Note: Email OTP will still default to /pages unless we update verifyOTP too,
-// but Google is the primary flow for guests.
-
+/**
+ * OTP LOGIN
+ */
 export async function sendOTP(email: string) {
   const supabase = await createClient();
   try {
@@ -64,7 +61,7 @@ export async function verifyOTP(email: string, token: string) {
     if (error) throw error;
     if (data.session) isSuccessful = true;
   } catch (error) {
-    return { error: "Invalid or expired code" };
+    return { error: "Invalid code" };
   }
 
   if (isSuccessful) {
@@ -80,8 +77,60 @@ export async function signOut() {
   redirect("/");
 }
 
+// ==========================================
+// PROFILE ACTIONS
+// ==========================================
+
+export async function getProfile() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) return null;
+
+  const { data, error } = await supabase
+    .from("profiles")
+    .select("first_name, last_name, email, avatar_url, created_at")
+    .eq("id", user.id)
+    .single();
+
+  if (error) return null;
+  return data;
+}
+
+export async function updateProfile(formData: {
+  firstName: string;
+  lastName: string;
+}) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) return { error: "Not authenticated" };
+
+  const { error } = await supabase
+    .from("profiles")
+    .update({
+      first_name: formData.firstName,
+      last_name: formData.lastName,
+    })
+    .eq("id", user.id);
+
+  if (error) return { error: error.message };
+
+  revalidatePath("/profile");
+  return { success: true };
+}
+
+// ==========================================
+// AUTH HELPERS (Fixed Missing Export)
+// ==========================================
+
 /**
- * Returns the currently authenticated user (server-side)
+ * Returns the raw Auth User object (lighter than getProfile)
+ * Used by Layouts to check login status quickly.
  */
 export async function getCurrentUser() {
   const supabase = await createClient();
@@ -90,8 +139,7 @@ export async function getCurrentUser() {
     error,
   } = await supabase.auth.getUser();
 
-  if (error) {
-    console.error("getCurrentUser error:", error.message);
+  if (error || !user) {
     return null;
   }
 

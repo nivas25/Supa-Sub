@@ -1,56 +1,69 @@
 "use server";
 import { createClient } from "@/lib/supabase/server";
-import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
-export async function joinCommunity(creatorHandle: string, price: number) {
+// Helper: Calculate the Expiry Date
+function calculateExpiry(interval: string): string | null {
+  const now = new Date();
+
+  if (interval === "weekly") {
+    now.setDate(now.getDate() + 7);
+  } else if (interval === "monthly") {
+    now.setMonth(now.getMonth() + 1);
+  } else if (interval === "yearly") {
+    now.setFullYear(now.getFullYear() + 1);
+  } else if (interval === "lifetime") {
+    return null; // Null means "Forever"
+  } else {
+    // Default fallback (e.g. 30 days) if interval is unknown
+    now.setMonth(now.getMonth() + 1);
+  }
+
+  return now.toISOString();
+}
+
+export async function joinCommunity(
+  slug: string,
+  amount: number,
+  interval: string,
+) {
   const supabase = await createClient();
+
+  // 1. Get Current User
   const {
     data: { user },
   } = await supabase.auth.getUser();
-
-  // 1. GUEST CHECK: If not logged in, send to new Login Page
   if (!user) {
-    return {
-      error: "not_authenticated",
-      // Pass the current page as the 'next' destination
-      redirectUrl: `/auth/login?next=/${creatorHandle}`,
-    };
+    return { error: "Please log in first" };
   }
 
-  // 2. Fetch Creator & Group
-  const { data: creator } = await supabase
-    .from("creators")
-    .select("id, groups(*)")
-    .eq("username", creatorHandle)
+  // 2. Find the Page
+  const { data: page } = await supabase
+    .from("pages")
+    .select("id")
+    .eq("slug", slug)
     .single();
 
-  if (!creator || !creator.groups[0]) return { error: "Group not found" };
-  const group = creator.groups[0];
+  if (!page) return { error: "Page not found" };
 
-  // 3. Upsert Membership (Mock Payment)
-  const { data: membership, error: memberError } = await supabase
-    .from("memberships")
-    .upsert({
-      user_id: user.id,
-      group_id: group.id,
-      status: "active",
-      expires_at: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
-      amount_paid: price,
-    })
-    .select()
-    .single();
+  // 3. Calculate Expiry
+  const expiresAt = calculateExpiry(interval);
 
-  if (memberError) return { error: "Failed to create membership" };
-
-  // 4. Generate Invite Code
-  const code = Math.random().toString(36).substring(2, 10).toUpperCase();
-
-  await supabase.from("invite_codes").insert({
-    code: code,
-    membership_id: membership.id,
-    expires_at: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
+  // 4. Create Membership
+  const { error } = await supabase.from("memberships").insert({
+    user_id: user.id,
+    page_id: page.id,
+    status: "active",
+    amount_paid: amount,
+    expires_at: expiresAt, // <--- NOW IT HAS A DATE
   });
 
-  // 5. Success
-  redirect(`/thank-you/${code}`);
+  if (error) {
+    console.error("Join Error:", error);
+    return { error: "Failed to join. You might already be a member." };
+  }
+
+  // 5. Refresh
+  revalidatePath(`/${slug}`);
+  return { success: true };
 }

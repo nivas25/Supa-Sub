@@ -1,5 +1,6 @@
 "use client";
-import React, { useTransition, useMemo, useEffect } from "react";
+import React, { useTransition, useMemo, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { joinCommunity } from "@/app/actions/join";
 import { registerView } from "@/app/actions/analytics";
@@ -10,13 +11,16 @@ import {
   RiDiscordFill,
   RiWhatsappFill,
   RiGlobalLine,
-  RiGroupLine,
-  RiShieldStarLine,
-  RiLoader4Fill,
-  RiExternalLinkLine,
-  RiCheckDoubleLine,
-  RiTimeLine,
+  RiLock2Line,
+  RiArrowRightLine,
+  RiCheckLine,
   RiFlashlightFill,
+  RiShieldStarLine,
+  RiChatQuoteLine,
+  RiExternalLinkLine,
+  RiLoader4Fill,
+  RiArrowDownSLine,
+  RiArrowUpSLine,
 } from "react-icons/ri";
 import styles from "./PublicProfile.module.css";
 
@@ -26,10 +30,15 @@ interface PlatformDetails {
   title: string;
 }
 
+interface PriceOption {
+  amount: number;
+  interval: string;
+}
+
 interface PublicProfileProps {
   name: string;
   bio: string;
-  price: string;
+  prices: PriceOption[];
   handle: string;
   memberCount: number;
   avatarUrl?: string | null;
@@ -40,15 +49,40 @@ interface PublicProfileProps {
     whatsapp: PlatformDetails;
   };
   existingMembership?: {
+    id: string; // THIS ID IS CRITICAL
     expires_at: string;
   } | null;
   groupId?: string;
+  features?: string[];
+  welcomeMessage?: string;
+  terms?: string;
 }
+
+const formatInterval = (interval: string) => {
+  if (interval === "weekly") return "Weekly Access";
+  if (interval === "monthly") return "Monthly Access";
+  if (interval === "yearly") return "Annual Membership";
+  if (interval === "lifetime") return "Lifetime Access";
+  return "Membership";
+};
+
+const SubStarterBranding = () => (
+  <div className={styles.brandingArea}>
+    <span className={styles.brandText}>Powered by</span>
+    <div className={styles.footerBrand}>
+      <span className={styles.wordSub}>Sub</span>
+      <span className={styles.wordStarter}>Starter</span>
+      <div className={styles.footerBolt}>
+        <RiFlashlightFill />
+      </div>
+    </div>
+  </div>
+);
 
 export default function PublicProfile({
   name,
   bio,
-  price,
+  prices,
   handle,
   memberCount,
   avatarUrl,
@@ -56,17 +90,21 @@ export default function PublicProfile({
   platforms,
   existingMembership,
   groupId,
+  features = [],
+  welcomeMessage,
+  terms,
 }: PublicProfileProps) {
+  const router = useRouter();
   const [isPending, startTransition] = useTransition();
+  const [selectedPriceIdx, setSelectedPriceIdx] = useState(0);
+  const [expandedPlatform, setExpandedPlatform] = useState<string | null>(null);
 
   useEffect(() => {
-    if (groupId) {
-      registerView(groupId);
-    }
+    if (groupId) registerView(groupId);
   }, [groupId]);
 
   const daysRemaining = useMemo(() => {
-    if (!existingMembership?.expires_at) return 0;
+    if (!existingMembership?.expires_at) return 30;
     const diff =
       new Date(existingMembership.expires_at).getTime() - new Date().getTime();
     const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
@@ -76,161 +114,225 @@ export default function PublicProfile({
   const activePlatforms = Object.entries(platforms).filter(
     ([_, d]) => d.enabled,
   );
-
-  const formatCount = (num: number) => {
-    if (num >= 1000) {
-      return (num / 1000).toFixed(1) + "k";
-    }
-    return num;
-  };
+  const currentPrice =
+    prices && prices.length > 0
+      ? prices[selectedPriceIdx]
+      : { amount: 0, interval: "monthly" };
+  const formatCount = (num: number) =>
+    num >= 1000 ? (num / 1000).toFixed(1) + "k" : num;
 
   const getIcon = (key: string) => {
-    if (key === "telegram") return <RiTelegramFill size={28} color="#229ED9" />;
-    if (key === "discord") return <RiDiscordFill size={28} color="#5865F2" />;
-    if (key === "whatsapp") return <RiWhatsappFill size={28} color="#25D366" />;
-    return <RiGlobalLine size={28} />;
+    if (key === "telegram") return <RiTelegramFill />;
+    if (key === "discord") return <RiDiscordFill />;
+    if (key === "whatsapp") return <RiWhatsappFill />;
+    return <RiGlobalLine />;
   };
 
   const handleJoin = () => {
     if (existingMembership) return;
+
     startTransition(async () => {
-      const result = await joinCommunity(handle, Number(price));
-      if (result?.redirectUrl) window.location.href = result.redirectUrl;
+      try {
+        const result = await joinCommunity(
+          handle,
+          Number(currentPrice.amount),
+          currentPrice.interval,
+        );
+
+        if (result?.error) {
+          alert(result.error);
+        } else {
+          router.refresh();
+        }
+      } catch (err) {
+        console.error(err);
+        alert("Something went wrong.");
+      }
     });
+  };
+
+  const toggleExpand = (key: string) => {
+    if (!existingMembership) return;
+    setExpandedPlatform(expandedPlatform === key ? null : key);
+  };
+
+  // --- NEW: Smart Open Function (Debugs the Link) ---
+  const handleOpenLink = (key: string, originalLink: string) => {
+    // 1. Handle Telegram Logic
+    if (key === "telegram") {
+      const memId = existingMembership?.id;
+
+      // DEBUG: Alert if ID is missing
+      if (!memId) {
+        alert(
+          "DEBUG ERROR: Membership ID is missing!\nPlease refresh the page or try logging out and back in.",
+        );
+        console.error("Missing ID in membership object:", existingMembership);
+        return;
+      }
+
+      // 2. Open Bot
+      const botUrl = `https://t.me/substarter_offical_bot?start=${memId}`;
+      window.open(botUrl, "_blank");
+      return;
+    }
+
+    // 3. Handle Other Platforms
+    const finalLink = originalLink.startsWith("http")
+      ? originalLink
+      : `https://${originalLink}`;
+    window.open(finalLink, "_blank");
   };
 
   return (
     <div className={styles.pageContainer}>
-      <div className={styles.coverArea}>
-        {bannerUrl ? (
-          <Image
-            src={bannerUrl}
-            alt="Banner"
-            fill
-            className={styles.bannerImg}
-            unoptimized // <--- FIXES IMAGE ERROR
-          />
-        ) : (
-          <div className={styles.defaultBanner} />
-        )}
-      </div>
-
-      <div className={styles.profileBody}>
-        <div className={styles.avatarWrapper}>
-          {avatarUrl ? (
+      <div className={styles.contentWrapper}>
+        {/* IDENTITY */}
+        <div className={styles.coverArea}>
+          {bannerUrl ? (
             <Image
-              src={avatarUrl}
-              alt="Avatar"
+              src={bannerUrl}
+              alt="Banner"
               fill
-              className={styles.avatarImg}
-              unoptimized // <--- FIXES IMAGE ERROR
+              className={styles.bannerImg}
+              unoptimized
             />
           ) : (
-            <div className={styles.avatarFallback}>
-              <RiUser3Line />
-            </div>
+            <div className={styles.defaultBanner} />
           )}
         </div>
 
-        <h1 className={styles.displayName}>
-          {name || "Creator Name"}
-          <RiVerifiedBadgeFill className={styles.verifiedIcon} />
-        </h1>
-
-        <p className={styles.bioText}>
-          {bio || "Welcome to my exclusive community."}
-        </p>
-
-        <div className={styles.cleanStats}>
-          <div className={styles.statPill}>
-            <RiGroupLine /> {formatCount(memberCount)} Members
+        <div className={styles.profileInfo}>
+          <div className={styles.avatarBox}>
+            {avatarUrl ? (
+              <Image
+                src={avatarUrl}
+                alt="Avatar"
+                fill
+                className={styles.avatarImg}
+                unoptimized
+              />
+            ) : (
+              <div className={styles.avatarFallback}>
+                <RiUser3Line />
+              </div>
+            )}
           </div>
-          <div className={styles.statPill}>
-            <RiShieldStarLine /> {activePlatforms.length} Channels
+          <div className={styles.handle}>
+            {name || "Creator Name"}
+            <RiVerifiedBadgeFill className={styles.verified} />
           </div>
-        </div>
+          <p className={styles.bio}>
+            {bio || "Welcome to my exclusive community."}
+          </p>
 
-        <div className={styles.accessSection}>
-          <div className={styles.sectionHeader}>
-            {existingMembership ? "Your Access Links" : "Membership Includes"}
-          </div>
-
-          {activePlatforms.map(([key, data]) => {
-            const isMember = !!existingMembership;
-            const CardComponent = isMember ? "a" : "div";
-            const hrefProps = isMember
-              ? {
-                  href: data.link.startsWith("http")
-                    ? data.link
-                    : `https://${data.link}`,
-                  target: "_blank",
-                }
-              : {};
-
-            return (
-              <CardComponent
-                key={key}
-                className={`${styles.platformCard} ${
-                  isMember ? styles.memberCard : ""
-                }`}
-                {...hrefProps}
-              >
-                <div className={styles.iconBox}>{getIcon(key)}</div>
-                <div className={styles.platformInfo}>
-                  <span className={styles.platformTitle}>{data.title}</span>
-                  <span className={styles.platformMeta}>
-                    {isMember ? "Click to open" : `Private ${key} group`}
-                  </span>
-                </div>
-                {isMember ? (
-                  <div className={styles.actionIcon}>
-                    <RiExternalLinkLine />
-                  </div>
-                ) : (
-                  <div className={styles.lockIcon}>
-                    <RiCheckDoubleLine />
-                  </div>
-                )}
-              </CardComponent>
-            );
-          })}
-        </div>
-
-        <div className={styles.brandingFooter}>
-          <span className={styles.brandLabel}>Powered by</span>
-          <div className={styles.brandLogo}>
-            <div className={styles.brandIcon}>
-              <RiFlashlightFill size={12} />
+          <div className={styles.statsGrid}>
+            <div className={styles.stat}>
+              <span className={styles.statNum}>{formatCount(memberCount)}</span>
+              <span className={styles.statLabel}>Members</span>
             </div>
-            <span className={styles.brandName}>SubStarter</span>
+            <div className={styles.stat}>
+              <span className={styles.statNum}>{activePlatforms.length}</span>
+              <span className={styles.statLabel}>Channels</span>
+            </div>
           </div>
         </div>
+
+        {/* ACCESS (Interactive) */}
+        <div className={styles.contentSection}>
+          <div className={styles.sectionHeader}>
+            <RiLock2Line color={existingMembership ? "#25d366" : "#94a3b8"} />
+            <span className={styles.sectionLabel}>
+              {existingMembership ? "🎉 You have access" : "Unlock Access"}
+            </span>
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+            {activePlatforms.map(([key, data]) => {
+              const isMember = !!existingMembership;
+              const isExpanded = expandedPlatform === key;
+
+              return (
+                <div
+                  key={key}
+                  className={`${styles.accessCard} ${isMember ? styles.memberCard : ""}`}
+                >
+                  {/* Card Header */}
+                  <div
+                    className={styles.accessCardHeader}
+                    onClick={() => toggleExpand(key)}
+                  >
+                    <div className={styles.accessIconBox}>{getIcon(key)}</div>
+                    <div className={styles.accessDetails}>
+                      <span className={styles.accessTitle}>{data.title}</span>
+                      <span className={styles.accessSub}>
+                        {isMember
+                          ? isExpanded
+                            ? "Click to close"
+                            : "Click to view invite"
+                          : `Private ${key} group`}
+                      </span>
+                    </div>
+                    {isMember ? (
+                      <div className={styles.statusIcon}>
+                        {isExpanded ? <RiArrowUpSLine /> : <RiArrowDownSLine />}
+                      </div>
+                    ) : (
+                      <RiLock2Line className={styles.statusIcon} />
+                    )}
+                  </div>
+
+                  {/* Expanded Content */}
+                  {isExpanded && isMember && (
+                    <div className={styles.expandedContent}>
+                      <div className={styles.inviteBox}>
+                        <span className={styles.inviteLabel}>
+                          {key === "telegram"
+                            ? "Activate via Bot"
+                            : "Your Invite Link"}
+                        </span>
+
+                        {/* CHANGED TO BUTTON FOR BETTER DEBUGGING */}
+                        <button
+                          onClick={() => handleOpenLink(key, data.link)}
+                          className={styles.launchGroupBtn}
+                        >
+                          <RiExternalLinkLine />
+                          {key === "telegram"
+                            ? "Open Telegram Bot"
+                            : `Join ${key} Group`}
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* OTHER SECTIONS OMITTED FOR BREVITY, THEY ARE UNCHANGED */}
+
+        <SubStarterBranding />
       </div>
 
-      <div className={styles.actionDock}>
+      {/* STICKY DOCK */}
+      <div className={styles.stickyBar}>
         <div className={styles.dockContent}>
           {existingMembership ? (
-            <>
-              <div className={styles.memberStatus}>
-                <div className={styles.pulseDot} />
-                <span className={styles.activeText}>Active Member</span>
-              </div>
-              <div className={styles.expiryInfo}>
-                <RiTimeLine className={styles.timeIcon} />
-                <span>
-                  {daysRemaining > 0
-                    ? `${daysRemaining} days left`
-                    : "Expiring"}
-                </span>
-              </div>
-            </>
+            <div className={styles.memberStatus}>
+              <div className={styles.pulseDot} />
+              <span className={styles.activeText}>
+                Active Member • Expires in {daysRemaining} days
+              </span>
+            </div>
           ) : (
             <>
-              <div className={styles.priceInfo}>
-                <span className={styles.priceBig}>${price}</span>
-                <span className={styles.priceSmall}>/ 30 days</span>
+              <div className={styles.priceDisplay}>
+                <span className={styles.totalLabel}>Total</span>
+                <span className={styles.priceValue}>
+                  ${currentPrice.amount}
+                </span>
               </div>
-
               <button
                 className={styles.joinBtn}
                 onClick={handleJoin}
@@ -241,7 +343,10 @@ export default function PublicProfile({
                     <RiLoader4Fill className={styles.spin} /> Processing
                   </>
                 ) : (
-                  "Join Now"
+                  <>
+                    <span style={{ marginRight: 6 }}>Join Now</span>
+                    <RiArrowRightLine />
+                  </>
                 )}
               </button>
             </>

@@ -13,70 +13,78 @@ export default async function PublicProfilePage({
     data: { user },
   } = await supabase.auth.getUser();
 
-  // 1. Fetch Creator
-  const { data: creator } = await supabase
-    .from("creators")
-    .select("*, profiles(*)")
-    .eq("username", slug)
+  // 1. Fetch the Page (Product) by Slug
+  const { data: page } = await supabase
+    .from("pages")
+    .select("*, owner:profiles(*)") // Fetch owner details if needed
+    .eq("slug", slug)
+    .eq("status", "active")
     .single();
 
-  if (!creator) return notFound();
+  if (!page) return notFound();
 
-  // 2. Fetch Active Group
-  const { data: groups } = await supabase
-    .from("groups")
+  // 2. Fetch Prices
+  const { data: priceData } = await supabase
+    .from("page_prices")
     .select("*")
-    .eq("creator_id", creator.id)
-    .eq("status", "active")
-    .order("created_at", { ascending: false })
-    .limit(1);
+    .eq("page_id", page.id);
 
-  const group = groups && groups.length > 0 ? groups[0] : null;
+  const prices = priceData || [];
 
-  // 3. GET REAL MEMBER COUNT (The Fix)
-  let realMemberCount = 0;
-  if (group) {
-    const { count } = await supabase
-      .from("memberships")
-      .select("*", { count: "exact", head: true }) // <--- Counts actual rows
-      .eq("group_id", group.id)
-      .eq("status", "active");
+  // 3. Fetch Platform Configs (To see what is enabled)
+  const { data: telegramConfig } = await supabase
+    .from("page_telegram_config")
+    .select("*")
+    .eq("page_id", page.id)
+    .single();
 
-    realMemberCount = count || 0;
-  }
+  const { data: discordConfig } = await supabase
+    .from("page_discord_config")
+    .select("*")
+    .eq("page_id", page.id)
+    .single();
 
-  // 4. CHECK IF YOU ARE A MEMBER
+  const { data: whatsappConfig } = await supabase
+    .from("page_whatsapp_config")
+    .select("*")
+    .eq("page_id", page.id)
+    .single();
+
+  // 4. Get Real Member Count
+  const { count: realMemberCount } = await supabase
+    .from("memberships")
+    .select("*", { count: "exact", head: true })
+    .eq("page_id", page.id)
+    .eq("status", "active");
+
+  // 5. Check if User is a Member
   let existingMembership = null;
-
-  if (user && group) {
+  if (user) {
     const { data: members } = await supabase
       .from("memberships")
       .select("*")
       .eq("user_id", user.id)
-      .eq("group_id", group.id)
+      .eq("page_id", page.id)
       .eq("status", "active")
       .limit(1);
-
-    if (members && members.length > 0) {
-      existingMembership = members[0];
-    }
+    if (members && members.length > 0) existingMembership = members[0];
   }
 
-  // 5. Prepare UI Data
+  // 6. Map to UI Props
   const platforms = {
     telegram: {
-      enabled: group?.platform === "telegram",
-      link: group?.telegram_link || "",
+      enabled: !!telegramConfig,
+      link: telegramConfig?.invite_link || "", // Public link if available
       title: "VIP Channel",
     },
     discord: {
-      enabled: group?.platform === "discord",
-      link: "",
+      enabled: !!discordConfig,
+      link: discordConfig?.invite_link || "",
       title: "Community Server",
     },
     whatsapp: {
-      enabled: group?.platform === "whatsapp",
-      link: "",
+      enabled: !!whatsappConfig,
+      link: whatsappConfig?.invite_link || "",
       title: "Member Group",
     },
   };
@@ -84,16 +92,22 @@ export default async function PublicProfilePage({
   return (
     <main>
       <PublicProfile
-        name={creator.profiles.display_name}
-        bio={creator.bio}
-        price={group?.price?.toString() || "0"}
-        handle={creator.username}
-        memberCount={realMemberCount} // <--- Passing the real count
-        avatarUrl={creator.profiles.avatar_url}
-        bannerUrl={creator.banner_url} // <--- Pass the new banner from DB
+        // Identity
+        name={page.name}
+        bio={page.description}
+        handle={page.slug}
+        avatarUrl={page.icon_url}
+        bannerUrl={page.banner_url}
+        // Data
+        prices={prices}
+        memberCount={realMemberCount || 0}
         platforms={platforms}
         existingMembership={existingMembership}
-        groupId={group?.id} // <--- NEW: Pass the Group ID for analytics
+        groupId={page.id} // We pass page.id as groupId for analytics
+        // Content
+        features={page.features || []}
+        welcomeMessage={page.welcome_message}
+        terms={page.terms}
       />
     </main>
   );

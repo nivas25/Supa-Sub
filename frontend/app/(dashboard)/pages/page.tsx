@@ -12,38 +12,33 @@ export default async function PagesDashboard() {
   } = await supabase.auth.getUser();
   if (!user) redirect("/");
 
-  // 2. Fetch Creator Profile (To get the Link/Username)
-  const { data: creator } = await supabase
-    .from("creators")
-    .select("username")
-    .eq("id", user.id)
-    .single();
-
-  // 3. Fetch Groups
-  const { data: groups } = await supabase
-    .from("groups")
+  // 2. Fetch Pages
+  const { data: pagesData } = await supabase
+    .from("pages")
     .select("*")
-    .eq("creator_id", user.id)
+    .eq("owner_id", user.id)
     .order("created_at", { ascending: false });
 
-  // 4. GET REAL STATS (The Fix)
-  // We use Promise.all to fetch the member count for EACH group in parallel
+  // 3. Transform Data
+  // We use Promise.all to fetch member counts efficiently
   const realPages = await Promise.all(
-    (groups || []).map(async (group) => {
-      // A. Count Active Memberships for this group
+    (pagesData || []).map(async (page) => {
+      // Count subscribers
       const { count: memberCount } = await supabase
         .from("memberships")
         .select("*", { count: "exact", head: true })
-        .eq("group_id", group.id)
+        .eq("page_id", page.id)
         .eq("status", "active");
 
       return {
-        id: group.id,
-        slug: creator?.username || "username",
-        title: group.name,
-        subscribers: memberCount || 0, // <--- REAL DATABASE COUNT
-        visits: group.views || 0, // <--- NOW USING REAL DB DATA
-        status: group.status as "active" | "draft",
+        id: page.id,
+        slug: page.slug,
+
+        // --- THE FIX IS HERE ---
+        name: page.name, // Send 'name' (not title)
+        views: page.views || 0, // Send 'views' (not visits)
+        subscribers: memberCount || 0,
+        status: page.status,
       };
     }),
   );
