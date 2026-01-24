@@ -21,6 +21,8 @@ import {
   RiLoader4Fill,
   RiArrowDownSLine,
   RiArrowUpSLine,
+  RiFileTextLine,
+  RiPriceTag3Line,
 } from "react-icons/ri";
 import styles from "./PublicProfile.module.css";
 
@@ -49,7 +51,7 @@ interface PublicProfileProps {
     whatsapp: PlatformDetails;
   };
   existingMembership?: {
-    id: string; // THIS ID IS CRITICAL
+    id: string;
     expires_at: string;
   } | null;
   groupId?: string;
@@ -59,11 +61,11 @@ interface PublicProfileProps {
 }
 
 const formatInterval = (interval: string) => {
-  if (interval === "weekly") return "Weekly Access";
-  if (interval === "monthly") return "Monthly Access";
-  if (interval === "yearly") return "Annual Membership";
-  if (interval === "lifetime") return "Lifetime Access";
-  return "Membership";
+  if (interval === "weekly") return "Weekly";
+  if (interval === "monthly") return "Monthly";
+  if (interval === "yearly") return "Yearly";
+  if (interval === "lifetime") return "Lifetime";
+  return interval;
 };
 
 const SubStarterBranding = () => (
@@ -114,10 +116,12 @@ export default function PublicProfile({
   const activePlatforms = Object.entries(platforms).filter(
     ([_, d]) => d.enabled,
   );
+
   const currentPrice =
     prices && prices.length > 0
       ? prices[selectedPriceIdx]
       : { amount: 0, interval: "monthly" };
+
   const formatCount = (num: number) =>
     num >= 1000 ? (num / 1000).toFixed(1) + "k" : num;
 
@@ -156,28 +160,21 @@ export default function PublicProfile({
     setExpandedPlatform(expandedPlatform === key ? null : key);
   };
 
-  // --- NEW: Smart Open Function (Debugs the Link) ---
   const handleOpenLink = (key: string, originalLink: string) => {
     // 1. Handle Telegram Logic
     if (key === "telegram") {
       const memId = existingMembership?.id;
-
-      // DEBUG: Alert if ID is missing
       if (!memId) {
-        alert(
-          "DEBUG ERROR: Membership ID is missing!\nPlease refresh the page or try logging out and back in.",
-        );
-        console.error("Missing ID in membership object:", existingMembership);
+        alert("Please log in again to verify your membership.");
         return;
       }
-
-      // 2. Open Bot
-      const botUrl = `https://t.me/substarter_offical_bot?start=${memId}`;
+      // Open Bot
+      const botUrl = `https://t.me/mysubstarterbot?start=${memId}`;
       window.open(botUrl, "_blank");
       return;
     }
 
-    // 3. Handle Other Platforms
+    // 2. Handle Other Platforms
     const finalLink = originalLink.startsWith("http")
       ? originalLink
       : `https://${originalLink}`;
@@ -187,7 +184,7 @@ export default function PublicProfile({
   return (
     <div className={styles.pageContainer}>
       <div className={styles.contentWrapper}>
-        {/* IDENTITY */}
+        {/* --- 1. IDENTITY --- */}
         <div className={styles.coverArea}>
           {bannerUrl ? (
             <Image
@@ -238,79 +235,175 @@ export default function PublicProfile({
           </div>
         </div>
 
-        {/* ACCESS (Interactive) */}
+        {/* --- 2. MESSAGE (Optional) --- */}
+        {welcomeMessage && (
+          <div className={styles.contentSection}>
+            <div className={styles.sectionHeader}>
+              <RiChatQuoteLine color="#94a3b8" />
+              <span className={styles.sectionLabel}>Message</span>
+            </div>
+            <div className={styles.messageCard}>{welcomeMessage}</div>
+          </div>
+        )}
+
+        {/* --- 3. FEATURES (Optional) --- */}
+        {features && features.length > 0 && (
+          <div className={styles.contentSection}>
+            <div className={styles.sectionHeader}>
+              <RiShieldStarLine color="#94a3b8" />
+              <span className={styles.sectionLabel}>What's Included</span>
+            </div>
+            <div className={styles.featuresGrid}>
+              {features.map((feat, i) => (
+                <div key={i} className={styles.featureRow}>
+                  <RiCheckLine className={styles.checkIcon} />
+                  <span className={styles.featureText}>{feat}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* --- 4. PRICING PLANS (New: Was Missing) --- */}
+        {!existingMembership && prices && prices.length > 0 && (
+          <div className={styles.contentSection}>
+            <div className={styles.sectionHeader}>
+              <RiPriceTag3Line color="#94a3b8" />
+              <span className={styles.sectionLabel}>Select a Plan</span>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+              {prices.map((price, idx) => (
+                <div
+                  key={idx}
+                  className={`${styles.planCard} ${
+                    selectedPriceIdx === idx ? styles.activePlan : ""
+                  }`}
+                  onClick={() => setSelectedPriceIdx(idx)}
+                >
+                  <div className={styles.planInfo}>
+                    <span className={styles.planName}>
+                      {formatInterval(price.interval)}
+                    </span>
+                    <span className={styles.planCost}>
+                      ${price.amount} / {price.interval}
+                    </span>
+                  </div>
+                  <div className={styles.radioCircle}>
+                    <div className={styles.radioDot} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* --- 5. ACCESS (Restored) --- */}
         <div className={styles.contentSection}>
           <div className={styles.sectionHeader}>
             <RiLock2Line color={existingMembership ? "#25d366" : "#94a3b8"} />
             <span className={styles.sectionLabel}>
-              {existingMembership ? "🎉 You have access" : "Unlock Access"}
+              {existingMembership ? "🎉 You have access" : "Community Access"}
             </span>
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-            {activePlatforms.map(([key, data]) => {
-              const isMember = !!existingMembership;
-              const isExpanded = expandedPlatform === key;
+            {activePlatforms.length > 0 ? (
+              activePlatforms.map(([key, data]) => {
+                const isMember = !!existingMembership;
+                const isExpanded = expandedPlatform === key;
 
-              return (
-                <div
-                  key={key}
-                  className={`${styles.accessCard} ${isMember ? styles.memberCard : ""}`}
-                >
-                  {/* Card Header */}
+                return (
                   <div
-                    className={styles.accessCardHeader}
-                    onClick={() => toggleExpand(key)}
+                    key={key}
+                    className={`${styles.accessCard} ${
+                      isMember ? styles.memberCard : ""
+                    }`}
                   >
-                    <div className={styles.accessIconBox}>{getIcon(key)}</div>
-                    <div className={styles.accessDetails}>
-                      <span className={styles.accessTitle}>{data.title}</span>
-                      <span className={styles.accessSub}>
-                        {isMember
-                          ? isExpanded
-                            ? "Click to close"
-                            : "Click to view invite"
-                          : `Private ${key} group`}
-                      </span>
-                    </div>
-                    {isMember ? (
-                      <div className={styles.statusIcon}>
-                        {isExpanded ? <RiArrowUpSLine /> : <RiArrowDownSLine />}
+                    <div
+                      className={styles.accessCardHeader}
+                      onClick={() => toggleExpand(key)}
+                    >
+                      <div className={styles.accessIconBox}>{getIcon(key)}</div>
+                      <div className={styles.accessDetails}>
+                        <span className={styles.accessTitle}>{data.title}</span>
+                        <span className={styles.accessSub}>
+                          {isMember
+                            ? isExpanded
+                              ? "Click to close"
+                              : "Click to view invite"
+                            : `Private ${key} group`}
+                        </span>
                       </div>
-                    ) : (
-                      <RiLock2Line className={styles.statusIcon} />
+                      {isMember ? (
+                        <div className={styles.statusIcon}>
+                          {isExpanded ? (
+                            <RiArrowUpSLine />
+                          ) : (
+                            <RiArrowDownSLine />
+                          )}
+                        </div>
+                      ) : (
+                        <RiLock2Line className={styles.statusIcon} />
+                      )}
+                    </div>
+
+                    {isExpanded && isMember && (
+                      <div className={styles.expandedContent}>
+                        <div className={styles.inviteBox}>
+                          <span className={styles.inviteLabel}>
+                            {key === "telegram"
+                              ? "Activate via Bot"
+                              : "Your Invite Link"}
+                          </span>
+                          <button
+                            onClick={() => handleOpenLink(key, data.link)}
+                            className={styles.launchGroupBtn}
+                          >
+                            <RiExternalLinkLine />
+                            {key === "telegram"
+                              ? "Open Telegram Bot"
+                              : `Join ${key} Group`}
+                          </button>
+                        </div>
+                      </div>
                     )}
                   </div>
-
-                  {/* Expanded Content */}
-                  {isExpanded && isMember && (
-                    <div className={styles.expandedContent}>
-                      <div className={styles.inviteBox}>
-                        <span className={styles.inviteLabel}>
-                          {key === "telegram"
-                            ? "Activate via Bot"
-                            : "Your Invite Link"}
-                        </span>
-
-                        {/* CHANGED TO BUTTON FOR BETTER DEBUGGING */}
-                        <button
-                          onClick={() => handleOpenLink(key, data.link)}
-                          className={styles.launchGroupBtn}
-                        >
-                          <RiExternalLinkLine />
-                          {key === "telegram"
-                            ? "Open Telegram Bot"
-                            : `Join ${key} Group`}
-                        </button>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              );
-            })}
+                );
+              })
+            ) : (
+              <div
+                style={{
+                  padding: 16,
+                  textAlign: "center",
+                  color: "#94a3b8",
+                  fontSize: "0.9rem",
+                  background: "#f8fafc",
+                  borderRadius: 12,
+                }}
+              >
+                No active channels connected.
+              </div>
+            )}
           </div>
         </div>
 
-        {/* OTHER SECTIONS OMITTED FOR BREVITY, THEY ARE UNCHANGED */}
+        {/* --- 6. TERMS (Optional) --- */}
+        {terms && (
+          <div className={styles.contentSection}>
+            <div className={styles.sectionHeader}>
+              <RiFileTextLine color="#94a3b8" />
+              <span className={styles.sectionLabel}>Terms & Conditions</span>
+            </div>
+            <p
+              style={{
+                fontSize: "0.85rem",
+                color: "#64748b",
+                lineHeight: "1.5",
+              }}
+            >
+              {terms}
+            </p>
+          </div>
+        )}
 
         <SubStarterBranding />
       </div>
@@ -328,7 +421,9 @@ export default function PublicProfile({
           ) : (
             <>
               <div className={styles.priceDisplay}>
-                <span className={styles.totalLabel}>Total</span>
+                <span className={styles.totalLabel}>
+                  {currentPrice.interval} Total
+                </span>
                 <span className={styles.priceValue}>
                   ${currentPrice.amount}
                 </span>
@@ -340,7 +435,7 @@ export default function PublicProfile({
               >
                 {isPending ? (
                   <>
-                    <RiLoader4Fill className={styles.spin} /> Processing
+                    <RiLoader4Fill className="spin" /> Processing
                   </>
                 ) : (
                   <>

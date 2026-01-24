@@ -1,82 +1,113 @@
 import { createClient } from "@/lib/supabase/server";
-import { redirect, notFound } from "next/navigation";
-import SinglePageDashboard from "@/components/pages/SinglePageDashboard";
+import { notFound } from "next/navigation";
+import PublicProfile from "@/components/public/PublicProfile";
 
-export default async function PageDashboard({
+// This helps Next.js cache the page for better performance
+export const revalidate = 60;
+
+export default async function PublicPage({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ slug: string }>;
 }) {
   const supabase = await createClient();
-  const { id } = await params;
+  const { slug } = await params;
 
-  // 1. Auth Check
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) redirect("/");
-
-  // 2. Fetch Page Details & Price
+  // 1. Fetch Page Details
   const { data: page } = await supabase
     .from("pages")
-    .select(`*, page_prices(amount)`)
-    .eq("id", id)
-    .eq("owner_id", user.id)
+    .select("*")
+    .eq("slug", slug)
     .single();
 
   if (!page) return notFound();
 
-  // 3. FETCH REAL MEMBERSHIP HISTORY (The Magic Step)
-  // We get the creation date of every active member
-  const { data: members } = await supabase
+  // 2. Register View (Increment View Count)
+  // We do this lazily so it doesn't block the page load
+  await supabase.rpc("increment_page_view", { page_id: page.id });
+
+  // 3. Fetch Prices
+  const { data: prices } = await supabase
+    .from("page_prices")
+    .select("amount, interval")
+    .eq("page_id", page.id)
+    .order("amount", { ascending: true });
+
+  // 4. Fetch Platform Configs (To see what is enabled)
+  const { data: telegram } = await supabase
+    .from("page_telegram_config")
+    .select("*")
+    .eq("page_id", page.id)
+    .single();
+  const { data: discord } = await supabase
+    .from("page_discord_config")
+    .select("*")
+    .eq("page_id", page.id)
+    .single();
+  const { data: whatsapp } = await supabase
+    .from("page_whatsapp_config")
+    .select("*")
+    .eq("page_id", page.id)
+    .single();
+
+  // 5. Fetch Member Count
+  const { count: memberCount } = await supabase
     .from("memberships")
-    .select("created_at")
-    .eq("page_id", id)
-    .eq("status", "active")
-    .order("created_at", { ascending: true });
+    .select("*", { count: "exact", head: true })
+    .eq("page_id", page.id)
+    .eq("status", "active");
 
-  // 4. PROCESS HISTORY (Last 30 Days)
-  const price = page.page_prices?.[0]?.amount || 0;
-  const history = [];
-  const today = new Date();
+  // 6. Check if Current User is a Member (For "Access" view)
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  let existingMembership = null;
 
-  // Create an array for the last 30 days
-  for (let i = 29; i >= 0; i--) {
-    const date = new Date();
-    date.setDate(today.getDate() - i);
-    const dateString = date.toISOString().split("T")[0]; // "2023-10-25"
-
-    // Count how many members existed ON or BEFORE this specific date
-    // (This creates a cumulative "Growth" chart)
-    const countOnDay =
-      members?.filter(
-        (m) =>
-          new Date(m.created_at) <= new Date(date.setHours(23, 59, 59, 999)),
-      ).length || 0;
-
-    history.push({
-      day: date.toLocaleDateString("en-US", { month: "short", day: "numeric" }), // "Oct 25"
-      subscribers: countOnDay,
-      revenue: countOnDay * price,
-    });
+  if (user) {
+    const { data: mem } = await supabase
+      .from("memberships")
+      .select("id, expires_at, status")
+      .eq("user_id", user.id)
+      .eq("page_id", page.id)
+      .eq("status", "active")
+      .single();
+    existingMembership = mem;
   }
 
-  // 5. Calculate Totals
-  const totalMembers = members?.length || 0;
-  const totalRevenue = totalMembers * price;
-
-  // 6. Structure Data
-  const stats = {
-    id: page.id,
-    name: page.name,
-    slug: page.slug,
-    iconUrl: page.icon_url,
-    revenue: totalRevenue,
-    subscribers: totalMembers,
-    views: page.views || 0,
-    retention: 100, // Placeholder until we track cancellations
-    history: history, // <--- PASSING REAL GRAPH DATA
+  // 7. Structure Data for Component
+  const platformData = {
+    telegram: {
+      enabled: !!telegram, // If row exists, it's enabled
+      link: "", // Telegram uses Bot logic, no static link
+      title: "Telegram Group",
+    },
+    discord: {
+      enabled: !!discord,
+      link: discord?.invite_link || "",
+      title: "Discord Server",
+    },
+    whatsapp: {
+      enabled: !!whatsapp,
+      link: whatsapp?.invite_link || "",
+      title: "WhatsApp Group",
+    },
   };
 
-  return <SinglePageDashboard stats={stats} />;
+  return (
+    <PublicProfile
+      name={page.name}
+      bio={page.description}
+      handle={page.slug}
+      avatarUrl={page.icon_url}
+      bannerUrl={page.banner_url}
+      memberCount={memberCount || 0}
+      prices={prices || []}
+      platforms={platformData}
+      existingMembership={existingMembership}
+      groupId={page.id}
+      features={page.features || []}
+      welcomeMessage={page.welcome_message}
+      terms={page.terms}
+    />
+  );
 }
