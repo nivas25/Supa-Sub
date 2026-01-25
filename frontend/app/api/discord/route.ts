@@ -1,11 +1,12 @@
-\import { NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 // REMOVED: import nacl ... (We don't need it!)
 
 // 1. FORCE NODEJS RUNTIME
-export const runtime = 'nodejs'; 
+export const runtime = "nodejs";
 
 // 2. PASTE YOUR PUBLIC KEY HERE (Inside quotes)
-const PUBLIC_KEY = "f5c4e0efdac941e8f609a5d247ad54d4fc8285e2f9afe91278465ceabf023926";
+const PUBLIC_KEY =
+  "f5c4e0efdac941e8f609a5d247ad54d4fc8285e2f9afe91278465ceabf023926";
 
 export async function POST(req: Request) {
   try {
@@ -25,7 +26,7 @@ export async function POST(req: Request) {
       PUBLIC_KEY,
       signature,
       timestamp,
-      bodyBuffer
+      bodyBuffer,
     );
 
     if (!isVerified) {
@@ -38,23 +39,25 @@ export async function POST(req: Request) {
     if (interaction.type === 1) {
       return new Response(JSON.stringify({ type: 1 }), {
         status: 200,
-        headers: { "Content-Type": "application/json" }
+        headers: { "Content-Type": "application/json" },
       });
     }
 
     // 6. COMMANDS
     if (interaction.type === 2) {
-      return new Response(JSON.stringify({
-        type: 4,
-        data: { content: "✅ Connection Successful!" }
-      }), {
-        status: 200,
-        headers: { "Content-Type": "application/json" }
-      });
+      return new Response(
+        JSON.stringify({
+          type: 4,
+          data: { content: "✅ Connection Successful!" },
+        }),
+        {
+          status: 200,
+          headers: { "Content-Type": "application/json" },
+        },
+      );
     }
 
     return new Response("OK", { status: 200 });
-
   } catch (err) {
     console.error(err);
     return new Response("Server Error", { status: 500 });
@@ -62,17 +65,22 @@ export async function POST(req: Request) {
 }
 
 // --- HELPER: VERIFY SIGNATURE WITHOUT LIBRARIES ---
-async function verifyDiscordRequest(clientKey: string, signature: string, timestamp: string, body: Buffer) {
+async function verifyDiscordRequest(
+  clientKey: string,
+  signature: string,
+  timestamp: string,
+  body: Buffer,
+) {
   // Dynamic import avoids build errors
-  const { webcrypto } = await import('node:crypto');
-  
+  const { webcrypto } = await import("node:crypto");
+
   // @ts-ignore
   const key = await webcrypto.subtle.importKey(
     "raw",
     Buffer.from(clientKey, "hex"),
     { name: "Ed25519" },
     false,
-    ["verify"]
+    ["verify"],
   );
 
   const signatureBuffer = Buffer.from(signature, "hex");
@@ -80,10 +88,5 @@ async function verifyDiscordRequest(clientKey: string, signature: string, timest
   const data = Buffer.concat([timestampBuffer, body]);
 
   // @ts-ignore
-  return await webcrypto.subtle.verify(
-    "Ed25519",
-    key,
-    signatureBuffer,
-    data
-  );
+  return await webcrypto.subtle.verify("Ed25519", key, signatureBuffer, data);
 }
