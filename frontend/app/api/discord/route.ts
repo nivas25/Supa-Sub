@@ -1,20 +1,35 @@
 import { NextResponse } from "next/server";
 import { verifyKey } from "discord-interactions";
 
-const PUBLIC_KEY = process.env.DISCORD_PUBLIC_KEY!;
+// Ensure Node runtime (discord-interactions uses Node crypto)
+export const runtime = "nodejs";
+// Avoid caching the route in Vercel edge cache
+export const dynamic = "force-dynamic";
+// Prefer the same region shown in Vercel logs (iad1) to reduce cold start
+export const preferredRegion = ["iad1"];
+
+const PUBLIC_KEY = process.env.DISCORD_PUBLIC_KEY;
+
+export async function GET() {
+  return new NextResponse("ok", { status: 200 });
+}
+
+export async function HEAD() {
+  return new NextResponse(null, { status: 200 });
+}
 
 export async function POST(req: Request) {
-  const signature = req.headers.get("X-Signature-Ed25519");
-  const timestamp = req.headers.get("X-Signature-Timestamp");
-  const bodyText = await req.text();
-
-  console.log("⚡️ INCOMING REQUEST"); // Look for this in your VS Code Terminal
+  const signature = req.headers.get("x-signature-ed25519");
+  const timestamp = req.headers.get("x-signature-timestamp");
 
   if (!signature || !timestamp || !PUBLIC_KEY) {
+    console.error("❌ Missing signature/timestamp/public key");
     return NextResponse.json({ error: "Bad Request" }, { status: 401 });
   }
 
+  const bodyText = await req.text(); // raw body required for signature validation
   const isValidRequest = verifyKey(bodyText, signature, timestamp, PUBLIC_KEY);
+
   if (!isValidRequest) {
     console.error("❌ Invalid Signature");
     return NextResponse.json(
