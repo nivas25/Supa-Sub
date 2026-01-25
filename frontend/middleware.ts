@@ -5,11 +5,17 @@ import { cookies } from "next/headers";
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // 🛑 BYPASS MIDDLEWARE FOR DISCORD
-  // This is the critical fix. We immediately let Discord requests through.
+  // -----------------------------------------------------------------
+  // 1. CRITICAL: Bypass Middleware for Discord
+  // This ensures the Discord Robot is never asked to "Log In"
+  // -----------------------------------------------------------------
   if (pathname.startsWith("/api/discord")) {
     return NextResponse.next();
   }
+
+  // -----------------------------------------------------------------
+  // 2. YOUR EXISTING AUTH CONFIG
+  // -----------------------------------------------------------------
 
   // Protected routes that require authentication
   const protectedRoutes = ["/dashboard"];
@@ -24,6 +30,7 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith(route),
   );
   const isAuthRoute = authRoutes.includes(pathname);
+  const isPublicRoute = publicRoutes.includes(pathname);
 
   try {
     // Create a Supabase client using the request's cookie jar
@@ -54,12 +61,12 @@ export async function middleware(request: NextRequest) {
       data: { session },
     } = await supabase.auth.getSession();
 
-    // If user is authenticated and trying to access auth routes, redirect to dashboard
+    // Logic: If user is authenticated and trying to access auth routes (like login), redirect to dashboard
     if (session && isAuthRoute) {
       return NextResponse.redirect(new URL("/dashboard/coupons", request.url));
     }
 
-    // If user is not authenticated and trying to access protected routes, redirect to home
+    // Logic: If user is not authenticated and trying to access protected routes, redirect to home
     if (!session && isProtectedRoute) {
       return NextResponse.redirect(new URL("/", request.url));
     }
@@ -67,14 +74,19 @@ export async function middleware(request: NextRequest) {
     // Allow the request to continue
     return NextResponse.next();
   } catch (error) {
+    // If there's an error checking authentication, allow the request to continue
+    // This prevents infinite redirects in case of errors
     console.error("Middleware error:", error);
     return NextResponse.next();
   }
 }
 
 export const config = {
-  // We added 'api/discord' to the ignore list here as a backup
   matcher: [
+    // -----------------------------------------------------------------
+    // 3. MATCHER UPDATE:
+    // Added '|api/discord' to the exclusion list here as a backup safety
+    // -----------------------------------------------------------------
     "/((?!_next/static|_next/image|favicon.ico|api/discord|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
   ],
 };
