@@ -323,8 +323,21 @@ export default function CreatorStudio({ user }: any) {
         </div>
         <div className={styles.previewScaler}>
           <LivePreview
-            {...formData}
+            name={formData.pageTitle}
+            bio={formData.description}
+            avatarUrl={formData.avatarUrl}
+            bannerUrl={formData.bannerUrl}
+            handle={formData.handle}
+            prices={formData.prices}
+            features={formData.features}
+            platforms={formData.platforms}
+            socialLinks={formData.socialLinks}
+            welcomeMessage={formData.welcomeMessage}
+            terms={formData.terms}
             buttonText={formData.buttonText || "Subscribe"}
+            themeColor={formData.themeColor}
+            buttonTextColor={formData.buttonTextColor}
+            buttonStyle={formData.buttonStyle}
             viewMode={previewDevice}
           />
         </div>

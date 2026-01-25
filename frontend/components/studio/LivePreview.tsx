@@ -21,14 +21,14 @@ import styles from "./LivePreview.module.css";
 interface LivePreviewProps {
   name: string;
   bio: string;
-  prices: any[];
+  prices: Price[];
   features?: string[];
   handle: string;
   avatarUrl?: string | null;
   bannerUrl?: string | null;
-  platforms: any;
+  platforms: PlatformMap;
   buttonText: string;
-  socialLinks: any[];
+  socialLinks: SocialLink[];
   themeColor: string;
   buttonTextColor?: string;
   buttonStyle: string;
@@ -37,201 +37,210 @@ interface LivePreviewProps {
   terms?: string;
 }
 
-export default function LivePreview({
+interface Price {
+  amount: string | number;
+  interval: string;
+}
+
+interface PlatformMap {
+  [key: string]: { enabled: boolean; title?: string };
+}
+
+interface SocialLink {
+  url: string;
+  platform: string;
+}
+
+// --- HELPER FUNCTIONS (Outside component) ---
+const formatInterval = (interval: string) => {
+  const clean = interval?.toLowerCase() || "";
+  switch (clean) {
+    case "weekly":
+      return "7 days";
+    case "monthly":
+      return "30 days";
+    case "yearly":
+      return "365 days";
+    case "lifetime":
+      return "Lifetime";
+    default:
+      return "30 days";
+  }
+};
+
+const formatPrice = (amount: string | number) => {
+  if (!amount) return "0";
+  return Number(amount).toLocaleString();
+};
+
+const getSocialIcon = (platform: string) => {
+  const clean = platform?.toLowerCase() || "";
+  switch (clean) {
+    case "twitter":
+      return <RiTwitterXFill />;
+    case "instagram":
+      return <RiInstagramLine />;
+    case "youtube":
+      return <RiYoutubeFill />;
+    case "facebook":
+      return <RiFacebookCircleFill />;
+    default:
+      return <RiGlobalLine />;
+  }
+};
+
+const getPlatformIcon = (key: string) => {
+  switch (key) {
+    case "telegram":
+      return <RiTelegramFill />;
+    case "discord":
+      return <RiDiscordFill />;
+    case "whatsapp":
+      return <RiWhatsappFill />;
+    default:
+      return <RiGlobalLine />;
+  }
+};
+
+// --- SUB-COMPONENTS (Moved outside) ---
+
+const IdentitySection = ({
   name,
   bio,
-  prices,
-  features = [],
-  handle,
   avatarUrl,
   bannerUrl,
-  platforms,
-  buttonText,
   socialLinks,
   themeColor,
-  buttonTextColor = "#ffffff",
-  buttonStyle,
-  viewMode = "desktop",
-  welcomeMessage,
-  terms,
-}: LivePreviewProps) {
-  const [selectedPriceIdx, setSelectedPriceIdx] = useState(0);
+}: {
+  name: string;
+  bio: string;
+  avatarUrl?: string | null;
+  bannerUrl?: string | null;
+  socialLinks: SocialLink[];
+  themeColor: string;
+}) => (
+  <div className={styles.identityCard}>
+    <div className={styles.bannerFrame}>
+      {bannerUrl && (
+        <img
+          src={bannerUrl}
+          alt="Banner"
+          className={styles.bannerImg}
+          onError={(e) => {
+            (e.currentTarget as HTMLImageElement).style.display = "none";
+          }}
+        />
+      )}
+    </div>
 
-  const currentPrice =
-    prices && prices.length > 0
-      ? prices[selectedPriceIdx]
-      : { amount: "0", interval: "monthly" };
-
-  const activePlatforms = Object.entries(platforms).filter(
-    ([_, data]: any) => data.enabled,
-  );
-
-  // --- DATE FORMATTING ---
-  const formatInterval = (interval: string) => {
-    const clean = interval?.toLowerCase() || "";
-    switch (clean) {
-      case "weekly":
-        return "7 days";
-      case "monthly":
-        return "30 days";
-      case "yearly":
-        return "365 days";
-      case "lifetime":
-        return "Lifetime";
-      default:
-        return "30 days";
-    }
-  };
-
-  const formatPrice = (amount: string | number) => {
-    if (!amount) return "0";
-    return Number(amount).toLocaleString();
-  };
-
-  const borderRadius =
-    buttonStyle === "pill"
-      ? "100px"
-      : buttonStyle === "rounded"
-        ? "14px"
-        : "0px";
-
-  const customStyle = {
-    "--accent": themeColor || "#000000",
-    "--radius": borderRadius,
-  } as React.CSSProperties;
-
-  // --- ICONS (Updated with Facebook) ---
-  const getSocialIcon = (platform: string) => {
-    const clean = platform?.toLowerCase() || "";
-    switch (clean) {
-      case "twitter":
-        return <RiTwitterXFill />;
-      case "instagram":
-        return <RiInstagramLine />;
-      case "youtube":
-        return <RiYoutubeFill />;
-      case "facebook":
-        return <RiFacebookCircleFill />; // Fixed: Added Facebook
-      default:
-        return <RiGlobalLine />;
-    }
-  };
-
-  const getPlatformIcon = (key: string) => {
-    switch (key) {
-      case "telegram":
-        return <RiTelegramFill />;
-      case "discord":
-        return <RiDiscordFill />;
-      case "whatsapp":
-        return <RiWhatsappFill />;
-      default:
-        return <RiGlobalLine />;
-    }
-  };
-
-  // --- SUB-COMPONENTS ---
-
-  const IdentitySection = () => (
-    <div className={styles.identityCard}>
-      <div className={styles.bannerFrame}>
-        {bannerUrl && (
+    <div className={styles.profileContent}>
+      <div className={styles.avatarWrapper}>
+        {avatarUrl ? (
           <img
-            src={bannerUrl}
-            alt="Banner"
+            src={avatarUrl}
+            alt="Avatar"
             className={styles.bannerImg}
             onError={(e) => {
               (e.currentTarget as HTMLImageElement).style.display = "none";
             }}
           />
-        )}
-      </div>
-
-      <div className={styles.profileContent}>
-        <div className={styles.avatarWrapper}>
-          {avatarUrl ? (
-            <img
-              src={avatarUrl}
-              alt="Avatar"
-              className={styles.bannerImg}
-              onError={(e) => {
-                (e.currentTarget as HTMLImageElement).style.display = "none";
-              }}
-            />
-          ) : (
-            <div
-              style={{
-                width: "100%",
-                height: "100%",
-                background: "#f1f5f9",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <RiUser3Line size={32} color="#cbd5e1" />
-            </div>
-          )}
-        </div>
-
-        <div className={styles.nameRow}>
-          <h1 className={styles.name}>{name || "Creator Name"}</h1>
-        </div>
-
-        <p className={styles.bio}>
-          {bio ||
-            "Join my exclusive community to get access to premium content, insights, and more."}
-        </p>
-
-        {socialLinks && socialLinks.length > 0 && (
-          <div className={styles.socialRow}>
-            {socialLinks.map((s, i) => (
-              <a
-                key={i}
-                href={s.url}
-                className={styles.socialBtn}
-                target="_blank"
-              >
-                {getSocialIcon(s.platform)}
-              </a>
-            ))}
+        ) : (
+          <div
+            style={{
+              width: "100%",
+              height: "100%",
+              background: "#f1f5f9",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <RiUser3Line size={32} color="#cbd5e1" />
           </div>
         )}
       </div>
-    </div>
-  );
 
-  const FeaturesList = () => {
-    if (!features || features.length === 0) return null;
-    return (
-      <div className={viewMode === "desktop" ? styles.featuresCard : ""}>
-        <div className={styles.featureList}>
-          <span className={styles.sectionTitle}>
-            <RiShieldCheckLine /> What's Included
-          </span>
-          {features.map((feat, i) => (
-            <div key={i} className={styles.featureItem}>
-              <RiCheckboxCircleFill
-                color={themeColor}
-                size={22}
-                style={{ flexShrink: 0 }}
-              />
-              <span>{feat}</span>
-            </div>
+      <div className={styles.nameRow}>
+        <h1 className={styles.name}>{name || "Creator Name"}</h1>
+      </div>
+
+      <p className={styles.bio}>
+        {bio ||
+          "Join my exclusive community to get access to premium content, insights, and more."}
+      </p>
+
+      {socialLinks && socialLinks.length > 0 && (
+        <div className={styles.socialRow}>
+          {socialLinks.map((s, i) => (
+            <a
+              key={i}
+              href={s.url}
+              className={styles.socialBtn}
+              target="_blank"
+            >
+              {getSocialIcon(s.platform)}
+            </a>
           ))}
         </div>
-      </div>
-    );
-  };
+      )}
+    </div>
+  </div>
+);
 
-  const CheckoutContent = () => (
+const FeaturesList = ({
+  features,
+  viewMode,
+  themeColor,
+}: {
+  features: string[];
+  viewMode: string;
+  themeColor: string;
+}) => {
+  if (!features || features.length === 0) return null;
+  return (
+    <div className={viewMode === "desktop" ? styles.featuresCard : ""}>
+      <div className={styles.featureList}>
+        <span className={styles.sectionTitle}>
+          <RiShieldCheckLine /> What's Included
+        </span>
+        {features.map((feat, i) => (
+          <div key={i} className={styles.featureItem}>
+            <RiCheckboxCircleFill
+              color={themeColor}
+              size={22}
+              style={{ flexShrink: 0 }}
+            />
+            <span>{feat}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const CheckoutContent = ({
+  activePlatforms,
+  prices,
+  selectedPriceIdx,
+  terms,
+  themeColor,
+  onSelectPrice,
+}: {
+  activePlatforms: Array<[string, { enabled: boolean; title?: string }]>;
+  prices: Price[];
+  selectedPriceIdx: number;
+  terms?: string;
+  themeColor: string;
+  onSelectPrice: (idx: number) => void;
+}) => {
+  return (
     <>
       {activePlatforms.length > 0 && (
         <div className={styles.accessGrid}>
           <span className={styles.sectionTitle}>
             <RiLock2Fill /> Instant Access
           </span>
-          {activePlatforms.map(([key, data]: any) => (
+          {activePlatforms.map(([key, data]) => (
             <div key={key} className={styles.bigAccessCard}>
               <div
                 className={styles.accessIconBox}
@@ -259,7 +268,7 @@ export default function LivePreview({
               <div
                 key={i}
                 className={`${styles.priceCard} ${isActive ? styles.activePrice : ""}`}
-                onClick={() => setSelectedPriceIdx(i)}
+                onClick={() => onSelectPrice(i)}
               >
                 <div className={styles.activeIndicator}></div>
                 <div className={styles.intervalBadge}>
@@ -287,7 +296,21 @@ export default function LivePreview({
       )}
     </>
   );
+};
 
+const StickyFooter = ({
+  currentPrice,
+  themeColor,
+  buttonTextColor,
+  buttonText,
+  borderRadius,
+}: {
+  currentPrice: Price;
+  themeColor: string;
+  buttonTextColor: string;
+  buttonText: string;
+  borderRadius: string;
+}) => {
   const priceString = formatPrice(currentPrice.amount);
   const priceSizeClass =
     priceString.length > 6
@@ -296,7 +319,7 @@ export default function LivePreview({
         ? styles["text-md"]
         : styles["text-lg"];
 
-  const StickyFooter = () => (
+  return (
     <div className={styles.stickyFooter}>
       <div className={styles.priceDisplay}>
         <span className={`${styles.footerAmount} ${priceSizeClass}`}>
@@ -318,6 +341,56 @@ export default function LivePreview({
       </button>
     </div>
   );
+};
+
+export default function LivePreview({
+  name,
+  bio,
+  prices,
+  features = [],
+  handle,
+  avatarUrl,
+  bannerUrl,
+  platforms,
+  buttonText,
+  socialLinks,
+  themeColor,
+  buttonTextColor = "#ffffff",
+  buttonStyle,
+  viewMode = "desktop",
+  welcomeMessage,
+  terms,
+}: LivePreviewProps) {
+  const [selectedPriceIdx, setSelectedPriceIdx] = useState(0);
+
+  const currentPrice =
+    prices && prices.length > 0
+      ? prices[selectedPriceIdx]
+      : { amount: "0", interval: "monthly" };
+
+  const activePlatforms = Object.entries(platforms).filter(
+    ([, data]) => data.enabled,
+  ) as Array<[string, { enabled: boolean; title?: string }]>;
+
+  const borderRadius =
+    buttonStyle === "pill"
+      ? "100px"
+      : buttonStyle === "rounded"
+        ? "14px"
+        : "0px";
+
+  const customStyle = {
+    "--accent": themeColor || "#000000",
+    "--radius": borderRadius,
+  } as React.CSSProperties;
+
+  const priceString = formatPrice(currentPrice.amount);
+  const priceSizeClass =
+    priceString.length > 6
+      ? styles["text-sm"]
+      : priceString.length > 4
+        ? styles["text-md"]
+        : styles["text-lg"];
 
   return (
     <div className={styles.previewWrapper} style={customStyle}>
@@ -349,7 +422,14 @@ export default function LivePreview({
           <div className={styles.scrollArea}>
             <div className={styles.desktopLayout}>
               <div className={styles.leftCol}>
-                <IdentitySection />
+                <IdentitySection
+                  name={name}
+                  bio={bio}
+                  avatarUrl={avatarUrl}
+                  bannerUrl={bannerUrl}
+                  socialLinks={socialLinks}
+                  themeColor={themeColor}
+                />
                 {welcomeMessage && (
                   <div className={styles.welcomeCard}>
                     <div className={styles.welcomeIconWrapper}>
@@ -358,11 +438,22 @@ export default function LivePreview({
                     <p className={styles.welcomeText}>{welcomeMessage}</p>
                   </div>
                 )}
-                <FeaturesList />
+                <FeaturesList
+                  features={features}
+                  viewMode={viewMode}
+                  themeColor={themeColor}
+                />
               </div>
               <div className={styles.rightCol}>
                 <div className={styles.purchaseCardDesktop}>
-                  <CheckoutContent />
+                  <CheckoutContent
+                    activePlatforms={activePlatforms}
+                    prices={prices}
+                    selectedPriceIdx={selectedPriceIdx}
+                    terms={terms}
+                    themeColor={themeColor}
+                    onSelectPrice={setSelectedPriceIdx}
+                  />
                   <button
                     className={styles.joinBtn}
                     style={{
@@ -384,7 +475,14 @@ export default function LivePreview({
           <>
             <div className={styles.scrollArea}>
               <div className={styles.mobileLayout}>
-                <IdentitySection />
+                <IdentitySection
+                  name={name}
+                  bio={bio}
+                  avatarUrl={avatarUrl}
+                  bannerUrl={bannerUrl}
+                  socialLinks={socialLinks}
+                  themeColor={themeColor}
+                />
                 <div className={styles.mobileContentStack}>
                   {welcomeMessage && (
                     <div className={styles.welcomeCard}>
@@ -394,12 +492,29 @@ export default function LivePreview({
                       <p className={styles.welcomeText}>{welcomeMessage}</p>
                     </div>
                   )}
-                  <FeaturesList />
-                  <CheckoutContent />
+                  <FeaturesList
+                    features={features}
+                    viewMode={viewMode}
+                    themeColor={themeColor}
+                  />
+                  <CheckoutContent
+                    activePlatforms={activePlatforms}
+                    prices={prices}
+                    selectedPriceIdx={selectedPriceIdx}
+                    terms={terms}
+                    themeColor={themeColor}
+                    onSelectPrice={setSelectedPriceIdx}
+                  />
                 </div>
               </div>
             </div>
-            <StickyFooter />
+            <StickyFooter
+              currentPrice={currentPrice}
+              themeColor={themeColor}
+              buttonTextColor={buttonTextColor}
+              buttonText={buttonText}
+              borderRadius={borderRadius}
+            />
           </>
         )}
       </div>
