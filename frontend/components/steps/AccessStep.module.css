@@ -1,0 +1,693 @@
+/* AccessStep.module.css */
+
+/* =========================================
+   1. MAIN CARD CONTAINER
+   ========================================= */
+.accessCard {
+  background: #ffffff;
+  border: 2px solid #000000;
+  border-radius: 20px;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  font-family: var(--font-outfit), sans-serif !important;
+  transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+  position: relative;
+}
+
+.accessCard:focus-within {
+  transform: translate(-4px, -4px);
+  box-shadow: 8px 8px 0 #000000;
+}
+
+.errorBorder {
+  border-color: #ef4444 !important;
+  box-shadow: 8px 8px 0 #ef4444 !important;
+}
+
+/* =========================================
+   2. HEADER SECTION
+   ========================================= */
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding-bottom: 24px;
+  border-bottom: 2px solid #f1f5f9;
+}
+
+.stepBadge {
+  width: 48px;
+  height: 48px;
+  background: #000;
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: 800;
+  border-radius: 12px;
+  border: 2px solid #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 3px 3px 0 #000;
+}
+
+.headerText h3 {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #000;
+  margin: 0;
+  line-height: 1;
+}
+
+.headerText p {
+  margin: 6px 0 0 0;
+  font-size: 0.95rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+/* =========================================
+   3. PLATFORM CARDS
+   ========================================= */
+.platformStack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.platformCard {
+  border: 2px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 24px;
+  transition: all 0.2s ease;
+  background: #fff;
+}
+
+.enabledPlatform {
+  border-color: #000;
+  background: #fff;
+  transform: translate(-2px, -2px);
+  box-shadow: 4px 4px 0 #000;
+}
+
+.platHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.platInfo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.platIcon {
+  font-size: 1.5rem;
+  display: flex;
+}
+
+.platName {
+  text-transform: capitalize;
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: #000;
+}
+
+.platBody {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 2px dashed #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Toggle Switch */
+.switch {
+  position: relative;
+  width: 52px;
+  height: 28px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #fff;
+  border-radius: 34px;
+  transition: 0.2s;
+  border: 2px solid #cbd5e1;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: #cbd5e1;
+  border-radius: 50%;
+  transition: 0.2s;
+}
+
+input:checked + .slider {
+  background-color: #000;
+  border-color: #000;
+}
+
+input:checked + .slider:before {
+  transform: translateX(24px);
+  background-color: #fff;
+}
+
+/* Inputs */
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.subLabel {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.stdInput {
+  width: 100%;
+  height: 56px;
+  padding: 0 16px;
+  border: 2px solid #000;
+  border-radius: 12px;
+  background: #fff;
+  font-family: var(--font-outfit), sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #000;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.stdInput:focus {
+  background: #fdfdfd;
+  transform: translate(-2px, -2px);
+  box-shadow: 4px 4px 0 #000;
+}
+
+/* =========================================
+   4. CONNECTION BOX (Telegram/Discord)
+   ========================================= */
+.connectBox {
+  background: #f8fafc;
+  padding: 24px;
+  border-radius: 14px;
+  border: 2px dashed #94a3b8;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Instruction Steps */
+.instructionList {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  background: #fff;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+.stepItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.stepIcon {
+  background: #f1f5f9;
+  color: #0f172a;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 1.1rem;
+}
+
+.stepItem p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #334155;
+  line-height: 1.5;
+  padding-top: 4px;
+}
+
+.stepItem strong {
+  color: #000;
+  font-weight: 700;
+}
+
+.linkText {
+  color: #5865f2;
+  font-weight: 800;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.linkText:hover {
+  color: #4752c4;
+}
+
+/* New Action Link Button for Discord Invite */
+.actionLinkBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #5865F2; /* Discord Blurple */
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 6px 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  width: fit-content;
+  transition: all 0.2s;
+  margin-top: 4px;
+}
+
+.actionLinkBtn:hover {
+  background: #4752c4;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(88, 101, 242, 0.3);
+}
+
+/* Code Block */
+.codeBlock {
+  background: #0f172a;
+  color: #4ade80;
+  padding: 14px 18px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  border: 1px solid #334155;
+  transition: all 0.2s;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.codeBlock:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.codeBlock code {
+  font-family: monospace;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.copyBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 6px 10px;
+  border-radius: 6px;
+  color: #fff;
+  font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Verify Button */
+.verifyBtn {
+  width: 100%;
+  padding: 14px;
+  background: #fff;
+  color: #0284c7;
+  font-weight: 700;
+  font-size: 0.95rem;
+  border: 2px solid #0284c7;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: 0.2s;
+}
+
+.verifyBtn:hover:not(:disabled) {
+  background: #0284c7;
+  color: #fff;
+}
+
+.verifyBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Initial "Generate ID" State */
+.generateState {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+  text-align: center;
+  padding: 10px 0;
+}
+
+.generateState p {
+  font-size: 0.9rem;
+  color: #64748b;
+  font-weight: 500;
+  margin: 0;
+  max-width: 80%;
+}
+
+.generateBtn {
+  background: #000;
+  color: #fff;
+  padding: 14px 28px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 1rem;
+  border: 2px solid #000;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.2s;
+}
+
+.generateBtn:hover:not(:disabled) {
+  background: #25d366; /* Brand Success Color */
+  color: #000;
+  transform: translate(-2px, -2px);
+  box-shadow: 4px 4px 0 #000;
+}
+
+/* Success State */
+.successState {
+  background: #f0fdf4;
+  border: 2px solid #16a34a;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  color: #15803d;
+}
+
+.successState h4 {
+  margin: 0;
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: #166534;
+}
+
+.successState p {
+  margin: 4px 0 0 0;
+  font-size: 0.95rem;
+  color: #15803d;
+}
+
+/* =========================================
+   5. PRICING SECTION
+   ========================================= */
+.divider {
+  height: 2px;
+  background: #f1f5f9;
+  margin: 32px 0;
+}
+
+.pricingStack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.priceRow {
+  display: flex;
+  align-items: stretch;
+  gap: 12px;
+  background: #fff;
+  padding: 12px;
+  border: 2px solid #e2e8f0;
+  border-radius: 14px;
+  transition: all 0.2s;
+}
+
+.priceRow:focus-within {
+  border-color: #000;
+  box-shadow: 4px 4px 0 #000;
+  transform: translate(-2px, -2px);
+}
+
+.moneyInputWrapper {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  background: #f8fafc;
+  border-radius: 10px;
+  border: 1px solid transparent;
+}
+
+.invalidPrice {
+  background: #fff1f2;
+  border-color: #fda4af;
+}
+
+.moneySymbol {
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: #000;
+}
+
+.moneyInput {
+  width: 100%;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-weight: 800;
+  font-size: 1.2rem;
+  color: #000;
+  padding: 10px 8px;
+}
+
+.intervalSelect {
+  flex: 1.5;
+  padding: 0 12px;
+  border: none;
+  border-left: 2px dashed #e2e8f0;
+  background: #fff;
+  font-family: var(--font-outfit), sans-serif;
+  font-size: 1rem;
+  color: #000;
+  outline: none;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.deletePlanBtn {
+  width: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  color: #ef4444;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: all 0.2s;
+}
+
+.deletePlanBtn:hover {
+  border-color: #ef4444;
+  background: #fff1f2;
+  color: #dc2626;
+}
+
+.addPlanBtn {
+  margin-top: 12px;
+  width: 100%;
+  height: 60px;
+  border: 2px dashed #cbd5e1;
+  background: #f8fafc;
+  color: #64748b;
+  font-weight: 700;
+  font-size: 1rem;
+  border-radius: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s;
+}
+
+.addPlanBtn:hover {
+  border-color: #000;
+  color: #000;
+  background: #fff;
+  border-style: solid;
+  box-shadow: 4px 4px 0 #000;
+  transform: translate(-2px, -2px);
+}
+
+.errorText {
+  color: #dc2626;
+  font-weight: 700;
+  font-size: 0.85rem;
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.spin {
+  animation: rotate 1s linear infinite;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =========================================
+   MOBILE OPTIMIZATION (Overrides)
+   ========================================= */
+@media (max-width: 768px) {
+  .accessCard {
+    padding: 24px 16px;
+    gap: 24px;
+    box-shadow: 4px 4px 0 #000; /* Consistent Mobile Shadow */
+  }
+
+  .cardHeader {
+    gap: 12px;
+    padding-bottom: 16px;
+  }
+
+  .stepBadge {
+    width: 40px;
+    height: 40px;
+    font-size: 1.1rem;
+  }
+
+  .headerText h3 {
+    font-size: 1.25rem;
+  }
+
+  .platformStack {
+    gap: 16px;
+  }
+
+  .platformCard {
+    padding: 16px;
+    border-radius: 14px;
+  }
+
+  .platBody {
+    margin-top: 16px;
+    padding-top: 16px;
+    gap: 16px;
+  }
+
+  /* Connect Box Mobile */
+  .connectBox {
+    padding: 16px;
+  }
+
+  .instructionList {
+    padding: 12px;
+  }
+
+  .stepIcon {
+    width: 28px;
+    height: 28px;
+    font-size: 1rem;
+  }
+
+  .codeBlock {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    word-break: break-all;
+  }
+
+  .copyBtn {
+    width: 100%;
+    justify-content: center;
+    padding: 8px;
+  }
+
+  /* Inputs Mobile */
+  .stdInput {
+    height: 50px;
+    border-radius: 10px;
+    font-size: 1rem; /* Prevents zoom */
+  }
+
+  /* Pricing Mobile */
+  .priceRow {
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .moneyInputWrapper {
+    border-radius: 8px;
+    min-width: 120px;
+  }
+
+  .intervalSelect {
+    border-left: none;
+    border-top: 1px dashed #e2e8f0;
+    padding-top: 8px;
+    width: 100%;
+  }
+
+  .addPlanBtn {
+    height: 50px;
+    font-size: 0.95rem;
+  }
+}

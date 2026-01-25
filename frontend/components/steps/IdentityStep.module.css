@@ -1,0 +1,650 @@
+/* IdentityStep.module.css */
+
+/* --- Main Card (The "Gumroad" Look) --- */
+.identityCard {
+  background: #ffffff;
+  border: 2px solid #000000;
+  border-radius: 20px;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  /* Layout Fixes */
+  height: auto;
+  min-height: min-content;
+  flex-shrink: 0;
+  position: relative;
+  font-family: var(--font-outfit), sans-serif !important;
+  box-shadow: 0 0 0 #000;
+  transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.identityCard:focus-within {
+  transform: translate(-4px, -4px);
+  box-shadow: 8px 8px 0 #000000;
+}
+
+.errorBorder {
+  border-color: #ff4757 !important;
+  box-shadow: 8px 8px 0 #ff4757 !important;
+}
+
+/* --- Header --- */
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding-bottom: 24px;
+  border-bottom: 2px solid #f1f5f9;
+}
+
+.stepBadge {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  background: #000;
+  color: #fff;
+  font-size: 1.25rem;
+  font-weight: 800;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: rotate(-3deg);
+}
+
+.headerText h3 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #000;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.headerText p {
+  margin: 4px 0 0 0;
+  font-size: 0.95rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+/* --- Fields --- */
+.fieldStack {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  width: 100%;
+}
+
+.inputWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.labelRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.labelRow label {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #000;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-outfit), sans-serif;
+}
+
+/* --- YOUR CUSTOM BADGE STYLE --- */
+.reqTag {
+  background: #25d366; /* Bright Green */
+  color: #000;
+  border: 2px solid #000;
+  font-size: 0.7rem;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  box-shadow: 2px 2px 0 #000; /* Little pop */
+}
+
+.charCount {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #94a3b8;
+}
+
+/* --- Inputs --- */
+.stdInput,
+.stdTextArea,
+.urlInputGroup {
+  width: 100%;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  background: #fff;
+  font-family: var(--font-outfit), sans-serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #000;
+  outline: none;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.stdInput,
+.urlInputGroup {
+  height: 60px;
+  padding: 0 16px;
+}
+
+.stdTextArea {
+  padding: 16px;
+  line-height: 1.5;
+  resize: vertical;
+  min-height: 120px;
+}
+
+.stdInput:focus,
+.stdTextArea:focus,
+.urlInputGroup:focus-within {
+  border-color: #000;
+  transform: translate(-3px, -3px);
+  box-shadow: 5px 5px 0 #000;
+}
+
+.errorInput {
+  border-color: #ef4444 !important;
+  background: #fff5f5;
+}
+
+.errorText {
+  color: #ef4444;
+  font-weight: 700;
+  font-size: 0.85rem;
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* --- URL Input --- */
+.urlInputGroup {
+  display: flex;
+  align-items: center;
+}
+
+.urlPrefix {
+  color: #94a3b8;
+  font-weight: 700;
+  font-size: 1.05rem;
+  white-space: nowrap;
+  letter-spacing: -0.02em;
+}
+
+.transparentInput {
+  flex: 1;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: #000;
+  height: 100%;
+  padding-left: 2px;
+  font-family: var(--font-outfit), sans-serif;
+}
+
+/* --- Social Section --- */
+.socialBlueprintContainer {
+  background: #fdfbf7;
+  border: 2px dashed #cbd5e1;
+  border-radius: 16px;
+  padding: 24px;
+  transition: all 0.3s ease;
+}
+
+.socialBlueprintContainer:hover {
+  border-color: #94a3b8;
+  background: #fff;
+}
+
+.socialPickerRow {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+  flex-wrap: wrap; /* Allows icons to wrap if many */
+}
+
+.socialIconBtn {
+  width: 50px; /* Slightly smaller to fit more */
+  height: 50px;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  background: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  color: #64748b;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.socialIconBtn:hover:not(:disabled) {
+  transform: translate(-3px, -3px) rotate(-3deg);
+  box-shadow: 3px 3px 0 #000;
+  border-color: #000;
+  color: #000;
+  background: #25d366; /* Green highlight on hover */
+}
+
+.socialIconBtn:disabled {
+  background: #f1f5f9;
+  color: #cbd5e1;
+  cursor: not-allowed;
+  transform: scale(0.95);
+  border-style: dashed;
+}
+
+.socialActiveList {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.emptyState {
+  text-align: center;
+  font-size: 0.95rem;
+  color: #94a3b8;
+  font-weight: 600;
+  font-style: italic;
+  padding: 10px;
+}
+
+.socialInputRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #fff;
+  border: 2px solid #000;
+  padding: 8px 12px;
+  border-radius: 12px;
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.1);
+  animation: slideIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.platformBadge {
+  width: 36px;
+  height: 36px;
+  background: #000;
+  color: #fff;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+}
+
+.socialUrlField {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-weight: 600;
+  font-size: 0.95rem;
+  outline: none;
+  font-family: var(--font-outfit), sans-serif;
+  color: #000;
+}
+
+.socialUrlField::placeholder {
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+.deleteLinkBtn {
+  width: 32px;
+  height: 32px;
+  background: #fee2e2;
+  color: #ef4444;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.deleteLinkBtn:hover {
+  background: #ef4444;
+  color: #fff;
+  border-color: #ef4444;
+}
+
+.availabilityIndicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+}
+
+.spin {
+  animation: rotate 1s linear infinite;
+  color: #000;
+}
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* --- Mobile Optimization --- */
+@media (max-width: 768px) {
+  .identityCard {
+    padding: 24px;
+    gap: 24px;
+    border-radius: 16px;
+    box-shadow: 0 0 0 #000;
+  }
+
+  .identityCard:focus-within {
+    transform: translate(-2px, -2px);
+    box-shadow: 4px 4px 0 #000000;
+  }
+
+  .cardHeader {
+    gap: 12px;
+    padding-bottom: 16px;
+  }
+
+  .stepBadge {
+    width: 40px;
+    height: 40px;
+    font-size: 1.1rem;
+  }
+
+  .headerText h3 {
+    font-size: 1.25rem;
+  }
+
+  .headerText p {
+    font-size: 0.85rem;
+  }
+
+  .fieldStack {
+    gap: 24px;
+  }
+
+  .stdInput,
+  .stdTextArea,
+  .urlInputGroup {
+    font-size: 1rem;
+  }
+
+  .stdInput,
+  .urlInputGroup {
+    height: 52px;
+    padding: 0 14px;
+  }
+
+  .stdTextArea {
+    padding: 14px;
+    min-height: 100px;
+  }
+
+  .stdInput:focus,
+  .stdTextArea:focus,
+  .urlInputGroup:focus-within {
+    transform: translate(-2px, -2px);
+    box-shadow: 3px 3px 0 #000;
+  }
+
+  .labelRow label {
+    font-size: 0.8rem;
+    gap: 6px;
+  }
+
+  .reqTag {
+    font-size: 0.65rem;
+    padding: 3px 8px;
+  }
+
+  .charCount {
+    font-size: 0.7rem;
+  }
+
+  /* Social Section Mobile */
+  .socialBlueprintContainer {
+    padding: 18px;
+    border-radius: 12px;
+  }
+
+  .socialPickerRow {
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+
+  .socialIconBtn {
+    width: 44px;
+    height: 44px;
+    font-size: 1.2rem;
+    border-radius: 10px;
+  }
+
+  .socialIconBtn:hover:not(:disabled) {
+    transform: translate(-2px, -2px) rotate(-2deg);
+    box-shadow: 2px 2px 0 #000;
+  }
+
+  .socialInputRow {
+    gap: 10px;
+    padding: 10px;
+    border-radius: 10px;
+  }
+
+  .platformBadge {
+    width: 32px;
+    height: 32px;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+
+  .socialUrlField {
+    font-size: 0.9rem;
+  }
+
+  .deleteLinkBtn {
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+  }
+}
+
+/* --- Tablet & Small Mobile --- */
+@media (max-width: 480px) {
+  .identityCard {
+    padding: 18px;
+    gap: 18px;
+    border-radius: 14px;
+  }
+
+  .identityCard:focus-within {
+    transform: translate(-1px, -1px);
+    box-shadow: 2px 2px 0 #000000;
+  }
+
+  .cardHeader {
+    gap: 10px;
+    padding-bottom: 14px;
+    border-bottom: 2px solid #f1f5f9;
+  }
+
+  .stepBadge {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+  }
+
+  .headerText h3 {
+    font-size: 1.1rem;
+    font-weight: 800;
+  }
+
+  .headerText p {
+    font-size: 0.8rem;
+  }
+
+  .fieldStack {
+    gap: 18px;
+  }
+
+  .inputWrapper {
+    gap: 8px;
+  }
+
+  .stdInput,
+  .stdTextArea,
+  .urlInputGroup {
+    font-size: 0.95rem;
+    border-radius: 10px;
+  }
+
+  .stdInput,
+  .urlInputGroup {
+    height: 48px;
+    padding: 0 12px;
+  }
+
+  .stdTextArea {
+    padding: 12px;
+    min-height: 90px;
+    font-size: 0.95rem;
+  }
+
+  .stdInput:focus,
+  .stdTextArea:focus,
+  .urlInputGroup:focus-within {
+    transform: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-color: #000;
+  }
+
+  .labelRow {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .labelRow label {
+    font-size: 0.75rem;
+  }
+
+  .reqTag {
+    font-size: 0.6rem;
+    padding: 3px 6px;
+    border-radius: 4px;
+  }
+
+  .charCount {
+    font-size: 0.65rem;
+  }
+
+  .errorText {
+    font-size: 0.8rem;
+  }
+
+  .urlPrefix {
+    font-size: 0.95rem;
+  }
+
+  .transparentInput {
+    font-size: 0.95rem;
+  }
+
+  /* Social Mobile Optimization */
+  .socialBlueprintContainer {
+    padding: 14px;
+    border-radius: 10px;
+  }
+
+  .socialPickerRow {
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .socialIconBtn {
+    width: 40px;
+    height: 40px;
+    font-size: 1.1rem;
+    border-radius: 8px;
+    min-width: 40px;
+    min-height: 40px;
+  }
+
+  .socialIconBtn:hover:not(:disabled) {
+    transform: scale(1.05);
+    box-shadow: 2px 2px 0 #000;
+  }
+
+  .socialIconBtn:active:not(:disabled) {
+    transform: scale(0.98);
+  }
+
+  .socialActiveList {
+    gap: 10px;
+  }
+
+  .socialInputRow {
+    gap: 8px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    flex-wrap: wrap;
+  }
+
+  .platformBadge {
+    width: 28px;
+    height: 28px;
+    font-size: 0.9rem;
+  }
+
+  .socialUrlField {
+    font-size: 0.85rem;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .deleteLinkBtn {
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    min-height: 24px;
+    flex-shrink: 0;
+  }
+
+  .availabilityIndicator {
+    width: 20px;
+    height: 20px;
+  }
+
+  .emptyState {
+    font-size: 0.85rem;
+  }
+}

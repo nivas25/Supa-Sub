@@ -1,369 +1,408 @@
 "use client";
-import React, { useState, useEffect } from "react";
-import Image from "next/image";
+import React, { useState } from "react";
 import {
-  RiVerifiedBadgeFill,
   RiUser3Line,
   RiTelegramFill,
   RiDiscordFill,
   RiWhatsappFill,
   RiGlobalLine,
-  RiLock2Line,
   RiArrowRightLine,
-  RiCheckLine,
-  RiFlashlightFill,
-  RiShieldStarLine,
+  RiTwitterXFill,
+  RiInstagramLine,
+  RiYoutubeFill,
+  RiFacebookCircleFill, // Added Facebook Icon
+  RiCheckboxCircleFill,
+  RiLock2Fill,
   RiChatQuoteLine,
+  RiShieldCheckLine,
 } from "react-icons/ri";
 import styles from "./LivePreview.module.css";
-
-// --- Types ---
-interface PlatformDetails {
-  enabled: boolean;
-  link: string;
-  title: string;
-}
-
-interface PriceOption {
-  amount: string;
-  interval: string;
-}
 
 interface LivePreviewProps {
   name: string;
   bio: string;
-  prices: PriceOption[];
+  prices: any[];
   features?: string[];
-  welcomeMessage?: string;
-  terms?: string;
   handle: string;
   avatarUrl?: string | null;
   bannerUrl?: string | null;
-  platforms: {
-    telegram: PlatformDetails;
-    discord: PlatformDetails;
-    whatsapp: PlatformDetails;
-  };
+  platforms: any;
+  buttonText: string;
+  socialLinks: any[];
+  themeColor: string;
+  buttonTextColor?: string;
+  buttonStyle: string;
   viewMode?: "mobile" | "desktop";
+  welcomeMessage?: string;
+  terms?: string;
 }
 
-const formatInterval = (interval: string) => {
-  if (interval === "weekly") return "week";
-  if (interval === "monthly") return "month";
-  if (interval === "yearly") return "year";
-  if (interval === "lifetime") return "forever";
-  return interval;
-};
-
-const formatLabel = (interval: string) => {
-  if (interval === "weekly") return "Weekly Access";
-  if (interval === "monthly") return "Monthly Access";
-  if (interval === "yearly") return "Annual Membership";
-  if (interval === "lifetime") return "Lifetime Access";
-  return "Membership";
-};
-
-// --- Branding Component ---
-const SubStarterBranding = () => (
-  <div className={styles.brandingArea}>
-    <span className={styles.brandText}>Made with love in</span>
-    <div className={styles.footerBrand}>
-      <span className={styles.wordSub}>Sub</span>
-      <span className={styles.wordStarter}>Starter</span>
-      <div className={styles.footerBolt}>
-        <RiFlashlightFill />
-      </div>
-    </div>
-  </div>
-);
-
-// --- Content Component ---
-const PreviewContent = ({
+export default function LivePreview({
   name,
   bio,
   prices,
   features = [],
-  welcomeMessage,
-  terms,
+  handle,
   avatarUrl,
   bannerUrl,
   platforms,
-  viewMode,
-}: Omit<LivePreviewProps, "handle">) => {
+  buttonText,
+  socialLinks,
+  themeColor,
+  buttonTextColor = "#ffffff",
+  buttonStyle,
+  viewMode = "desktop",
+  welcomeMessage,
+  terms,
+}: LivePreviewProps) {
   const [selectedPriceIdx, setSelectedPriceIdx] = useState(0);
-
-  useEffect(() => {
-    setSelectedPriceIdx(0);
-  }, [prices.length]);
 
   const currentPrice =
     prices && prices.length > 0
       ? prices[selectedPriceIdx]
       : { amount: "0", interval: "monthly" };
 
-  const getIcon = (key: string) => {
-    if (key === "telegram") return <RiTelegramFill />;
-    if (key === "discord") return <RiDiscordFill />;
-    if (key === "whatsapp") return <RiWhatsappFill />;
-    return <RiGlobalLine />;
+  const activePlatforms = Object.entries(platforms).filter(
+    ([_, data]: any) => data.enabled,
+  );
+
+  // --- DATE FORMATTING ---
+  const formatInterval = (interval: string) => {
+    const clean = interval?.toLowerCase() || "";
+    switch (clean) {
+      case "weekly":
+        return "7 days";
+      case "monthly":
+        return "30 days";
+      case "yearly":
+        return "365 days";
+      case "lifetime":
+        return "Lifetime";
+      default:
+        return "30 days";
+    }
   };
 
-  const activePlatforms = Object.entries(platforms).filter(
-    ([_, data]) => data.enabled,
-  );
+  const formatPrice = (amount: string | number) => {
+    if (!amount) return "0";
+    return Number(amount).toLocaleString();
+  };
 
-  return (
-    <>
-      <div className={styles.screenContent}>
-        {/* Desktop Container Wrapper */}
-        <div className={viewMode === "desktop" ? styles.desktopContainer : ""}>
-          {/* 1. IDENTITY SECTION */}
-          <div className={styles.coverPhoto}>
-            {bannerUrl ? (
-              <Image
-                src={bannerUrl}
-                alt="Banner"
-                fill
-                className={styles.coverImg}
-                unoptimized
-              />
-            ) : (
-              <div
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  background: "#f1f5f9",
-                }}
-              />
-            )}
-          </div>
+  const borderRadius =
+    buttonStyle === "pill"
+      ? "100px"
+      : buttonStyle === "rounded"
+        ? "14px"
+        : "0px";
 
-          <div className={styles.profileInfo}>
-            <div className={styles.avatarBox}>
-              {avatarUrl ? (
-                <Image
-                  src={avatarUrl}
-                  alt="Avatar"
-                  fill
-                  className={styles.avatarImg}
-                  unoptimized
-                />
-              ) : (
-                <div
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontSize: "2rem",
-                    color: "#94a3b8",
-                  }}
-                >
-                  <RiUser3Line />
-                </div>
-              )}
-            </div>
-            <div className={styles.handle}>
-              {name || "Creator Name"}
-              <RiVerifiedBadgeFill className={styles.verified} />
-            </div>
-            <p className={styles.bio}>
-              {bio || "Welcome to my exclusive community."}
-            </p>
+  const customStyle = {
+    "--accent": themeColor || "#000000",
+    "--radius": borderRadius,
+  } as React.CSSProperties;
 
-            <div className={styles.statsGrid}>
-              <div className={styles.stat}>
-                <span className={styles.statNum}>1.2K</span>
-                <span className={styles.statLabel}>Members</span>
-              </div>
-              <div className={styles.stat}>
-                <span className={styles.statNum}>
-                  {activePlatforms.length > 0 ? activePlatforms.length : "-"}
-                </span>
-                <span className={styles.statLabel}>Channels</span>
-              </div>
-            </div>
-          </div>
+  // --- ICONS (Updated with Facebook) ---
+  const getSocialIcon = (platform: string) => {
+    const clean = platform?.toLowerCase() || "";
+    switch (clean) {
+      case "twitter":
+        return <RiTwitterXFill />;
+      case "instagram":
+        return <RiInstagramLine />;
+      case "youtube":
+        return <RiYoutubeFill />;
+      case "facebook":
+        return <RiFacebookCircleFill />; // Fixed: Added Facebook
+      default:
+        return <RiGlobalLine />;
+    }
+  };
 
-          {/* 2. CREATOR MESSAGE */}
-          {welcomeMessage && (
-            <div className={styles.contentSection}>
-              <div className={styles.sectionHeader}>
-                <RiChatQuoteLine color="#d4af37" />
-                <span className={styles.sectionLabel}>From the Creator</span>
-              </div>
-              <div className={styles.messageCard}>{welcomeMessage}</div>
-            </div>
-          )}
+  const getPlatformIcon = (key: string) => {
+    switch (key) {
+      case "telegram":
+        return <RiTelegramFill />;
+      case "discord":
+        return <RiDiscordFill />;
+      case "whatsapp":
+        return <RiWhatsappFill />;
+      default:
+        return <RiGlobalLine />;
+    }
+  };
 
-          {/* 3. FEATURES */}
-          {features.length > 0 && (
-            <div className={styles.contentSection}>
-              <div className={styles.sectionHeader}>
-                <RiShieldStarLine color="#d4af37" />
-                <span className={styles.sectionLabel}>What you get</span>
-              </div>
-              <div className={styles.featuresGrid}>
-                {features.map((feat, idx) => (
-                  <div key={idx} className={styles.featureRow}>
-                    <RiCheckLine className={styles.checkIcon} />
-                    <span className={styles.featureText}>{feat}</span>
-                  </div>
-                ))}
-              </div>
+  // --- SUB-COMPONENTS ---
+
+  const IdentitySection = () => (
+    <div className={styles.identityCard}>
+      <div className={styles.bannerFrame}>
+        {bannerUrl && (
+          <img
+            src={bannerUrl}
+            alt="Banner"
+            className={styles.bannerImg}
+            onError={(e) => {
+              (e.currentTarget as HTMLImageElement).style.display = "none";
+            }}
+          />
+        )}
+      </div>
+
+      <div className={styles.profileContent}>
+        <div className={styles.avatarWrapper}>
+          {avatarUrl ? (
+            <img
+              src={avatarUrl}
+              alt="Avatar"
+              className={styles.bannerImg}
+              onError={(e) => {
+                (e.currentTarget as HTMLImageElement).style.display = "none";
+              }}
+            />
+          ) : (
+            <div
+              style={{
+                width: "100%",
+                height: "100%",
+                background: "#f1f5f9",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <RiUser3Line size={32} color="#cbd5e1" />
             </div>
           )}
+        </div>
 
-          {/* 4. PRICING PLANS */}
-          {prices.length > 0 && (
-            <div className={styles.contentSection}>
-              <div className={styles.sectionHeader}>
-                <span className={styles.sectionLabel}>Select Plan</span>
-              </div>
-              <div
-                style={{ display: "flex", flexDirection: "column", gap: 10 }}
+        <div className={styles.nameRow}>
+          <h1 className={styles.name}>{name || "Creator Name"}</h1>
+        </div>
+
+        <p className={styles.bio}>
+          {bio ||
+            "Join my exclusive community to get access to premium content, insights, and more."}
+        </p>
+
+        {socialLinks && socialLinks.length > 0 && (
+          <div className={styles.socialRow}>
+            {socialLinks.map((s, i) => (
+              <a
+                key={i}
+                href={s.url}
+                className={styles.socialBtn}
+                target="_blank"
               >
-                {prices.map((p, idx) => (
-                  <div
-                    key={idx}
-                    className={`${styles.planCard} ${
-                      selectedPriceIdx === idx ? styles.activePlan : ""
-                    }`}
-                    onClick={() => setSelectedPriceIdx(idx)}
-                  >
-                    <div
-                      style={{
-                        display: "flex",
-                        gap: "12px",
-                        alignItems: "center",
-                      }}
-                    >
-                      <div className={styles.radioCircle}>
-                        <div className={styles.radioDot} />
-                      </div>
-                      <div className={styles.planInfo}>
-                        <span className={styles.planName}>
-                          {formatLabel(p.interval)}
-                        </span>
-                        <span className={styles.planCost}>
-                          Billed every {formatInterval(p.interval)}
-                        </span>
-                      </div>
-                    </div>
-                    <div
-                      style={{
-                        fontWeight: 800,
-                        fontSize: "1.2rem",
-                        color: "#0f172a",
-                      }}
-                    >
-                      ${p.amount}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* 5. ACCESS (Platforms) */}
-          <div className={styles.contentSection}>
-            <div className={styles.sectionHeader}>
-              <RiLock2Line color="#94a3b8" />
-              <span className={styles.sectionLabel}>Unlock Access</span>
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-              {activePlatforms.length > 0 ? (
-                activePlatforms.map(([key, data]) => (
-                  <div key={key} className={styles.accessCard}>
-                    <div className={styles.accessIconBox}>{getIcon(key)}</div>
-                    <div className={styles.accessDetails}>
-                      <span className={styles.accessTitle}>{data.title}</span>
-                      <span className={styles.accessSub}>
-                        Private {key} Group
-                      </span>
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <div
-                  style={{
-                    padding: 16,
-                    textAlign: "center",
-                    fontSize: "0.9rem",
-                    color: "#94a3b8",
-                    border: "1px dashed #e2e8f0",
-                    borderRadius: 12,
-                  }}
-                >
-                  No channels connected yet.
-                </div>
-              )}
-            </div>
+                {getSocialIcon(s.platform)}
+              </a>
+            ))}
           </div>
-
-          {/* 6. TERMS */}
-          {terms && (
-            <div className={styles.contentSection}>
-              <div className={styles.sectionHeader}>
-                <span
-                  className={styles.sectionLabel}
-                  style={{ fontSize: "0.7rem" }}
-                >
-                  Terms & Conditions
-                </span>
-              </div>
-              <div className={styles.termsBox}>{terms}</div>
-            </div>
-          )}
-
-          {/* 7. FOOTER BRANDING (VISIBLE NOW) */}
-          <SubStarterBranding />
-        </div>
+        )}
       </div>
-
-      {/* 8. STICKY FOOTER */}
-      <div className={styles.stickyBar}>
-        <div className={styles.priceDisplay}>
-          <span className={styles.totalLabel}>Total</span>
-          <span className={styles.totalAmount}>${currentPrice.amount}</span>
-        </div>
-        <button className={styles.joinButton}>
-          Join Now <RiArrowRightLine />
-        </button>
-      </div>
-    </>
+    </div>
   );
-};
 
-export default function LivePreview(props: LivePreviewProps) {
-  const { handle, viewMode = "mobile" } = props;
-
-  return (
-    <div className={styles.previewWrapper}>
-      <div className={styles.dotPattern} />
-
-      {viewMode === "mobile" ? (
-        <div className={styles.mobileFrame}>
-          <div className={styles.browserChrome}>
-            <div className={styles.urlPill}>
-              <RiLock2Line size={12} />
-              substarter.com/{handle || "user"}
+  const FeaturesList = () => {
+    if (!features || features.length === 0) return null;
+    return (
+      <div className={viewMode === "desktop" ? styles.featuresCard : ""}>
+        <div className={styles.featureList}>
+          <span className={styles.sectionTitle}>
+            <RiShieldCheckLine /> What's Included
+          </span>
+          {features.map((feat, i) => (
+            <div key={i} className={styles.featureItem}>
+              <RiCheckboxCircleFill
+                color={themeColor}
+                size={22}
+                style={{ flexShrink: 0 }}
+              />
+              <span>{feat}</span>
             </div>
-          </div>
-          <PreviewContent {...props} viewMode="mobile" />
+          ))}
         </div>
-      ) : (
-        <div className={styles.desktopFrame}>
-          <div className={styles.browserChrome}>
-            <div className={styles.urlPill}>
-              <RiLock2Line size={12} />
-              substarter.com/{handle || "user"}
+      </div>
+    );
+  };
+
+  const CheckoutContent = () => (
+    <>
+      {activePlatforms.length > 0 && (
+        <div className={styles.accessGrid}>
+          <span className={styles.sectionTitle}>
+            <RiLock2Fill /> Instant Access
+          </span>
+          {activePlatforms.map(([key, data]: any) => (
+            <div key={key} className={styles.bigAccessCard}>
+              <div
+                className={styles.accessIconBox}
+                style={{ color: themeColor, background: `${themeColor}15` }}
+              >
+                {getPlatformIcon(key)}
+              </div>
+              <div className={styles.accessMeta}>
+                <span className={styles.accessTitle}>
+                  {data.title || key + " Group"}
+                </span>
+                <span className={styles.accessSub}>Locked • Members Only</span>
+              </div>
             </div>
-          </div>
-          <PreviewContent {...props} viewMode="desktop" />
+          ))}
         </div>
       )}
+
+      {prices.length > 0 && (
+        <div className={styles.pricingGrid}>
+          <span className={styles.sectionTitle}>Choose Plan</span>
+          {prices.map((p, i) => {
+            const isActive = i === selectedPriceIdx;
+            return (
+              <div
+                key={i}
+                className={`${styles.priceCard} ${isActive ? styles.activePrice : ""}`}
+                onClick={() => setSelectedPriceIdx(i)}
+              >
+                <div className={styles.activeIndicator}></div>
+                <div className={styles.intervalBadge}>
+                  {formatInterval(p.interval)}
+                  <span className={styles.intervalSub}>Recurring</span>
+                </div>
+                <div className={styles.priceTag}>${formatPrice(p.amount)}</div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {terms && (
+        <div className={styles.termsBox}>
+          <p className={styles.termsText}>
+            By subscribing, you agree to the{" "}
+            <span className={styles.termsLink}>Terms & Conditions</span>.
+            <br />
+            <span style={{ opacity: 0.6, fontSize: "0.7rem" }}>
+              {terms.slice(0, 50)}...
+            </span>
+          </p>
+        </div>
+      )}
+    </>
+  );
+
+  const priceString = formatPrice(currentPrice.amount);
+  const priceSizeClass =
+    priceString.length > 6
+      ? styles["text-sm"]
+      : priceString.length > 4
+        ? styles["text-md"]
+        : styles["text-lg"];
+
+  const StickyFooter = () => (
+    <div className={styles.stickyFooter}>
+      <div className={styles.priceDisplay}>
+        <span className={`${styles.footerAmount} ${priceSizeClass}`}>
+          ${priceString}
+        </span>
+        <span className={styles.footerInterval}>
+          / {formatInterval(currentPrice.interval)}
+        </span>
+      </div>
+      <button
+        className={styles.joinBtn}
+        style={{
+          background: themeColor,
+          color: buttonTextColor,
+          borderRadius: borderRadius,
+        }}
+      >
+        {buttonText || "Join Now"} <RiArrowRightLine />
+      </button>
+    </div>
+  );
+
+  return (
+    <div className={styles.previewWrapper} style={customStyle}>
+      <div
+        className={
+          viewMode === "mobile" ? styles.mobileFrame : styles.desktopFrame
+        }
+      >
+        {viewMode === "desktop" && (
+          <div className={styles.pageBackground}></div>
+        )}
+
+        <div className={styles.browserChrome}>
+          {viewMode === "desktop" && (
+            <div className={styles.windowControls}>
+              <div className={`${styles.dot} ${styles.red}`}></div>
+              <div className={`${styles.dot} ${styles.yellow}`}></div>
+              <div className={`${styles.dot} ${styles.green}`}></div>
+            </div>
+          )}
+          <div className={styles.urlPill}>
+            <RiLock2Fill size={12} />
+            substarter.com/{handle || "username"}
+          </div>
+          {viewMode === "desktop" && <div style={{ width: 40 }}></div>}
+        </div>
+
+        {viewMode === "desktop" ? (
+          <div className={styles.scrollArea}>
+            <div className={styles.desktopLayout}>
+              <div className={styles.leftCol}>
+                <IdentitySection />
+                {welcomeMessage && (
+                  <div className={styles.welcomeCard}>
+                    <div className={styles.welcomeIconWrapper}>
+                      <RiChatQuoteLine size={16} />
+                    </div>
+                    <p className={styles.welcomeText}>{welcomeMessage}</p>
+                  </div>
+                )}
+                <FeaturesList />
+              </div>
+              <div className={styles.rightCol}>
+                <div className={styles.purchaseCardDesktop}>
+                  <CheckoutContent />
+                  <button
+                    className={styles.joinBtn}
+                    style={{
+                      width: "100%",
+                      marginTop: 24,
+                      justifyContent: "center",
+                      background: themeColor,
+                      color: buttonTextColor,
+                      borderRadius: borderRadius,
+                    }}
+                  >
+                    {buttonText || "Subscribe"} <RiArrowRightLine />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <>
+            <div className={styles.scrollArea}>
+              <div className={styles.mobileLayout}>
+                <IdentitySection />
+                <div className={styles.mobileContentStack}>
+                  {welcomeMessage && (
+                    <div className={styles.welcomeCard}>
+                      <div className={styles.welcomeIconWrapper}>
+                        <RiChatQuoteLine size={16} />
+                      </div>
+                      <p className={styles.welcomeText}>{welcomeMessage}</p>
+                    </div>
+                  )}
+                  <FeaturesList />
+                  <CheckoutContent />
+                </div>
+              </div>
+            </div>
+            <StickyFooter />
+          </>
+        )}
+      </div>
     </div>
   );
 }

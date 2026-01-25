@@ -1,75 +1,147 @@
 /* components/public/PublicProfile.module.css */
 
-/* --- 1. MAIN PAGE STRUCTURE --- */
+/* --- GLOBAL LAYOUT --- */
 .pageContainer {
-  width: 100%;
   min-height: 100vh;
-  background-color: #ffffff;
+  background-color: #f8fafc; /* Page Background */
   font-family: var(--font-outfit), "Inter", sans-serif;
-  position: relative;
-  display: flex;
-  justify-content: center;
-  padding-bottom: 120px; /* Space for dock */
+  padding-bottom: 100px; /* Space for mobile footer */
 }
 
-/* --- 2. CONTENT WRAPPER --- */
-.contentWrapper {
-  width: 100%;
-  max-width: 600px;
-  background: #fff;
-  min-height: 100vh;
+/* Background Decoration (Dot Pattern) */
+.pageContainer::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background-image:
+    linear-gradient(#e2e8f0 1px, transparent 1px),
+    linear-gradient(90deg, #e2e8f0 1px, transparent 1px);
+  background-size: 40px 40px;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* --- RESPONSIVE GRID --- */
+.mainGrid {
   position: relative;
   z-index: 1;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
 }
 
-@media (min-width: 601px) {
-  .contentWrapper {
-    border-left: 1px dashed #f1f5f9;
-    border-right: 1px dashed #f1f5f9;
+/* Desktop Grid Trigger */
+@media (min-width: 1024px) {
+  .pageContainer {
+    padding: 40px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .mainGrid {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 32px;
+    align-items: start;
   }
 }
 
-/* --- 3. IDENTITY HEADER --- */
-.coverArea {
-  width: 100%;
-  height: 200px;
-  position: relative;
-  background: #f8fafc;
-  flex-shrink: 0;
+/* --- LEFT COLUMN (Content) --- */
+.leftCol {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
-.defaultBanner {
+/* --- RIGHT COLUMN (Sticky on Desktop) --- */
+.rightCol {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+@media (min-width: 1024px) {
+  .rightCol {
+    position: sticky;
+    top: 24px;
+  }
+}
+
+/* =========================================
+   COMPONENTS
+   ========================================= */
+
+/* --- IDENTITY CARD --- */
+.identityCard {
+  background: #fff;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+@media (min-width: 1024px) {
+  .identityCard {
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
+    overflow: hidden;
+    box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.05);
+  }
+}
+
+.bannerFrame {
+  height: 160px;
+  background: #f1f5f9;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+/* Dot Pattern Overlay on Banner */
+/* Dot pattern removed from banner for a cleaner look */
+.bannerFrame::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #e2e8f0 0%, #f1f5f9 100%);
+  background-image: none;
+  pointer-events: none;
 }
 
 .bannerImg {
   object-fit: cover;
+  z-index: 1;
 }
 
-.profileInfo {
+.profileContent {
   padding: 0 24px;
-  text-align: center;
-  transform: translateY(-50px);
-  margin-bottom: -20px;
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
+  margin-top: -50px;
+  z-index: 10;
 }
 
-.avatarBox {
+.avatarWrapper {
   width: 100px;
   height: 100px;
-  border-radius: 50%;
-  border: 5px solid #fff;
+  border-radius: 24px;
   background: #fff;
-  margin: 0 auto 12px auto;
+  border: 4px solid #ffffff;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  margin-bottom: 16px;
+  box-shadow:
+    0 10px 20px -5px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
 .avatarImg {
@@ -78,314 +150,380 @@
 .avatarFallback {
   width: 100%;
   height: 100%;
+  background: #f1f5f9;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2.5rem;
-  color: #94a3b8;
-  background: #f1f5f9;
 }
 
-.handle {
+.nameRow {
+  margin-bottom: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.name {
+  font-family: var(--font-outfit), sans-serif;
   font-size: 1.6rem;
   font-weight: 800;
   color: #0f172a;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-bottom: 8px;
-  line-height: 1.1;
-}
-
-.verified {
-  color: #d4af37;
-  font-size: 1.2rem;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
 }
 
 .bio {
-  font-size: 1rem;
-  color: #475569;
+  font-family: var(--font-outfit), sans-serif;
+  font-size: 0.95rem;
+  color: #64748b;
   line-height: 1.6;
-  max-width: 480px;
-  margin: 0 auto 24px auto;
+  margin-bottom: 24px;
+  max-width: 90%;
+  font-weight: 500;
 }
 
-/* Stats */
-.statsGrid {
+/* Social Buttons (Hard Shadow) */
+.socialRow {
   display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
   justify-content: center;
-  gap: 32px;
-  padding-bottom: 24px;
-  border-bottom: 1px solid #f1f5f9;
-  margin-bottom: 32px;
-  width: 100%;
-}
-.stat {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.statNum {
-  font-weight: 800;
-  font-size: 1.1rem;
-  color: #0f172a;
-}
-.statLabel {
-  font-size: 0.7rem;
-  color: #94a3b8;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
 }
 
-/* --- CONTENT SECTIONS --- */
-.contentSection {
-  padding: 0 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  margin-bottom: 40px;
-}
-
-.sectionHeader {
+.socialBtn {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: #fff;
+  border: 2px solid #e2e8f0;
+  color: #64748b;
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 8px;
+  justify-content: center;
+  transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+  font-size: 1.2rem;
+  text-decoration: none;
 }
-.sectionLabel {
+
+.socialBtn:hover {
+  border-color: #000;
+  color: #000;
+  transform: translate(-3px, -3px);
+  box-shadow: 4px 4px 0 #000;
+}
+
+/* --- WELCOME CARD --- */
+.welcomeCard {
+  background: #fff; /* White card on desktop */
+  border-radius: 20px;
+  padding: 24px;
+  text-align: center;
+  position: relative;
+}
+
+@media (min-width: 1024px) {
+  .welcomeCard {
+    border: 1px solid #e2e8f0;
+  }
+}
+
+.welcomeIconWrapper {
+  width: 32px;
+  height: 32px;
+  background: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  color: #000; /* Accent color */
+  border: 1px solid #e2e8f0;
+}
+
+.welcomeText {
+  font-family: var(--font-outfit), sans-serif;
+  font-size: 0.95rem;
+  color: #475569;
+  line-height: 1.7;
+  font-weight: 500;
+  font-style: italic;
+}
+
+/* --- FEATURES --- */
+.featuresCard {
+  padding: 0 24px; /* Mobile Padding */
+}
+@media (min-width: 1024px) {
+  .featuresCard {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 20px;
+    padding: 24px;
+  }
+}
+
+.sectionTitle {
   font-size: 0.8rem;
   font-weight: 800;
   text-transform: uppercase;
   color: #94a3b8;
-  letter-spacing: 1px;
+  margin-bottom: 12px;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
-/* Message & Features */
-.messageCard {
-  background: #fff;
-  border-left: 3px solid #d4af37;
-  padding: 16px 20px;
-  border-radius: 4px 12px 12px 4px;
+.featureList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.featureItem {
+  display: flex;
+  gap: 12px;
   font-size: 0.95rem;
   color: #334155;
-  line-height: 1.6;
-  font-style: italic;
+  align-items: center;
+  font-weight: 500;
+}
+
+/* --- ACCESS & PRICING (Right Col on Desktop, Bottom on Mobile) --- */
+.purchaseCard {
+  background: #fff;
+  padding: 24px;
+}
+@media (min-width: 1024px) {
+  .purchaseCard {
+    border: 1px solid #e2e8f0;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
+  }
+}
+
+/* Access Grid (Platforms) */
+.accessGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.accessCard {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  background: #fff;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.accessCard:hover {
+  border-color: #cbd5e1;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
 }
 
-.featuresGrid {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-.featureRow {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  padding: 12px;
-  background: #f8fafc;
-  border-radius: 12px;
-  border: 1px solid #f1f5f9;
-}
-.checkIcon {
-  color: #d4af37;
-  font-size: 1.2rem;
-  margin-top: 1px;
-  flex-shrink: 0;
-}
-.featureText {
-  font-size: 0.95rem;
-  color: #334155;
-  font-weight: 500;
-  line-height: 1.4;
-}
-
-/* --- PLANS (Selection) --- */
-.planCard {
-  background: #fff;
-  border: 2px solid #e2e8f0;
-  padding: 16px;
-  border-radius: 16px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  transition: all 0.2s;
-}
-.planCard:hover {
-  border-color: #cbd5e1;
-  transform: translateY(-2px);
-}
-.activePlan {
-  border-color: #0f172a;
-  background: #fff;
-  box-shadow: 0 8px 20px -4px rgba(0, 0, 0, 0.1);
-}
-.planInfo {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-.planName {
-  font-size: 1rem;
-  font-weight: 700;
-  color: #0f172a;
-}
-.planCost {
-  font-size: 0.85rem;
-  color: #64748b;
-  font-weight: 500;
-}
-.radioCircle {
-  width: 22px;
-  height: 22px;
-  border: 2px solid #cbd5e1;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.activePlan .radioCircle {
-  border-color: #0f172a;
-  background: #0f172a;
-}
-.radioDot {
-  width: 8px;
-  height: 8px;
-  background: #fff;
-  border-radius: 50%;
-  transform: scale(0);
-}
-.activePlan .radioDot {
-  transform: scale(1);
-}
-
-/* --- ACCESS CARDS (Expandable) --- */
-.accessCard {
-  background: #fff;
-  border: 1px solid #e2e8f0;
-  border-radius: 16px;
-  transition: all 0.2s;
-  overflow: hidden;
-}
-
-/* Header part of the card (always visible) */
-.accessCardHeader {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 14px;
-  cursor: default; /* Default non-clickable */
-}
-
-/* Member State: Clickable */
-.memberCard {
-  border-color: #22c55e;
-  background: #f0fdf4;
-  cursor: pointer;
-}
-.memberCard:hover {
-  background: #dcfce7;
-}
-
-/* Icons */
 .accessIconBox {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  background: #f1f5f9;
+  width: 48px;
+  height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.4rem;
+  background: #f1f5f9;
   color: #0f172a;
+  border-radius: 12px;
+  font-size: 1.4rem;
   flex-shrink: 0;
-  border: 1px solid #e2e8f0;
 }
-.memberCard .accessIconBox {
-  background: #fff;
-  border-color: #bbf7d0;
-  color: #15803d;
-}
-
-.accessDetails {
-  flex: 1;
+.accessMeta {
   display: flex;
   flex-direction: column;
 }
 .accessTitle {
+  font-weight: 700;
   font-size: 0.95rem;
-  font-weight: 800;
   color: #0f172a;
 }
 .accessSub {
   font-size: 0.8rem;
   color: #64748b;
-}
-.statusIcon {
-  font-size: 1.2rem;
-  color: #cbd5e1;
-}
-.memberCard .statusIcon {
-  color: #15803d;
-} /* Green arrow */
-
-/* --- EXPANDED AREA (The Secret Invite) --- */
-.expandedContent {
-  background: #fff;
-  border-top: 1px dashed #22c55e;
-  padding: 16px;
-  animation: slideDown 0.2s ease-out;
-}
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  font-weight: 500;
 }
 
-.inviteBox {
+/* Pricing Grid */
+.pricingGrid {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  text-align: center;
+  gap: 10px;
 }
-.inviteLabel {
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: #15803d;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+
+.priceCard {
+  position: relative;
+  border: 2px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 14px 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  transition: all 0.2s;
+  -webkit-tap-highlight-color: transparent;
 }
-.launchGroupBtn {
+.priceCard:hover {
+  border-color: #94a3b8;
+}
+.priceCard:active {
+  transform: scale(0.98);
+}
+
+.activePrice {
+  border-color: #000;
+  background: #fdfdfd;
+  box-shadow: 0 8px 20px -4px rgba(0, 0, 0, 0.08);
+}
+.activeIndicator {
+  width: 10px;
+  height: 10px;
+  background: #000;
+  border-radius: 50%;
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.activePrice .activeIndicator {
+  opacity: 1;
+}
+
+.intervalBadge {
+  font-size: 0.95rem;
+  font-weight: 700;
+  display: flex;
+  flex-direction: column;
+  padding-left: 20px;
+  color: #0f172a;
+}
+.intervalSub {
+  font-size: 0.75rem;
+  color: #64748b;
+  font-weight: 500;
+  margin-top: 2px;
+  text-transform: capitalize;
+}
+.priceTag {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+/* Desktop Button (Hidden on Mobile) */
+.desktopJoinBtn {
+  width: 100%;
+  height: 48px;
+  margin-top: 24px;
+  background: #000;
+  color: #fff;
+  border: none;
+  border-radius: 14px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  width: 100%;
-  padding: 12px;
-  background: #000;
-  color: #fff;
-  border-radius: 10px;
-  font-weight: 700;
-  font-size: 0.95rem;
-  text-decoration: none;
   transition: transform 0.2s;
 }
-.launchGroupBtn:hover {
-  transform: translateY(-2px);
-  background: #22c55e; /* Green on hover */
+.desktopJoinBtn:hover {
+  transform: scale(1.02);
+}
+
+@media (max-width: 1023px) {
+  .desktopJoinBtn {
+    display: none;
+  }
+}
+
+/* --- STICKY FOOTER (Mobile Only) --- */
+.stickyFooter {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border-top: 1px solid #e2e8f0;
+  padding: 16px 20px;
+  padding-bottom: calc(16px + env(safe-area-inset-bottom));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 100;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.04);
+}
+
+@media (min-width: 1024px) {
+  .stickyFooter {
+    display: none;
+  }
+}
+
+.priceDisplay {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  flex-direction: row;
+}
+.footerAmount {
+  font-weight: 800;
+  color: #0f172a;
+  font-size: 1.5rem;
+  line-height: 1;
+}
+.footerInterval {
+  font-size: 0.8rem;
+  color: #94a3b8;
+  font-weight: 600;
+}
+
+.mobileJoinBtn {
+  height: 48px;
+  padding: 0 24px;
+  background: #000;
+  color: #fff;
+  border: none;
+  border-radius: 100px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* --- TERMS --- */
+.termsBox {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px dashed #e2e8f0;
+  text-align: center;
+}
+.termsText {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  line-height: 1.5;
 }
 
 /* --- BRANDING --- */
 .brandingArea {
-  margin-top: auto;
-  padding: 40px 0 20px;
+  margin-top: 40px;
+  padding-bottom: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -425,190 +563,4 @@
   font-size: 0.55rem;
   border: 1.5px solid #000;
   margin-right: 4px;
-}
-
-/* --- STICKY DOCK --- */
-.stickyBar {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  justify-content: center;
-  z-index: 50;
-  pointer-events: none;
-}
-.dockContent {
-  pointer-events: auto;
-  width: 100%;
-  max-width: 600px;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(12px);
-  border-top: 1px solid #e2e8f0;
-  padding: 16px 24px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.03);
-}
-
-.priceDisplay {
-  display: flex;
-  flex-direction: column;
-}
-.totalLabel {
-  font-size: 0.7rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: #64748b;
-  margin-bottom: 2px;
-}
-.priceValue {
-  font-size: 1.6rem;
-  font-weight: 900;
-  color: #0f172a;
-  line-height: 1;
-}
-
-/* Join Button */
-.joinBtn {
-  background: #000;
-  color: #fff;
-  border: none;
-  height: 50px;
-  padding: 0 32px;
-  border-radius: 100px;
-  font-size: 1.05rem;
-  font-weight: 700;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  transition: all 0.2s;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.joinBtn:hover:not(:disabled) {
-  transform: translateY(-2px);
-  background: #333;
-}
-
-/* Member Dock State */
-.memberStatus {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: #f0fdf4;
-  padding: 10px 20px;
-  border-radius: 100px;
-  border: 1px solid #dcfce7;
-  width: 100%;
-  justify-content: center;
-}
-.pulseDot {
-  width: 8px;
-  height: 8px;
-  background: #22c55e;
-  border-radius: 50%;
-  animation: pulse 2s infinite;
-}
-.activeText {
-  font-weight: 700;
-  color: #15803d;
-  font-size: 0.9rem;
-}
-
-@keyframes pulse {
-  0% {
-    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
-  }
-  70% {
-    box-shadow: 0 0 0 6px rgba(34, 197, 94, 0);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
-  }
-}
-
-/* ... (Keep all your existing code above) ... */
-
-/* =========================================
-   MOBILE OPTIMIZATIONS (Add this to the bottom)
-   ========================================= */
-@media (max-width: 600px) {
-  .pageContainer {
-    /* Increase bottom space so the Join Button doesn't cover content */
-    padding-bottom: 160px;
-    padding-top: 0;
-    align-items: flex-start;
-  }
-
-  .contentWrapper {
-    /* Ensure full width on mobile */
-    max-width: 100%;
-    border: none;
-    min-height: auto;
-  }
-
-  /* Adjust Cover Image Height */
-  .coverArea {
-    height: 160px;
-  }
-
-  /* Fix Profile Info Spacing */
-  .profileInfo {
-    padding: 0 16px;
-    transform: translateY(-40px);
-    margin-bottom: -10px;
-  }
-
-  /* Make Avatar Smaller */
-  .avatarBox {
-    width: 80px;
-    height: 80px;
-    border-width: 4px;
-  }
-
-  /* Fix Font Sizes for Mobile */
-  .handle {
-    font-size: 1.4rem;
-  }
-  .bio {
-    font-size: 0.95rem;
-    padding: 0 10px;
-  }
-
-  /* Allow Access Cards to Wrap Text */
-  .accessCardHeader {
-    padding: 12px;
-    gap: 12px;
-  }
-  .accessTitle {
-    font-size: 0.9rem;
-    white-space: normal; /* Force text wrap */
-  }
-  .accessSub {
-    font-size: 0.75rem;
-    white-space: normal;
-  }
-
-  /* Adjust Sticky Dock Position */
-  .stickyBar {
-    bottom: 0;
-    padding-bottom: env(safe-area-inset-bottom); /* Fix for iPhone X+ */
-    background: rgba(255, 255, 255, 0.98); /* Less transparent on mobile */
-  }
-
-  .dockContent {
-    padding: 12px 16px;
-  }
-
-  .joinBtn {
-    height: 44px;
-    padding: 0 24px;
-    font-size: 0.95rem;
-  }
-
-  .priceValue {
-    font-size: 1.4rem;
-  }
 }

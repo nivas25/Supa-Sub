@@ -1,0 +1,585 @@
+/* BrandingStep.module.css */
+
+/* --- Main Card --- */
+.brandingCard {
+  background: #ffffff;
+  border: 2px solid #000000;
+  border-radius: 20px;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  /* Layout Fixes */
+  height: auto;
+  min-height: min-content;
+  flex-shrink: 0;
+  position: relative;
+  font-family: var(--font-outfit), sans-serif !important;
+  box-shadow: 0 0 0 #000;
+  transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.brandingCard:focus-within {
+  transform: translate(-4px, -4px);
+  box-shadow: 8px 8px 0 #000000;
+}
+
+.errorBorder {
+  border-color: #ff4757 !important;
+  box-shadow: 8px 8px 0 #ff4757 !important;
+}
+
+/* --- Header --- */
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding-bottom: 24px;
+  border-bottom: 2px solid #f1f5f9;
+}
+
+.stepBadge {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  background: #000;
+  color: #fff;
+  font-size: 1.25rem;
+  font-weight: 800;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: rotate(-3deg);
+}
+
+.headerText h3 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #000;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.headerText p {
+  margin: 4px 0 0 0;
+  font-size: 0.95rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+/* --- Upload Grid --- */
+.uploadGrid {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr; /* Icon smaller, Banner wider */
+  gap: 20px;
+}
+
+.uploadUnit {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.uploadLabelRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.uploadLabel {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #000;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* The Upload Card Area */
+.uploadCard {
+  height: 160px;
+  background: #fdfbf7;
+  border: 2px dashed #cbd5e1;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  overflow: hidden;
+  color: #94a3b8;
+}
+
+.uploadCard:hover {
+  border-color: #000;
+  border-style: solid;
+  background: #fff;
+  color: #000;
+  transform: translate(-3px, -3px);
+  box-shadow: 5px 5px 0 #000;
+}
+
+.uploadIcon {
+  font-size: 2rem;
+  transition: transform 0.2s;
+}
+
+.uploadCard:hover .uploadIcon {
+  transform: scale(1.1) rotate(-10deg);
+}
+
+.uploadText {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.previewImg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 10;
+}
+
+/* Hover Overlay for existing image */
+.uploadOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  opacity: 0;
+  transition: opacity 0.2s;
+  font-weight: 700;
+}
+
+.uploadCard:hover .uploadOverlay {
+  opacity: 1;
+}
+
+/* --- Badges --- */
+.reqTag {
+  background: #25d366; /* Bright Green */
+  color: #000;
+  border: 2px solid #000;
+  font-size: 0.65rem;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  box-shadow: 2px 2px 0 #000;
+}
+
+.optTag {
+  background: #f1f5f9;
+  color: #64748b;
+  border: 2px solid #e2e8f0;
+  font-size: 0.65rem;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-weight: 700;
+}
+
+/* --- Inputs & Colors --- */
+.fieldStack {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  margin-top: 12px;
+}
+
+.inputWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.fieldLabel {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #000;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stdInput {
+  width: 100%;
+  height: 60px;
+  padding: 0 16px;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  background: #fff;
+  font-family: var(--font-outfit), sans-serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #000;
+  outline: none;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.stdInput:focus {
+  border-color: #000;
+  transform: translate(-3px, -3px);
+  box-shadow: 5px 5px 0 #000;
+}
+
+/* Colors */
+.colorRow {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.colorDot {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.colorDot:hover {
+  transform: scale(1.15);
+}
+
+.activeColor {
+  border-color: #fff;
+  box-shadow:
+    0 0 0 2px #000,
+    4px 4px 0 rgba(0, 0, 0, 0.15); /* Double border effect */
+  transform: scale(1.1);
+}
+
+.customColorBtn {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 2px dashed #cbd5e1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  color: #64748b;
+  cursor: pointer;
+  background: #fff;
+  transition: all 0.2s;
+}
+
+.customColorBtn:hover {
+  border-color: #000;
+  color: #000;
+  transform: rotate(90deg);
+}
+
+.hiddenColorPicker {
+  position: absolute;
+  opacity: 0;
+  inset: 0;
+  cursor: pointer;
+}
+
+.errorText {
+  color: #ef4444;
+  font-weight: 700;
+  font-size: 0.8rem;
+  margin-top: -4px;
+}
+
+/* --- Mobile Optimization --- */
+@media (max-width: 768px) {
+  .brandingCard {
+    padding: 24px;
+    gap: 24px;
+    border-radius: 16px;
+  }
+
+  .brandingCard:focus-within {
+    transform: translate(-2px, -2px);
+    box-shadow: 4px 4px 0 #000000;
+  }
+
+  .cardHeader {
+    gap: 12px;
+    padding-bottom: 16px;
+  }
+
+  .stepBadge {
+    width: 40px;
+    height: 40px;
+    font-size: 1.1rem;
+  }
+
+  .headerText h3 {
+    font-size: 1.25rem;
+  }
+
+  .headerText p {
+    font-size: 0.85rem;
+  }
+
+  /* Upload Grid */
+  .uploadGrid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .uploadCard {
+    height: 140px;
+    border-radius: 14px;
+    gap: 10px;
+  }
+
+  .uploadIcon {
+    font-size: 1.8rem;
+  }
+
+  .uploadText {
+    font-size: 0.8rem;
+  }
+
+  .uploadCard:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 3px 3px 0 #000;
+  }
+
+  .uploadCard:hover .uploadIcon {
+    transform: scale(1.08) rotate(-8deg);
+  }
+
+  .uploadLabel {
+    font-size: 0.8rem;
+  }
+
+  /* Fields */
+  .fieldStack {
+    gap: 24px;
+    margin-top: 10px;
+  }
+
+  .inputWrapper {
+    gap: 10px;
+  }
+
+  .stdInput {
+    height: 52px;
+    padding: 0 14px;
+    font-size: 1rem;
+  }
+
+  .stdInput:focus {
+    transform: translate(-2px, -2px);
+    box-shadow: 3px 3px 0 #000;
+  }
+
+  .fieldLabel {
+    font-size: 0.8rem;
+  }
+
+  /* Colors */
+  .colorRow {
+    gap: 14px;
+  }
+
+  .colorDot {
+    width: 38px;
+    height: 38px;
+  }
+
+  .colorDot:hover {
+    transform: scale(1.12);
+  }
+
+  .activeColor {
+    box-shadow:
+      0 0 0 2px #000,
+      3px 3px 0 rgba(0, 0, 0, 0.15);
+  }
+
+  .customColorBtn {
+    width: 38px;
+    height: 38px;
+  }
+
+  .reqTag {
+    font-size: 0.6rem;
+    padding: 3px 7px;
+  }
+
+  .optTag {
+    font-size: 0.6rem;
+    padding: 3px 7px;
+  }
+
+  .errorText {
+    font-size: 0.75rem;
+  }
+}
+
+/* --- Small Mobile (≤480px) --- */
+@media (max-width: 480px) {
+  .brandingCard {
+    padding: 18px;
+    gap: 18px;
+    border-radius: 14px;
+  }
+
+  .brandingCard:focus-within {
+    transform: translate(-1px, -1px);
+    box-shadow: 2px 2px 0 #000000;
+  }
+
+  .cardHeader {
+    gap: 10px;
+    padding-bottom: 14px;
+  }
+
+  .stepBadge {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+  }
+
+  .headerText h3 {
+    font-size: 1.1rem;
+  }
+
+  .headerText p {
+    font-size: 0.8rem;
+  }
+
+  /* Upload Grid - Full width on small mobile */
+  .uploadGrid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .uploadUnit {
+    gap: 8px;
+  }
+
+  .uploadCard {
+    height: 120px;
+    border-radius: 12px;
+    gap: 8px;
+  }
+
+  .uploadIcon {
+    font-size: 1.6rem;
+  }
+
+  .uploadText {
+    font-size: 0.75rem;
+  }
+
+  .uploadCard:hover {
+    transform: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-color: #000;
+  }
+
+  .uploadCard:hover .uploadIcon {
+    transform: scale(1.05) rotate(-5deg);
+  }
+
+  .uploadLabel {
+    font-size: 0.75rem;
+  }
+
+  .uploadLabelRow {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  /* Fields */
+  .fieldStack {
+    gap: 18px;
+    margin-top: 8px;
+  }
+
+  .inputWrapper {
+    gap: 8px;
+  }
+
+  .stdInput {
+    height: 48px;
+    padding: 0 12px;
+    font-size: 0.95rem;
+    border-radius: 10px;
+  }
+
+  .stdInput:focus {
+    transform: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-color: #000;
+  }
+
+  .fieldLabel {
+    font-size: 0.7rem;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  /* Colors - Responsive grid */
+  .colorRow {
+    gap: 12px;
+    justify-content: flex-start;
+  }
+
+  .colorDot {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+  }
+
+  .colorDot:hover {
+    transform: scale(1.1);
+  }
+
+  .activeColor {
+    transform: scale(1.05);
+    box-shadow:
+      0 0 0 2px #000,
+      2px 2px 0 rgba(0, 0, 0, 0.15);
+  }
+
+  .customColorBtn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+  }
+
+  .customColorBtn:hover {
+    transform: rotate(45deg);
+  }
+
+  .reqTag {
+    font-size: 0.55rem;
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+
+  .optTag {
+    font-size: 0.55rem;
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+
+  .errorText {
+    font-size: 0.7rem;
+    margin-top: -2px;
+  }
+}

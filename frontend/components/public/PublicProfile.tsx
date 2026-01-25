@@ -5,27 +5,27 @@ import Image from "next/image";
 import { joinCommunity } from "@/app/actions/join";
 import { registerView } from "@/app/actions/analytics";
 import {
-  RiVerifiedBadgeFill,
   RiUser3Line,
   RiTelegramFill,
   RiDiscordFill,
   RiWhatsappFill,
   RiGlobalLine,
-  RiLock2Line,
   RiArrowRightLine,
-  RiCheckLine,
-  RiFlashlightFill,
-  RiShieldStarLine,
+  RiTwitterXFill,
+  RiInstagramLine,
+  RiYoutubeFill,
+  RiFacebookCircleFill,
+  RiCheckboxCircleFill,
+  RiLock2Fill,
   RiChatQuoteLine,
-  RiExternalLinkLine,
+  RiShieldCheckLine,
+  RiFlashlightFill,
   RiLoader4Fill,
-  RiArrowDownSLine,
-  RiArrowUpSLine,
-  RiFileTextLine,
-  RiPriceTag3Line,
+  RiExternalLinkLine,
 } from "react-icons/ri";
 import styles from "./PublicProfile.module.css";
 
+// --- INTERFACES ---
 interface PlatformDetails {
   enabled: boolean;
   link: string;
@@ -58,14 +58,57 @@ interface PublicProfileProps {
   features?: string[];
   welcomeMessage?: string;
   terms?: string;
+  socialLinks?: { platform: string; url: string }[]; // Added support if DB has it
 }
 
+// --- HELPERS ---
 const formatInterval = (interval: string) => {
-  if (interval === "weekly") return "Weekly";
-  if (interval === "monthly") return "Monthly";
-  if (interval === "yearly") return "Yearly";
-  if (interval === "lifetime") return "Lifetime";
-  return interval;
+  const clean = interval?.toLowerCase() || "";
+  switch (clean) {
+    case "weekly":
+      return "7 days";
+    case "monthly":
+      return "30 days";
+    case "yearly":
+      return "365 days";
+    case "lifetime":
+      return "Lifetime";
+    default:
+      return "30 days";
+  }
+};
+
+const formatPrice = (amount: number) => {
+  return Number(amount).toLocaleString();
+};
+
+const getSocialIcon = (platform: string) => {
+  const clean = platform?.toLowerCase() || "";
+  switch (clean) {
+    case "twitter":
+      return <RiTwitterXFill />;
+    case "instagram":
+      return <RiInstagramLine />;
+    case "youtube":
+      return <RiYoutubeFill />;
+    case "facebook":
+      return <RiFacebookCircleFill />;
+    default:
+      return <RiGlobalLine />;
+  }
+};
+
+const getPlatformIcon = (key: string) => {
+  switch (key) {
+    case "telegram":
+      return <RiTelegramFill />;
+    case "discord":
+      return <RiDiscordFill />;
+    case "whatsapp":
+      return <RiWhatsappFill />;
+    default:
+      return <RiGlobalLine />;
+  }
 };
 
 const SubStarterBranding = () => (
@@ -81,12 +124,12 @@ const SubStarterBranding = () => (
   </div>
 );
 
+// --- COMPONENT ---
 export default function PublicProfile({
   name,
   bio,
   prices,
   handle,
-  memberCount,
   avatarUrl,
   bannerUrl,
   platforms,
@@ -95,46 +138,30 @@ export default function PublicProfile({
   features = [],
   welcomeMessage,
   terms,
+  socialLinks = [], // Default empty if not passed
 }: PublicProfileProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [selectedPriceIdx, setSelectedPriceIdx] = useState(0);
-  const [expandedPlatform, setExpandedPlatform] = useState<string | null>(null);
 
   useEffect(() => {
     if (groupId) registerView(groupId);
   }, [groupId]);
 
-  const daysRemaining = useMemo(() => {
-    if (!existingMembership?.expires_at) return 30;
-    const diff =
-      new Date(existingMembership.expires_at).getTime() - new Date().getTime();
-    const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
-    return Math.max(0, days);
-  }, [existingMembership]);
-
-  const activePlatforms = Object.entries(platforms).filter(
-    ([_, d]) => d.enabled,
-  );
-
+  // Pricing Logic
   const currentPrice =
     prices && prices.length > 0
       ? prices[selectedPriceIdx]
       : { amount: 0, interval: "monthly" };
 
-  const formatCount = (num: number) =>
-    num >= 1000 ? (num / 1000).toFixed(1) + "k" : num;
+  // Active Platforms
+  const activePlatforms = Object.entries(platforms).filter(
+    ([_, d]) => d.enabled,
+  );
 
-  const getIcon = (key: string) => {
-    if (key === "telegram") return <RiTelegramFill />;
-    if (key === "discord") return <RiDiscordFill />;
-    if (key === "whatsapp") return <RiWhatsappFill />;
-    return <RiGlobalLine />;
-  };
-
+  // --- ACTIONS ---
   const handleJoin = () => {
     if (existingMembership) return;
-
     startTransition(async () => {
       try {
         const result = await joinCommunity(
@@ -142,12 +169,8 @@ export default function PublicProfile({
           Number(currentPrice.amount),
           currentPrice.interval,
         );
-
-        if (result?.error) {
-          alert(result.error);
-        } else {
-          router.refresh();
-        }
+        if (result?.error) alert(result.error);
+        else router.refresh();
       } catch (err) {
         console.error(err);
         alert("Something went wrong.");
@@ -155,26 +178,12 @@ export default function PublicProfile({
     });
   };
 
-  const toggleExpand = (key: string) => {
-    if (!existingMembership) return;
-    setExpandedPlatform(expandedPlatform === key ? null : key);
-  };
-
   const handleOpenLink = (key: string, originalLink: string) => {
-    // 1. Handle Telegram Logic
-    if (key === "telegram") {
-      const memId = existingMembership?.id;
-      if (!memId) {
-        alert("Please log in again to verify your membership.");
-        return;
-      }
-      // Open Bot
-      const botUrl = `https://t.me/mysubstarterbot?start=${memId}`;
+    if (key === "telegram" && existingMembership) {
+      const botUrl = `https://t.me/mysubstarterbot?start=${existingMembership.id}`;
       window.open(botUrl, "_blank");
       return;
     }
-
-    // 2. Handle Other Platforms
     const finalLink = originalLink.startsWith("http")
       ? originalLink
       : `https://${originalLink}`;
@@ -183,271 +192,242 @@ export default function PublicProfile({
 
   return (
     <div className={styles.pageContainer}>
-      <div className={styles.contentWrapper}>
-        {/* --- 1. IDENTITY --- */}
-        <div className={styles.coverArea}>
-          {bannerUrl ? (
-            <Image
-              src={bannerUrl}
-              alt="Banner"
-              fill
-              className={styles.bannerImg}
-              unoptimized
-            />
-          ) : (
-            <div className={styles.defaultBanner} />
+      <div className={styles.mainGrid}>
+        {/* === LEFT COLUMN: Identity, Welcome, Features === */}
+        <div className={styles.leftCol}>
+          {/* 1. Identity Card */}
+          <div className={styles.identityCard}>
+            <div className={styles.bannerFrame}>
+              {bannerUrl && (
+                <Image
+                  src={bannerUrl}
+                  alt="Banner"
+                  fill
+                  className={styles.bannerImg}
+                  unoptimized
+                />
+              )}
+            </div>
+            <div className={styles.profileContent}>
+              <div className={styles.avatarWrapper}>
+                {avatarUrl ? (
+                  <Image
+                    src={avatarUrl}
+                    alt="Avatar"
+                    fill
+                    className={styles.avatarImg}
+                    unoptimized
+                  />
+                ) : (
+                  <div className={styles.avatarFallback}>
+                    <RiUser3Line size={32} color="#cbd5e1" />
+                  </div>
+                )}
+              </div>
+              <div className={styles.nameRow}>
+                <h1 className={styles.name}>{name || "Creator"}</h1>
+              </div>
+              <p className={styles.bio}>
+                {bio || "Welcome to my exclusive community."}
+              </p>
+
+              {socialLinks.length > 0 && (
+                <div className={styles.socialRow}>
+                  {socialLinks.map((s, i) => (
+                    <a
+                      key={i}
+                      href={s.url}
+                      target="_blank"
+                      className={styles.socialBtn}
+                    >
+                      {getSocialIcon(s.platform)}
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* 2. Welcome Message */}
+          {welcomeMessage && (
+            <div className={styles.welcomeCard}>
+              <div className={styles.welcomeIconWrapper}>
+                <RiChatQuoteLine size={16} />
+              </div>
+              <p className={styles.welcomeText}>{welcomeMessage}</p>
+            </div>
+          )}
+
+          {/* 3. Features */}
+          {features && features.length > 0 && (
+            <div className={styles.featuresCard}>
+              <span className={styles.sectionTitle}>
+                <RiShieldCheckLine /> What's Included
+              </span>
+              <div className={styles.featureList}>
+                {features.map((feat, i) => (
+                  <div key={i} className={styles.featureItem}>
+                    <RiCheckboxCircleFill
+                      color="#000"
+                      size={22}
+                      style={{ flexShrink: 0 }}
+                    />
+                    <span>{feat}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
           )}
         </div>
 
-        <div className={styles.profileInfo}>
-          <div className={styles.avatarBox}>
-            {avatarUrl ? (
-              <Image
-                src={avatarUrl}
-                alt="Avatar"
-                fill
-                className={styles.avatarImg}
-                unoptimized
-              />
-            ) : (
-              <div className={styles.avatarFallback}>
-                <RiUser3Line />
-              </div>
-            )}
-          </div>
-          <div className={styles.handle}>
-            {name || "Creator Name"}
-            <RiVerifiedBadgeFill className={styles.verified} />
-          </div>
-          <p className={styles.bio}>
-            {bio || "Welcome to my exclusive community."}
-          </p>
-
-          <div className={styles.statsGrid}>
-            <div className={styles.stat}>
-              <span className={styles.statNum}>{formatCount(memberCount)}</span>
-              <span className={styles.statLabel}>Members</span>
-            </div>
-            <div className={styles.stat}>
-              <span className={styles.statNum}>{activePlatforms.length}</span>
-              <span className={styles.statLabel}>Channels</span>
-            </div>
-          </div>
-        </div>
-
-        {/* --- 2. MESSAGE (Optional) --- */}
-        {welcomeMessage && (
-          <div className={styles.contentSection}>
-            <div className={styles.sectionHeader}>
-              <RiChatQuoteLine color="#94a3b8" />
-              <span className={styles.sectionLabel}>Message</span>
-            </div>
-            <div className={styles.messageCard}>{welcomeMessage}</div>
-          </div>
-        )}
-
-        {/* --- 3. FEATURES (Optional) --- */}
-        {features && features.length > 0 && (
-          <div className={styles.contentSection}>
-            <div className={styles.sectionHeader}>
-              <RiShieldStarLine color="#94a3b8" />
-              <span className={styles.sectionLabel}>What's Included</span>
-            </div>
-            <div className={styles.featuresGrid}>
-              {features.map((feat, i) => (
-                <div key={i} className={styles.featureRow}>
-                  <RiCheckLine className={styles.checkIcon} />
-                  <span className={styles.featureText}>{feat}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* --- 4. PRICING PLANS (New: Was Missing) --- */}
-        {!existingMembership && prices && prices.length > 0 && (
-          <div className={styles.contentSection}>
-            <div className={styles.sectionHeader}>
-              <RiPriceTag3Line color="#94a3b8" />
-              <span className={styles.sectionLabel}>Select a Plan</span>
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-              {prices.map((price, idx) => (
-                <div
-                  key={idx}
-                  className={`${styles.planCard} ${
-                    selectedPriceIdx === idx ? styles.activePlan : ""
-                  }`}
-                  onClick={() => setSelectedPriceIdx(idx)}
-                >
-                  <div className={styles.planInfo}>
-                    <span className={styles.planName}>
-                      {formatInterval(price.interval)}
-                    </span>
-                    <span className={styles.planCost}>
-                      ${price.amount} / {price.interval}
-                    </span>
-                  </div>
-                  <div className={styles.radioCircle}>
-                    <div className={styles.radioDot} />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* --- 5. ACCESS (Restored) --- */}
-        <div className={styles.contentSection}>
-          <div className={styles.sectionHeader}>
-            <RiLock2Line color={existingMembership ? "#25d366" : "#94a3b8"} />
-            <span className={styles.sectionLabel}>
-              {existingMembership ? "🎉 You have access" : "Community Access"}
-            </span>
-          </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-            {activePlatforms.length > 0 ? (
-              activePlatforms.map(([key, data]) => {
-                const isMember = !!existingMembership;
-                const isExpanded = expandedPlatform === key;
-
-                return (
-                  <div
-                    key={key}
-                    className={`${styles.accessCard} ${
-                      isMember ? styles.memberCard : ""
-                    }`}
-                  >
+        {/* === RIGHT COLUMN: Checkout / Access === */}
+        <div className={styles.rightCol}>
+          <div className={styles.purchaseCard}>
+            {/* If Member: Show Access */}
+            {existingMembership ? (
+              <>
+                <span className={styles.sectionTitle}>
+                  <RiLock2Fill style={{ color: "#22c55e" }} /> You Have Access
+                </span>
+                <div className={styles.accessGrid}>
+                  {activePlatforms.map(([key, data]) => (
                     <div
-                      className={styles.accessCardHeader}
-                      onClick={() => toggleExpand(key)}
+                      key={key}
+                      className={styles.accessCard}
+                      onClick={() => handleOpenLink(key, data.link)}
                     >
-                      <div className={styles.accessIconBox}>{getIcon(key)}</div>
-                      <div className={styles.accessDetails}>
+                      <div className={styles.accessIconBox}>
+                        {getPlatformIcon(key)}
+                      </div>
+                      <div className={styles.accessMeta}>
                         <span className={styles.accessTitle}>{data.title}</span>
-                        <span className={styles.accessSub}>
-                          {isMember
-                            ? isExpanded
-                              ? "Click to close"
-                              : "Click to view invite"
-                            : `Private ${key} group`}
+                        <span
+                          className={styles.accessSub}
+                          style={{ color: "#15803d" }}
+                        >
+                          Click to Open{" "}
+                          <RiExternalLinkLine style={{ marginBottom: -2 }} />
                         </span>
                       </div>
-                      {isMember ? (
-                        <div className={styles.statusIcon}>
-                          {isExpanded ? (
-                            <RiArrowUpSLine />
-                          ) : (
-                            <RiArrowDownSLine />
-                          )}
-                        </div>
-                      ) : (
-                        <RiLock2Line className={styles.statusIcon} />
-                      )}
                     </div>
-
-                    {isExpanded && isMember && (
-                      <div className={styles.expandedContent}>
-                        <div className={styles.inviteBox}>
-                          <span className={styles.inviteLabel}>
-                            {key === "telegram"
-                              ? "Activate via Bot"
-                              : "Your Invite Link"}
+                  ))}
+                </div>
+              </>
+            ) : (
+              /* If Not Member: Show Pricing */
+              <>
+                {activePlatforms.length > 0 && (
+                  <div className={styles.accessGrid}>
+                    <span className={styles.sectionTitle}>
+                      <RiLock2Fill /> Instant Access
+                    </span>
+                    {activePlatforms.map(([key, data]) => (
+                      <div
+                        key={key}
+                        className={styles.accessCard}
+                        style={{ cursor: "default" }}
+                      >
+                        <div className={styles.accessIconBox}>
+                          {getPlatformIcon(key)}
+                        </div>
+                        <div className={styles.accessMeta}>
+                          <span className={styles.accessTitle}>
+                            {data.title}
                           </span>
-                          <button
-                            onClick={() => handleOpenLink(key, data.link)}
-                            className={styles.launchGroupBtn}
-                          >
-                            <RiExternalLinkLine />
-                            {key === "telegram"
-                              ? "Open Telegram Bot"
-                              : `Join ${key} Group`}
-                          </button>
+                          <span className={styles.accessSub}>
+                            Locked • Members Only
+                          </span>
                         </div>
                       </div>
-                    )}
+                    ))}
                   </div>
-                );
-              })
-            ) : (
-              <div
-                style={{
-                  padding: 16,
-                  textAlign: "center",
-                  color: "#94a3b8",
-                  fontSize: "0.9rem",
-                  background: "#f8fafc",
-                  borderRadius: 12,
-                }}
-              >
-                No active channels connected.
+                )}
+
+                {prices && prices.length > 0 && (
+                  <div className={styles.pricingGrid}>
+                    <span className={styles.sectionTitle}>Choose Plan</span>
+                    {prices.map((p, i) => {
+                      const isActive = i === selectedPriceIdx;
+                      return (
+                        <div
+                          key={i}
+                          className={`${styles.priceCard} ${isActive ? styles.activePrice : ""}`}
+                          onClick={() => setSelectedPriceIdx(i)}
+                        >
+                          <div className={styles.activeIndicator}></div>
+                          <div className={styles.intervalBadge}>
+                            {formatInterval(p.interval)}
+                            <span className={styles.intervalSub}>
+                              Recurring
+                            </span>
+                          </div>
+                          <div className={styles.priceTag}>
+                            ${formatPrice(p.amount)}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </>
+            )}
+
+            {/* Terms */}
+            {terms && !existingMembership && (
+              <div className={styles.termsBox}>
+                <p className={styles.termsText}>
+                  By subscribing, you agree to the Terms & Conditions.
+                </p>
               </div>
             )}
-          </div>
-        </div>
 
-        {/* --- 6. TERMS (Optional) --- */}
-        {terms && (
-          <div className={styles.contentSection}>
-            <div className={styles.sectionHeader}>
-              <RiFileTextLine color="#94a3b8" />
-              <span className={styles.sectionLabel}>Terms & Conditions</span>
-            </div>
-            <p
-              style={{
-                fontSize: "0.85rem",
-                color: "#64748b",
-                lineHeight: "1.5",
-              }}
-            >
-              {terms}
-            </p>
-          </div>
-        )}
-
-        <SubStarterBranding />
-      </div>
-
-      {/* STICKY DOCK */}
-      <div className={styles.stickyBar}>
-        <div className={styles.dockContent}>
-          {existingMembership ? (
-            <div className={styles.memberStatus}>
-              <div className={styles.pulseDot} />
-              <span className={styles.activeText}>
-                Active Member • Expires in {daysRemaining} days
-              </span>
-            </div>
-          ) : (
-            <>
-              <div className={styles.priceDisplay}>
-                <span className={styles.totalLabel}>
-                  {currentPrice.interval} Total
-                </span>
-                <span className={styles.priceValue}>
-                  ${currentPrice.amount}
-                </span>
-              </div>
+            {/* Desktop Join Button (Hidden on Mobile) */}
+            {!existingMembership && (
               <button
-                className={styles.joinBtn}
+                className={styles.desktopJoinBtn}
                 onClick={handleJoin}
                 disabled={isPending}
               >
                 {isPending ? (
                   <>
-                    <RiLoader4Fill className="spin" /> Processing
+                    {" "}
+                    <RiLoader4Fill className="spin" /> Processing{" "}
                   </>
                 ) : (
                   <>
-                    <span style={{ marginRight: 6 }}>Join Now</span>
-                    <RiArrowRightLine />
+                    {" "}
+                    Subscribe <RiArrowRightLine />{" "}
                   </>
                 )}
               </button>
-            </>
-          )}
+            )}
+          </div>
+
+          <SubStarterBranding />
         </div>
       </div>
+
+      {/* === MOBILE STICKY FOOTER (Hidden on Desktop) === */}
+      {!existingMembership && (
+        <div className={styles.stickyFooter}>
+          <div className={styles.priceDisplay}>
+            <span className={styles.footerAmount}>
+              ${formatPrice(currentPrice.amount)}
+            </span>
+            <span className={styles.footerInterval}>
+              / {formatInterval(currentPrice.interval)}
+            </span>
+          </div>
+          <button
+            className={styles.mobileJoinBtn}
+            onClick={handleJoin}
+            disabled={isPending}
+          >
+            {isPending ? <RiLoader4Fill className="spin" /> : "Join Now"}{" "}
+            <RiArrowRightLine />
+          </button>
+        </div>
+      )}
     </div>
   );
 }
