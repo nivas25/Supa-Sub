@@ -5,8 +5,8 @@ import { verifyKey } from "discord-interactions";
 export const runtime = "nodejs";
 
 // 2. HARDCODE THE *NEW* PUBLIC KEY HERE
-// Go to Discord Portal -> Copy "Public Key" -> Paste inside quotes
-const PUBLIC_KEY = "YOUR_NEW_PUBLIC_KEY_HERE_PASTE_IT";
+// (Paste your key inside these quotes)
+const PUBLIC_KEY = "YOUR_NEW_PUBLIC_KEY_HERE";
 
 export async function POST(req: Request) {
   const signature = req.headers.get("X-Signature-Ed25519");
@@ -16,7 +16,12 @@ export async function POST(req: Request) {
   const blob = await req.arrayBuffer();
   const bodyBuffer = Buffer.from(blob);
 
-  // 4. VERIFY
+  // 🚨 TYPESCRIPT FIX: Check for missing headers BEFORE using them
+  if (!signature || !timestamp) {
+    return new Response("Missing Request Signatures", { status: 401 });
+  }
+
+  // 4. VERIFY (Now TypeScript knows 'signature' and 'timestamp' are definitely strings)
   const isValid = verifyKey(bodyBuffer, signature, timestamp, PUBLIC_KEY);
 
   if (!isValid) {
@@ -27,7 +32,6 @@ export async function POST(req: Request) {
 
   // 5. PING (Handshake)
   if (interaction.type === 1) {
-    // 6. RETURN RAW RESPONSE (No Next.js wrappers)
     return new Response(JSON.stringify({ type: 1 }), {
       status: 200,
       headers: { "Content-Type": "application/json" },
