@@ -5,6 +5,12 @@ import { cookies } from "next/headers";
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  // 🛑 BYPASS MIDDLEWARE FOR DISCORD
+  // This is the critical fix. We immediately let Discord requests through.
+  if (pathname.startsWith("/api/discord")) {
+    return NextResponse.next();
+  }
+
   // Protected routes that require authentication
   const protectedRoutes = ["/dashboard"];
 
@@ -18,7 +24,6 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith(route),
   );
   const isAuthRoute = authRoutes.includes(pathname);
-  const isPublicRoute = publicRoutes.includes(pathname);
 
   try {
     // Create a Supabase client using the request's cookie jar
@@ -62,15 +67,14 @@ export async function middleware(request: NextRequest) {
     // Allow the request to continue
     return NextResponse.next();
   } catch (error) {
-    // If there's an error checking authentication, allow the request to continue
-    // This prevents infinite redirects in case of errors
     console.error("Middleware error:", error);
     return NextResponse.next();
   }
 }
 
 export const config = {
+  // We added 'api/discord' to the ignore list here as a backup
   matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+    "/((?!_next/static|_next/image|favicon.ico|api/discord|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
   ],
 };
