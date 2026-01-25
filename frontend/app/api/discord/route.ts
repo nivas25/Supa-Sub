@@ -1,118 +1,52 @@
 import { NextResponse } from "next/server";
 import { verifyKey } from "discord-interactions";
-import { createClient } from "@supabase/supabase-js";
 
-// 1. FORCE NODE.JS RUNTIME (Critical for Discord Security)
+// 1. FORCE NODEJS RUNTIME
 export const runtime = "nodejs";
-export const dynamic = "force-dynamic";
 
-// 2. CONFIGURATION
-const PUBLIC_KEY = process.env.DISCORD_PUBLIC_KEY!;
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const SUPABASE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY!;
-
-const supabase = createClient(SUPABASE_URL, SUPABASE_ROLE_KEY);
+// 2. HARDCODE THE *NEW* PUBLIC KEY HERE
+// Go to Discord Portal -> Copy "Public Key" -> Paste inside quotes
+const PUBLIC_KEY = "YOUR_NEW_PUBLIC_KEY_HERE_PASTE_IT";
 
 export async function POST(req: Request) {
-  try {
-    // 3. READ HEADERS
-    const signature = req.headers.get("X-Signature-Ed25519");
-    const timestamp = req.headers.get("X-Signature-Timestamp");
+  const signature = req.headers.get("X-Signature-Ed25519");
+  const timestamp = req.headers.get("X-Signature-Timestamp");
 
-    // 4. READ BODY AS BUFFER (Fixes all verification errors)
-    const blob = await req.arrayBuffer();
-    const bodyBuffer = Buffer.from(blob);
-    const bodyText = bodyBuffer.toString("utf-8");
+  // 3. READ BODY AS RAW BUFFER
+  const blob = await req.arrayBuffer();
+  const bodyBuffer = Buffer.from(blob);
 
-    // 5. CHECK FOR MISSING KEYS
-    if (!signature || !timestamp || !PUBLIC_KEY) {
-      console.error("❌ Missing Config: Check Vercel Environment Variables");
-      return NextResponse.json(
-        { error: "Configuration Error" },
-        { status: 401 },
-      );
-    }
+  // 4. VERIFY
+  const isValid = verifyKey(bodyBuffer, signature, timestamp, PUBLIC_KEY);
 
-    // 6. VERIFY SIGNATURE
-    const isValidRequest = verifyKey(
-      bodyBuffer,
-      signature,
-      timestamp,
-      PUBLIC_KEY,
-    );
-    if (!isValidRequest) {
-      console.error("❌ Invalid Signature: Key does not match");
-      return NextResponse.json(
-        { error: "Bad Request Signature" },
-        { status: 401 },
-      );
-    }
+  if (!isValid) {
+    return new Response("Bad Signature", { status: 401 });
+  }
 
-    const interaction = JSON.parse(bodyText);
+  const interaction = JSON.parse(bodyBuffer.toString("utf-8"));
 
-    // --- PING (Handshake) ---
-    if (interaction.type === 1) {
-      console.log("✅ PING received. Sending PONG.");
-      return NextResponse.json({ type: 1 });
-    }
+  // 5. PING (Handshake)
+  if (interaction.type === 1) {
+    // 6. RETURN RAW RESPONSE (No Next.js wrappers)
+    return new Response(JSON.stringify({ type: 1 }), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
 
-    // --- COMMANDS (/connect) ---
-    if (interaction.type === 2) {
-      if (interaction.data.name === "connect") {
-        const pageId = interaction.data.options?.[0]?.value;
-        const guildId = interaction.guild_id;
-        const adminId = interaction.member?.user?.id;
-
-        console.log(`🔹 Linking Page ${pageId} to Guild ${guildId}`);
-
-        // Update Database
-        const { data, error } = await supabase
-          .from("page_discord_config")
-          .update({
-            guild_id: guildId,
-            admin_id: adminId,
-            connected_at: new Date().toISOString(),
-            guild_name: "Connected Server",
-          })
-          .eq("page_id", pageId)
-          .select();
-
-        if (error) {
-          console.error("DB Error:", error);
-          return NextResponse.json({
-            type: 4,
-            data: {
-              content: "❌ **Error:** Database update failed. Check Page ID.",
-            },
-          });
-        }
-
-        if (!data || data.length === 0) {
-          return NextResponse.json({
-            type: 4,
-            data: {
-              content:
-                "❌ **Page Not Found.** Generate an ID in Creator Studio first.",
-            },
-          });
-        }
-
-        return NextResponse.json({
-          type: 4,
-          data: {
-            content:
-              "✅ **Success!** This server is now linked to your SubStarter page.",
-          },
-        });
-      }
-    }
-
-    return NextResponse.json({ error: "Unknown Command" }, { status: 400 });
-  } catch (err) {
-    console.error("Server Error:", err);
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 },
+  // COMMANDS
+  if (interaction.type === 2) {
+    return new Response(
+      JSON.stringify({
+        type: 4,
+        data: { content: "✅ It Works!" },
+      }),
+      {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      },
     );
   }
+
+  return new Response("Unknown", { status: 400 });
 }
