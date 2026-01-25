@@ -293,7 +293,7 @@ input:checked + .slider:before {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: #5865F2; /* Discord Blurple */
+  background: #5865f2; /* Discord Blurple */
   color: #fff;
   font-weight: 700;
   font-size: 0.85rem;
