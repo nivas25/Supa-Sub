@@ -95,16 +95,15 @@ export default async function PublicPage({
 
   return (
     <PublicProfile
+      pageId={page.id}
       name={page.name}
       bio={page.description}
       handle={page.slug}
       avatarUrl={page.icon_url}
       bannerUrl={page.banner_url}
-      memberCount={memberCount || 0}
       prices={prices || []}
       platforms={platformData}
       existingMembership={existingMembership}
-      groupId={page.id}
       features={page.features || []}
       welcomeMessage={page.welcome_message}
       terms={page.terms}
