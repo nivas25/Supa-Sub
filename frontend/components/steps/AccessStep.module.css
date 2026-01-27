@@ -11,7 +11,8 @@
   display: flex;
   flex-direction: column;
   gap: 32px;
-  font-family: var(--font-outfit), sans-serif !important;
+  font-family:
+    var(--font-outfit), sans-serif !important; /* Force Outfit Font */
   transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1);
   position: relative;
 }
@@ -263,6 +264,13 @@ input:checked + .slider:before {
   font-size: 1.1rem;
 }
 
+.stepContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
 .stepItem p {
   margin: 0;
   font-size: 0.9rem;
@@ -288,7 +296,7 @@ input:checked + .slider:before {
   color: #4752c4;
 }
 
-/* New Action Link Button for Discord Invite */
+/* Action Link Button for Discord Invite */
 .actionLinkBtn {
   display: inline-flex;
   align-items: center;
@@ -324,6 +332,7 @@ input:checked + .slider:before {
   border: 1px solid #334155;
   transition: all 0.2s;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  margin-top: 6px;
 }
 
 .codeBlock:hover {
@@ -351,15 +360,13 @@ input:checked + .slider:before {
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-/* Verify Button */
+/* Verify Button Base */
 .verifyBtn {
   width: 100%;
   padding: 14px;
   background: #fff;
-  color: #0284c7;
   font-weight: 700;
   font-size: 0.95rem;
-  border: 2px solid #0284c7;
   border-radius: 10px;
   cursor: pointer;
   display: flex;
@@ -367,16 +374,34 @@ input:checked + .slider:before {
   justify-content: center;
   gap: 8px;
   transition: 0.2s;
+  border: 2px solid transparent; /* default */
 }
 
-.verifyBtn:hover:not(:disabled) {
-  background: #0284c7;
+/* Telegram Verify Button Style */
+.telegramBtn {
+  border-color: #229ed9;
+  color: #229ed9;
+}
+.telegramBtn:hover:not(:disabled) {
+  background: #229ed9;
+  color: #fff;
+}
+
+/* Discord Verify Button Style */
+.discordBtn {
+  border-color: #5865f2;
+  color: #5865f2;
+}
+.discordBtn:hover:not(:disabled) {
+  background: #5865f2;
   color: #fff;
 }
 
 .verifyBtn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+  border-color: #94a3b8;
+  color: #94a3b8;
 }
 
 /* Initial "Generate ID" State */
@@ -592,14 +617,116 @@ input:checked + .slider:before {
   }
 }
 
+/* --- GUIDE BOX STYLES (NEW) --- */
+.guideToggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: #3b82f6;
+  cursor: pointer;
+  padding: 8px 12px;
+  background: #eff6ff;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+.guideToggle:hover {
+  background: #dbeafe;
+}
+
+.guideBox {
+  background: #fff;
+  border: 2px dashed #cbd5e1; /* Dashed to look like a 'blueprint' */
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  animation: slideDown 0.3s ease-out;
+}
+
+.guideTitle {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #1e3a8a;
+  margin: 0 0 16px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 8px;
+}
+
+.guideList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.guideItem {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.guideNum {
+  background: #000;
+  color: #fff;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 800;
+  flex-shrink: 0;
+  margin-top: 2px;
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.2);
+}
+
+.guideContent strong {
+  display: block;
+  font-size: 0.95rem;
+  color: #0f172a;
+  margin-bottom: 2px;
+}
+
+.guideContent p {
+  font-size: 0.85rem;
+  color: #475569;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.guideBox code {
+  background: #f1f5f9;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 0.85rem;
+  color: #0f172a;
+  border: 1px solid #e2e8f0;
+  font-weight: 600;
+}
+
+.guideBox ol {
+  padding-left: 20px;
+  margin: 0;
+}
+.guideBox li {
+  margin-bottom: 6px;
+  font-size: 0.85rem;
+  color: #1e3a8a;
+}
+
 /* =========================================
-   MOBILE OPTIMIZATION (Overrides)
+   MOBILE OPTIMIZATION
    ========================================= */
 @media (max-width: 768px) {
   .accessCard {
     padding: 24px 16px;
     gap: 24px;
-    box-shadow: 4px 4px 0 #000; /* Consistent Mobile Shadow */
+    box-shadow: 4px 4px 0 #000;
   }
 
   .cardHeader {
@@ -632,7 +759,6 @@ input:checked + .slider:before {
     gap: 16px;
   }
 
-  /* Connect Box Mobile */
   .connectBox {
     padding: 16px;
   }
@@ -660,14 +786,12 @@ input:checked + .slider:before {
     padding: 8px;
   }
 
-  /* Inputs Mobile */
   .stdInput {
     height: 50px;
     border-radius: 10px;
-    font-size: 1rem; /* Prevents zoom */
+    font-size: 1rem;
   }
 
-  /* Pricing Mobile */
   .priceRow {
     flex-wrap: wrap;
     gap: 10px;
@@ -690,4 +814,22 @@ input:checked + .slider:before {
     height: 50px;
     font-size: 0.95rem;
   }
+}
+
+.priceRowWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.invalidRow {
+  border-color: #ef4444 !important;
+  background-color: #fff5f5;
+}
+
+.miniErrorText {
+  color: #dc2626;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding-left: 4px;
 }

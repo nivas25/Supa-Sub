@@ -10,6 +10,7 @@ import {
   RiRocket2Fill,
   RiPencilLine,
   RiEyeLine,
+  RiSave3Line,
 } from "react-icons/ri";
 import LivePreview from "./LivePreview";
 import styles from "./CreatorStudio.module.css";
@@ -44,6 +45,7 @@ export default function CreatorStudio({ user }: any) {
 
   // States
   const [isLaunching, setIsLaunching] = useState(false);
+  const [isSavingDraft, setIsSavingDraft] = useState(false);
   const [pageId, setPageId] = useState<string | null>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -58,6 +60,7 @@ export default function CreatorStudio({ user }: any) {
     bannerUrl: "",
     themeColor: "#000000",
     buttonTextColor: "#ffffff",
+    fontStyle: "outfit",
     buttonStyle: "pill",
     buttonText: "",
     prices: [{ amount: "10", interval: "monthly" }] as PriceOption[],
@@ -67,7 +70,13 @@ export default function CreatorStudio({ user }: any) {
     terms: "",
     platforms: {
       telegram: { enabled: false, link: "", chatId: "", title: "VIP Telegram" },
-      discord: { enabled: false, link: "", title: "Pro Discord" },
+      // Added roleId here
+      discord: {
+        enabled: false,
+        link: "",
+        title: "Pro Discord",
+        roleId: "",
+      },
       whatsapp: { enabled: false, link: "", title: "Member Chat" },
     },
   });
@@ -80,28 +89,35 @@ export default function CreatorStudio({ user }: any) {
       newErrors.pageTitle = "Page Name is required";
       isValid = false;
     }
+
     if (!formData.handle.trim()) {
       newErrors.handle = "URL is required";
       isValid = false;
-    }
-    if (!formData.avatarUrl) {
-      newErrors.avatarUrl = "Icon is required";
+    } else if (formData.handle.length < 3) {
+      newErrors.handle = "URL must be at least 3 characters";
       isValid = false;
     }
 
     if (formData.prices.length === 0) {
-      newErrors.prices = "Add a plan";
+      newErrors.prices = "Add at least one plan";
       isValid = false;
     } else if (
-      formData.prices.some((p) => !p.amount || parseFloat(p.amount) < 1)
+      formData.prices.some((p) => !p.amount || parseFloat(p.amount) <= 1)
     ) {
-      newErrors.prices = "Minimum $1";
+      newErrors.prices = "All prices must be greater than $1";
       isValid = false;
+      if (activeTab === "preview") setActiveTab("edit");
     }
 
     if (!Object.values(formData.platforms).some((p) => p.enabled)) {
       newErrors.platforms = "Select at least one platform";
       isValid = false;
+    }
+
+    if (formData.socialLinks.some((s) => !s.url.trim())) {
+      newErrors.socialLinks = "Please fill in all social links or remove them.";
+      isValid = false;
+      if (activeTab === "preview") setActiveTab("edit");
     }
 
     setErrors(newErrors);
@@ -110,11 +126,12 @@ export default function CreatorStudio({ user }: any) {
 
   const handleCreatePage = async (isDraft: boolean = false) => {
     if (!validateForm()) {
-      alert("⚠️ Please fill in all required fields.");
+      alert("⚠️ Please fix the errors before saving.");
       return;
     }
 
-    setIsLaunching(true);
+    if (isDraft) setIsSavingDraft(true);
+    else setIsLaunching(true);
 
     try {
       // 1. Create/Upsert Page
@@ -130,15 +147,15 @@ export default function CreatorStudio({ user }: any) {
         welcome_message: formData.welcomeMessage,
         button_text: formData.buttonText || "Subscribe",
         theme_color: formData.themeColor,
+        font_style: formData.fontStyle,
         button_style: formData.buttonStyle,
         social_links: formData.socialLinks,
-        status: "active",
+        status: isDraft ? "draft" : "active",
       };
 
       let resultPageId = pageId;
 
       if (!pageId) {
-        // Insert new
         const { data: pageData, error: pageError } = await supabase
           .from("pages")
           .insert(pagePayload)
@@ -148,7 +165,6 @@ export default function CreatorStudio({ user }: any) {
         resultPageId = pageData.id;
         setPageId(pageData.id);
       } else {
-        // Update existing (if they clicked generate ID multiple times or are editing)
         const { error: pageError } = await supabase
           .from("pages")
           .update(pagePayload)
@@ -156,47 +172,64 @@ export default function CreatorStudio({ user }: any) {
         if (pageError) throw pageError;
       }
 
-      // 2. Upsert Configs (Simpler to delete/re-insert or upsert)
-      // For simplicity here we assume inserts are fine or you handle upserts in DB.
-      // A safe way is to delete old configs for this page_id then insert new.
-      await supabase
-        .from("page_telegram_config")
-        .delete()
-        .eq("page_id", resultPageId);
-      await supabase
-        .from("page_discord_config")
-        .delete()
-        .eq("page_id", resultPageId);
-      await supabase
-        .from("page_whatsapp_config")
-        .delete()
-        .eq("page_id", resultPageId);
-      await supabase.from("page_prices").delete().eq("page_id", resultPageId);
-
+      // 2. SMART UPSERT: Protect bot-generated data
       const { telegram, discord, whatsapp } = formData.platforms;
+
+      // TELEGRAM
       if (telegram.enabled) {
-        await supabase.from("page_telegram_config").insert({
-          page_id: resultPageId,
-          chat_id: telegram.chatId,
-          title: telegram.title,
-        });
-      }
-      if (discord.enabled) {
-        await supabase.from("page_discord_config").insert({
-          page_id: resultPageId,
-          invite_link: discord.link,
-          title: discord.title,
-        });
-      }
-      if (whatsapp.enabled) {
-        await supabase.from("page_whatsapp_config").insert({
-          page_id: resultPageId,
-          invite_link: whatsapp.link,
-          title: whatsapp.title,
-        });
+        await supabase.from("page_telegram_config").upsert(
+          {
+            page_id: resultPageId,
+            title: telegram.title || "VIP Telegram",
+          },
+          { onConflict: "page_id" },
+        );
+      } else {
+        await supabase
+          .from("page_telegram_config")
+          .delete()
+          .eq("page_id", resultPageId);
       }
 
-      // 3. Insert Prices
+      // DISCORD
+      if (discord.enabled) {
+        // Upsert allows us to save the role_id if the user typed it in,
+        // without destroying the guild_id that the bot might have set.
+        await supabase.from("page_discord_config").upsert(
+          {
+            page_id: resultPageId,
+            title: discord.title || "Pro Discord",
+            invite_link: discord.link || null,
+            role_id: discord.roleId || null, // Saving Role ID here
+          },
+          { onConflict: "page_id" },
+        );
+      } else {
+        await supabase
+          .from("page_discord_config")
+          .delete()
+          .eq("page_id", resultPageId);
+      }
+
+      // WHATSAPP
+      if (whatsapp.enabled) {
+        await supabase.from("page_whatsapp_config").upsert(
+          {
+            page_id: resultPageId,
+            invite_link: whatsapp.link,
+            title: whatsapp.title,
+          },
+          { onConflict: "page_id" },
+        );
+      } else {
+        await supabase
+          .from("page_whatsapp_config")
+          .delete()
+          .eq("page_id", resultPageId);
+      }
+
+      // 3. Update Prices
+      await supabase.from("page_prices").delete().eq("page_id", resultPageId);
       const priceInserts = formData.prices.map((p) => ({
         page_id: resultPageId,
         amount: parseFloat(p.amount),
@@ -204,7 +237,6 @@ export default function CreatorStudio({ user }: any) {
       }));
       await supabase.from("page_prices").insert(priceInserts);
 
-      // 4. Handle Completion
       if (!isDraft) {
         router.push("/pages");
       }
@@ -217,6 +249,7 @@ export default function CreatorStudio({ user }: any) {
       );
     } finally {
       setIsLaunching(false);
+      setIsSavingDraft(false);
     }
   };
 
@@ -252,7 +285,6 @@ export default function CreatorStudio({ user }: any) {
           </div>
         </header>
 
-        {/* STEPS */}
         <IdentityStep
           formData={formData}
           setFormData={setFormData}
@@ -281,27 +313,40 @@ export default function CreatorStudio({ user }: any) {
           setErrors={setErrors}
           pageId={pageId}
           onSavePage={() => handleCreatePage(true)}
-          isSaving={isLaunching}
+          isSaving={isSavingDraft}
           supabase={supabase}
         />
 
-        {/* Final Launch Button - Only navigates away */}
-        <button
-          className={styles.desktopLaunchBtn}
-          onClick={() => handleCreatePage(false)}
-          disabled={isLaunching}
-        >
-          {isLaunching ? (
-            <>
-              <RiLoader5Line className="animate-spin" size={24} /> Saving...
-            </>
-          ) : (
-            <>
-              <RiRocket2Fill className={styles.rocketIcon} />{" "}
-              {pageId ? "Save Changes & Exit" : "Launch Page"}
-            </>
-          )}
-        </button>
+        <div className={styles.actionRow}>
+          <button
+            className={styles.draftBtn}
+            onClick={() => handleCreatePage(true)}
+            disabled={isSavingDraft || isLaunching}
+          >
+            {isSavingDraft ? (
+              <RiLoader5Line className="animate-spin" />
+            ) : (
+              <RiSave3Line />
+            )}
+            Save Draft
+          </button>
+
+          <button
+            className={styles.launchBtn}
+            onClick={() => handleCreatePage(false)}
+            disabled={isSavingDraft || isLaunching}
+          >
+            {isLaunching ? (
+              <>
+                <RiLoader5Line className="animate-spin" /> Launching...
+              </>
+            ) : (
+              <>
+                <RiRocket2Fill /> {pageId ? "Update Live Page" : "Launch Page"}
+              </>
+            )}
+          </button>
+        </div>
       </div>
 
       <div
@@ -338,6 +383,7 @@ export default function CreatorStudio({ user }: any) {
             themeColor={formData.themeColor}
             buttonTextColor={formData.buttonTextColor}
             buttonStyle={formData.buttonStyle}
+            fontStyle={formData.fontStyle}
             viewMode={previewDevice}
           />
         </div>

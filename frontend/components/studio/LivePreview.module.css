@@ -20,8 +20,8 @@
   height: 100%;
   max-height: 850px;
   background: #ffffff;
-  border: 10px solid #1e293b;
-  border-radius: 50px;
+  border: 12px solid #1e293b;
+  border-radius: 48px;
   overflow: hidden;
   position: relative;
   box-shadow:
@@ -136,7 +136,8 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  padding-bottom: 24px;
+  padding-bottom: 32px; /* Consistent breathing room */
+  border-bottom: 1px solid #f1f5f9;
 }
 
 .desktopLayout .identityCard {
@@ -151,19 +152,6 @@
   background: #f1f5f9;
   position: relative;
   overflow: hidden;
-  border-bottom: 1px solid #e2e8f0;
-}
-
-.bannerFrame::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: none;
-  opacity: 0;
-  pointer-events: none;
 }
 
 .bannerImg {
@@ -204,7 +192,7 @@
 }
 
 .name {
-  font-family: var(--font-outfit), sans-serif;
+  font-family: inherit;
   font-size: 1.6rem;
   font-weight: 800;
   color: #0f172a;
@@ -213,7 +201,6 @@
 }
 
 .bio {
-  font-family: var(--font-outfit), sans-serif;
   font-size: 0.95rem;
   color: #64748b;
   line-height: 1.6;
@@ -239,6 +226,7 @@
   justify-content: center;
   transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1);
   font-size: 1.2rem;
+  text-decoration: none;
 }
 .socialBtn:hover {
   border-color: #000;
@@ -255,10 +243,9 @@
   background: #f8fafc;
   border-radius: 20px;
   padding: 24px;
-  margin-top: 32px;
-  margin-bottom: 24px;
   position: relative;
   text-align: center;
+  /* Margins are removed to let Flex Gap handle spacing */
 }
 
 .welcomeIconWrapper {
@@ -275,12 +262,12 @@
 }
 
 .welcomeText {
-  font-family: var(--font-outfit), sans-serif;
   font-size: 0.95rem;
   color: #475569;
   line-height: 1.7;
   font-weight: 500;
   font-style: italic;
+  margin: 0;
 }
 
 /* =========================================
@@ -303,7 +290,6 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: 12px;
-  margin-bottom: 24px;
 }
 
 .bigAccessCard {
@@ -350,16 +336,17 @@
 
 .featuresCard {
   background: #fff;
+}
+.desktopLayout .featuresCard {
   border: 1px solid #e2e8f0;
   border-radius: 20px;
   padding: 24px;
-  margin-top: 24px;
 }
+
 .featureList {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  margin-bottom: 24px;
 }
 .featureItem {
   display: flex;
@@ -388,7 +375,6 @@
   justify-content: space-between;
   background: #fff;
   transition: all 0.2s;
-  /* Playful: Disable default tap highlight */
   -webkit-tap-highlight-color: transparent;
 }
 .priceCard:hover {
@@ -396,7 +382,7 @@
 }
 .priceCard:active {
   transform: scale(0.98);
-} /* Playful Tactile Click */
+}
 
 .activePrice {
   border-color: var(--accent);
@@ -427,7 +413,6 @@
   padding-left: 20px;
   color: #0f172a;
 }
-/* Lowercase or small caps for the sub text */
 .intervalSub {
   font-size: 0.75rem;
   color: #64748b;
@@ -441,11 +426,11 @@
   color: #0f172a;
 }
 
-/* --- TERMS & CONDITIONS (New) --- */
+/* --- TERMS & CONDITIONS --- */
 .termsBox {
-  margin-top: 20px;
+  margin-top: 8px;
   padding-top: 16px;
-  border-top: 1px dashed #e2e8f0; /* Dashed line like a perforation */
+  border-top: 1px dashed #e2e8f0;
   text-align: center;
 }
 .termsText {
@@ -486,14 +471,25 @@
   box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
 }
 
-/* --- MOBILE LAYOUT --- */
+/* --- MOBILE LAYOUT (Fixed & Spaced) --- */
 .mobileLayout {
   display: flex;
   flex-direction: column;
+  /* No gaps here, we handle spacing in content stack */
 }
+
 .mobileContentStack {
+  display: flex;
+  flex-direction: column;
+  gap: 40px; /* INCREASED GAP: Uniform 40px space between sections */
   padding: 24px;
-  padding-bottom: 40px;
+  padding-top: 32px; /* Initial space after Identity section */
+  padding-bottom: 120px; /* Space for Sticky Footer */
+}
+
+/* IMPORTANT: Reset margins on children so the Gap handles spacing perfectly */
+.mobileContentStack > * {
+  margin: 0 !important;
 }
 
 /* --- STICKY FOOTER --- */
@@ -530,6 +526,7 @@
 .text-sm {
   font-size: 1.1rem;
 }
+
 .footerInterval {
   font-size: 0.8rem;
   color: #94a3b8;
@@ -552,7 +549,6 @@
   transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* Playful Wiggle on Hover */
 .joinBtn:hover {
   transform: scale(1.05) rotate(-1deg);
 }

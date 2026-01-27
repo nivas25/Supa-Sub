@@ -97,7 +97,7 @@
   letter-spacing: -0.2px;
 }
 
-/* --- LAUNCH BUTTON --- */
+/* --- LAUNCH BUTTON (Previous Single Button - Keeping for legacy if needed) --- */
 .desktopLaunchBtn {
   margin-top: 40px;
   width: 100%;
@@ -551,5 +551,75 @@
     width: 44px;
     height: 44px;
     font-size: 1.2rem;
+  }
+}
+
+/* --- Bottom Action Row --- */
+.actionRow {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr; /* Draft smaller, Launch bigger */
+  gap: 16px;
+  margin-top: 20px;
+  padding-bottom: 60px; /* Space at bottom for scrolling */
+}
+
+.draftBtn {
+  height: 56px;
+  background: #ffffff;
+  color: #000000;
+  border: 2px solid #e2e8f0;
+  border-radius: 14px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s;
+  font-family: var(--font-outfit), sans-serif; /* <--- UPDATED: Outfit Font */
+}
+
+.draftBtn:hover {
+  border-color: #000;
+  background: #f8fafc;
+}
+
+.launchBtn {
+  height: 56px;
+  background: #000000;
+  color: #ffffff;
+  border: none;
+  border-radius: 14px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: var(--font-outfit), sans-serif; /* <--- UPDATED: Outfit Font */
+}
+
+.launchBtn:hover {
+  background: #22c55e; /* Green on hover for success feel */
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(34, 197, 94, 0.2);
+}
+
+.launchBtn:disabled,
+.draftBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Mobile adjust */
+@media (max-width: 768px) {
+  .actionRow {
+    grid-template-columns: 1fr; /* Stack vertically on mobile */
+    gap: 12px;
   }
 }

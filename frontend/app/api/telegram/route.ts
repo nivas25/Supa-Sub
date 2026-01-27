@@ -14,8 +14,8 @@ const supabaseAdmin = createClient(
   },
 );
 
-// Helper: Send Message
-async function sendMessage(chatId: number, text: string) {
+// --- HELPER: Send Message ---
+async function sendMessage(chatId: number | string, text: string) {
   try {
     const res = await fetch(
       `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,
@@ -31,14 +31,19 @@ async function sendMessage(chatId: number, text: string) {
   }
 }
 
-// Helper: Create Invite
+// --- HELPER: Create Invite ---
 async function createInviteLink(chatId: string, name: string) {
   const res = await fetch(
     `https://api.telegram.org/bot${BOT_TOKEN}/createChatInviteLink`,
     {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ chat_id: chatId, member_limit: 1, name: name }),
+      body: JSON.stringify({
+        chat_id: chatId,
+        member_limit: 1, // STRICT 1 USE LIMIT
+        name: name,
+        expire_date: Math.floor(Date.now() / 1000) + 3600, // Expires in 1 hour
+      }),
     },
   );
   return await res.json();
@@ -47,32 +52,47 @@ async function createInviteLink(chatId: string, name: string) {
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    if (!body.message || !body.message.text)
+
+    // Safety check
+    if (!body.message) return NextResponse.json({ ok: true });
+
+    // 1. SILENT FIX: If Group ID changed, just update DB and stop.
+    // (We don't try to send messages here to avoid loops)
+    if (body.message.migrate_to_chat_id) {
+      const oldChatId = body.message.chat.id.toString();
+      const newChatId = body.message.migrate_to_chat_id.toString();
+
+      await supabaseAdmin
+        .from("page_telegram_config")
+        .update({ chat_id: newChatId })
+        .eq("chat_id", oldChatId);
+
       return NextResponse.json({ ok: true });
+    }
+
+    if (!body.message.text) return NextResponse.json({ ok: true });
 
     const { chat, text, from } = body.message;
     const chatId = chat.id;
-    const chatType = chat.type; // 'private', 'group', or 'supergroup'
+    const chatType = chat.type;
 
-    console.log(`[Telegram] ${chatType} msg from ${from.username}: ${text}`);
-
-    // --- HANDLE /start OR /connect ---
+    // --- COMMANDS ---
     if (text.startsWith("/start") || text.startsWith("/connect")) {
       const parts = text.split(" ");
       const payload = parts[1]?.trim();
 
-      // 1. NO ID PROVIDED?
+      // A. NO ID PROVIDED
       if (!payload) {
         if (chatType === "private") {
           await sendMessage(
             chatId,
-            "👋 **Hello Creator!**\n\nTo connect a group, go to your Dashboard and click **'Add Bot to Group'**.\n\nTo join a community, use the link from the creator's page.",
+            "👋 **Hello Creator!**\n\nTo connect a group, go to your Dashboard and click **'Add Bot to Group'**.",
           );
         }
         return NextResponse.json({ ok: true });
       }
 
-      // 2. CHECK IF IT IS A PAGE (Creator Setup)
+      // B. CREATOR SETUP (Connect Page)
       const { data: page } = await supabaseAdmin
         .from("pages")
         .select("id, name")
@@ -83,12 +103,12 @@ export async function POST(req: Request) {
         if (chatType === "private") {
           await sendMessage(
             chatId,
-            `👋 Hi! I see you want to connect **${page.name}**.\n\n⚠️ **You are in Private Chat.**\n\nPlease add me to the **Telegram Group** you want to use, and I will connect automatically.`,
+            "⚠️ **Wrong Place:** Please run this command inside your **Telegram Group**.",
           );
           return NextResponse.json({ ok: true });
         }
 
-        // SUCCESS: Creator is in a Group
+        // Upsert Group ID
         const { error } = await supabaseAdmin
           .from("page_telegram_config")
           .upsert(
@@ -96,6 +116,7 @@ export async function POST(req: Request) {
               page_id: payload,
               chat_id: chatId.toString(),
               is_enabled: true,
+              title: chat.title || "Telegram Group",
             },
             { onConflict: "page_id" },
           );
@@ -105,13 +126,13 @@ export async function POST(req: Request) {
         } else {
           await sendMessage(
             chatId,
-            `✅ **Connected to ${page.name}!**\n\n👇 **REQUIRED:**\nPromote me to **Admin** (with 'Invite Users' permission) so I can let members in.`,
+            `✅ **Connected to ${page.name}!**\n\n👇 **REQUIRED:**\nPromote me to **Admin** (with 'Invite Users' permission) NOW.`,
           );
         }
         return NextResponse.json({ ok: true });
       }
 
-      // 3. CHECK IF IT IS A MEMBERSHIP (Subscriber Join)
+      // C. SUBSCRIBER JOIN
       const { data: membership } = await supabaseAdmin
         .from("memberships")
         .select(`id, status, user_id, page_id, pages(name)`)
@@ -120,29 +141,25 @@ export async function POST(req: Request) {
 
       if (membership) {
         if (membership.status !== "active") {
-          await sendMessage(
-            chatId,
-            "⚠️ **Membership Inactive**\nYour subscription has expired or is invalid.",
-          );
+          await sendMessage(chatId, "⚠️ **Membership Inactive**");
           return NextResponse.json({ ok: true });
         }
 
-        // Get Group ID
         const { data: tgConfig } = await supabaseAdmin
           .from("page_telegram_config")
           .select("chat_id")
           .eq("page_id", membership.page_id)
           .single();
 
-        if (!tgConfig) {
+        if (!tgConfig || !tgConfig.chat_id) {
           await sendMessage(
             chatId,
-            "❌ **Error:** This page has not connected a Telegram Group yet.",
+            "❌ Creator has not connected a group yet.",
           );
           return NextResponse.json({ ok: true });
         }
 
-        // Save Telegram ID
+        // Save User Info
         await supabaseAdmin
           .from("memberships")
           .update({
@@ -158,18 +175,28 @@ export async function POST(req: Request) {
           `Member: ${payload.slice(0, 6)}`,
         );
 
-        // --- FIX IS HERE: Force type to 'any' to bypass TS 'never' error ---
-        const pagesData = membership.pages as any;
-        const pageName = Array.isArray(pagesData)
-          ? pagesData[0]?.name
-          : pagesData?.name;
-
         if (!inviteResult.ok) {
-          await sendMessage(
-            chatId,
-            "❌ **I cannot generate a link.**\n\n(Creators: Make sure I am an **Admin** in the group!)",
-          );
+          // SIMPLE ERROR HANDLING (No Loops)
+          const err = inviteResult.description || "";
+          if (err.includes("chat not found")) {
+            // If ID changed, we just tell them to reconnect. Much safer.
+            await sendMessage(
+              chatId,
+              "⚠️ **System Update Required.**\nCreator: Please run `/connect` in the group again.",
+            );
+          } else {
+            await sendMessage(
+              chatId,
+              "⚠️ **Permission Error.**\nCreator: Make sure I am an **Admin**.",
+            );
+          }
         } else {
+          // SAFE PAGE NAME EXTRACTION
+          const pagesData = membership.pages as any;
+          const pageName = Array.isArray(pagesData)
+            ? pagesData[0]?.name
+            : pagesData?.name;
+
           await sendMessage(
             chatId,
             `🎉 **Welcome to ${pageName || "Community"}!**\n\nTap to join:\n${inviteResult.result.invite_link}`,
@@ -178,20 +205,13 @@ export async function POST(req: Request) {
         return NextResponse.json({ ok: true });
       }
 
-      // 4. NEITHER FOUND
-      await sendMessage(
-        chatId,
-        "❌ **Invalid ID.**\nI could not find a Page or Membership with that ID.",
-      );
+      await sendMessage(chatId, "❌ **Invalid ID.**");
     }
 
     return NextResponse.json({ ok: true });
   } catch (err) {
     console.error("Server Error:", err);
-    return NextResponse.json({ error: "Server Error" }, { status: 500 });
+    // ALWAYS return OK so Telegram stops retrying
+    return NextResponse.json({ ok: true });
   }
-}
-
-export async function GET() {
-  return NextResponse.json({ ok: true });
 }

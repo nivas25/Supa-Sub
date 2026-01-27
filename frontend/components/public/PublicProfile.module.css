@@ -3,12 +3,12 @@
 /* --- GLOBAL LAYOUT --- */
 .pageContainer {
   min-height: 100vh;
-  background-color: #f8fafc; /* Page Background */
+  background-color: #f8fafc;
   font-family: var(--font-outfit), "Inter", sans-serif;
-  padding-bottom: 100px; /* Space for mobile footer */
+  padding-bottom: 120px; /* Space for sticky footer */
 }
 
-/* Background Decoration (Dot Pattern) */
+/* Background Pattern */
 .pageContainer::before {
   content: "";
   position: fixed;
@@ -49,69 +49,93 @@
   }
 }
 
-/* --- LEFT COLUMN (Content) --- */
-.leftCol {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
+/* --- MOBILE OPTIMIZATION (Strict Gaps) --- */
+@media (max-width: 1023px) {
+  .pageContainer {
+    padding-top: 0; /* Banner touches top */
+  }
 
-/* --- RIGHT COLUMN (Sticky on Desktop) --- */
-.rightCol {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
+  .mainGrid {
+    gap: 0; /* We handle spacing via padding on children */
+  }
 
-@media (min-width: 1024px) {
+  /* 1. Identity Section (Full Width) */
+  .identityCard {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    background: #fff;
+    margin-bottom: 40px; /* GAP 1 */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+
+  /* 2. Content Column */
+  .leftCol {
+    display: flex;
+    flex-direction: column;
+    gap: 40px; /* GAP BETWEEN Welcome & Features */
+    padding: 0 24px; /* Side Padding */
+  }
+
+  /* 3. Right Column (Pricing) */
   .rightCol {
-    position: sticky;
-    top: 24px;
+    margin-top: 40px; /* GAP BETWEEN Features & Pricing */
+    padding: 0 24px;
+  }
+
+  .featuresCard {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 24px;
+    padding: 24px;
+  }
+
+  .welcomeCard {
+    margin-bottom: 0; /* Handled by gap */
   }
 }
 
-/* =========================================
-   COMPONENTS
-   ========================================= */
-
-/* --- IDENTITY CARD --- */
-.identityCard {
-  background: #fff;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  padding-bottom: 24px;
-  border-bottom: 1px solid #e2e8f0;
-}
-
+/* --- DESKTOP COLUMNS --- */
 @media (min-width: 1024px) {
+  .leftCol {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .rightCol {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    position: sticky;
+    top: 24px;
+  }
+
   .identityCard {
     border-radius: 16px;
     border: 1px solid #e2e8f0;
     overflow: hidden;
     box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.05);
+    background: #fff;
+    padding-bottom: 24px;
+  }
+
+  .featuresCard {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 20px;
+    padding: 24px;
   }
 }
 
+/* --- IDENTITY COMPONENTS --- */
 .bannerFrame {
   height: 160px;
   background: #f1f5f9;
   position: relative;
   overflow: hidden;
   border-bottom: 1px solid #e2e8f0;
-}
-
-/* Dot Pattern Overlay on Banner */
-/* Dot pattern removed from banner for a cleaner look */
-.bannerFrame::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: none;
-  pointer-events: none;
 }
 
 .bannerImg {
@@ -139,9 +163,7 @@
   position: relative;
   overflow: hidden;
   margin-bottom: 16px;
-  box-shadow:
-    0 10px 20px -5px rgba(0, 0, 0, 0.1),
-    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.1);
 }
 
 .avatarImg {
@@ -156,24 +178,17 @@
   justify-content: center;
 }
 
-.nameRow {
-  margin-bottom: 8px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
 .name {
-  font-family: var(--font-outfit), sans-serif;
+  font-family: inherit;
   font-size: 1.6rem;
   font-weight: 800;
   color: #0f172a;
   letter-spacing: -0.02em;
   line-height: 1.2;
+  margin-bottom: 8px;
 }
 
 .bio {
-  font-family: var(--font-outfit), sans-serif;
   font-size: 0.95rem;
   color: #64748b;
   line-height: 1.6;
@@ -182,7 +197,6 @@
   font-weight: 500;
 }
 
-/* Social Buttons (Hard Shadow) */
 .socialRow {
   display: flex;
   gap: 12px;
@@ -200,49 +214,38 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+  transition: all 0.2s;
   font-size: 1.2rem;
-  text-decoration: none;
 }
-
 .socialBtn:hover {
   border-color: #000;
   color: #000;
-  transform: translate(-3px, -3px);
-  box-shadow: 4px 4px 0 #000;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* --- WELCOME CARD --- */
 .welcomeCard {
-  background: #fff; /* White card on desktop */
+  background: #fff;
   border-radius: 20px;
   padding: 24px;
   text-align: center;
-  position: relative;
-}
-
-@media (min-width: 1024px) {
-  .welcomeCard {
-    border: 1px solid #e2e8f0;
-  }
+  border: 1px solid #e2e8f0;
 }
 
 .welcomeIconWrapper {
   width: 32px;
   height: 32px;
-  background: #fff;
+  background: #f8fafc;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0 auto 12px auto;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  color: #000; /* Accent color */
   border: 1px solid #e2e8f0;
 }
 
 .welcomeText {
-  font-family: var(--font-outfit), sans-serif;
   font-size: 0.95rem;
   color: #475569;
   line-height: 1.7;
@@ -251,24 +254,12 @@
 }
 
 /* --- FEATURES --- */
-.featuresCard {
-  padding: 0 24px; /* Mobile Padding */
-}
-@media (min-width: 1024px) {
-  .featuresCard {
-    background: #fff;
-    border: 1px solid #e2e8f0;
-    border-radius: 20px;
-    padding: 24px;
-  }
-}
-
 .sectionTitle {
   font-size: 0.8rem;
   font-weight: 800;
   text-transform: uppercase;
   color: #94a3b8;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
   letter-spacing: 0.05em;
   display: flex;
   align-items: center;
@@ -289,20 +280,14 @@
   font-weight: 500;
 }
 
-/* --- ACCESS & PRICING (Right Col on Desktop, Bottom on Mobile) --- */
+/* --- PURCHASE CARD (Pricing & Access) --- */
 .purchaseCard {
   background: #fff;
   padding: 24px;
-}
-@media (min-width: 1024px) {
-  .purchaseCard {
-    border: 1px solid #e2e8f0;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
-  }
+  border: 1px solid #e2e8f0;
+  border-radius: 24px;
 }
 
-/* Access Grid (Platforms) */
 .accessGrid {
   display: grid;
   grid-template-columns: 1fr;
@@ -323,7 +308,7 @@
 }
 .accessCard:hover {
   border-color: #cbd5e1;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .accessIconBox {
@@ -371,34 +356,22 @@
   justify-content: space-between;
   background: #fff;
   transition: all 0.2s;
-  -webkit-tap-highlight-color: transparent;
 }
 .priceCard:hover {
   border-color: #94a3b8;
 }
-.priceCard:active {
-  transform: scale(0.98);
-}
-
 .activePrice {
-  border-color: #000;
   background: #fdfdfd;
   box-shadow: 0 8px 20px -4px rgba(0, 0, 0, 0.08);
 }
 .activeIndicator {
   width: 10px;
   height: 10px;
-  background: #000;
   border-radius: 50%;
   position: absolute;
   left: 14px;
   top: 50%;
   transform: translateY(-50%);
-  opacity: 0;
-  transition: opacity 0.2s;
-}
-.activePrice .activeIndicator {
-  opacity: 1;
 }
 
 .intervalBadge {
@@ -422,94 +395,9 @@
   color: #0f172a;
 }
 
-/* Desktop Button (Hidden on Mobile) */
-.desktopJoinBtn {
-  width: 100%;
-  height: 48px;
-  margin-top: 24px;
-  background: #000;
-  color: #fff;
-  border: none;
-  border-radius: 14px;
-  font-weight: 700;
-  font-size: 1rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  transition: transform 0.2s;
-}
-.desktopJoinBtn:hover {
-  transform: scale(1.02);
-}
-
-@media (max-width: 1023px) {
-  .desktopJoinBtn {
-    display: none;
-  }
-}
-
-/* --- STICKY FOOTER (Mobile Only) --- */
-.stickyFooter {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: #fff;
-  border-top: 1px solid #e2e8f0;
-  padding: 16px 20px;
-  padding-bottom: calc(16px + env(safe-area-inset-bottom));
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  z-index: 100;
-  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.04);
-}
-
-@media (min-width: 1024px) {
-  .stickyFooter {
-    display: none;
-  }
-}
-
-.priceDisplay {
-  display: flex;
-  align-items: baseline;
-  gap: 6px;
-  flex-direction: row;
-}
-.footerAmount {
-  font-weight: 800;
-  color: #0f172a;
-  font-size: 1.5rem;
-  line-height: 1;
-}
-.footerInterval {
-  font-size: 0.8rem;
-  color: #94a3b8;
-  font-weight: 600;
-}
-
-.mobileJoinBtn {
-  height: 48px;
-  padding: 0 24px;
-  background: #000;
-  color: #fff;
-  border: none;
-  border-radius: 100px;
-  font-weight: 700;
-  font-size: 1rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-/* --- TERMS --- */
+/* --- TERMS & BRANDING --- */
 .termsBox {
-  margin-top: 20px;
+  margin-top: 24px;
   padding-top: 16px;
   border-top: 1px dashed #e2e8f0;
   text-align: center;
@@ -520,10 +408,8 @@
   line-height: 1.5;
 }
 
-/* --- BRANDING --- */
 .brandingArea {
   margin-top: 40px;
-  padding-bottom: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -563,4 +449,273 @@
   font-size: 0.55rem;
   border: 1.5px solid #000;
   margin-right: 4px;
+}
+
+/* --- BUTTONS --- */
+.desktopJoinBtn {
+  width: 100%;
+  height: 52px;
+  margin-top: 24px;
+  border: none;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: transform 0.2s;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+.desktopJoinBtn:hover {
+  transform: scale(1.02);
+}
+
+@media (max-width: 1023px) {
+  .desktopJoinBtn {
+    display: none;
+  }
+}
+
+/* Sticky Mobile Footer */
+.stickyFooter {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border-top: 1px solid #e2e8f0;
+  padding: 16px 20px;
+  padding-bottom: calc(16px + env(safe-area-inset-bottom));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 100;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.04);
+}
+@media (min-width: 1024px) {
+  .stickyFooter {
+    display: none;
+  }
+}
+
+.footerAmount {
+  font-weight: 800;
+  color: #0f172a;
+  font-size: 1.5rem;
+  line-height: 1;
+}
+.footerInterval {
+  font-size: 0.8rem;
+  color: #94a3b8;
+  font-weight: 600;
+}
+
+.mobileJoinBtn {
+  height: 48px;
+  padding: 0 24px;
+  border: none;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* --- NEO-BRUTALIST MODAL --- */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(8px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modalContent {
+  background: #ffffff;
+  width: 100%;
+  max-width: 420px;
+  border: 2px solid #000000;
+  border-radius: 20px;
+  padding: 32px;
+  position: relative;
+  box-shadow: 8px 8px 0 #000000; /* Signature Hard Shadow */
+  animation: modalPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes modalPop {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.closeBtn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #94a3b8;
+  transition: color 0.2s;
+}
+.closeBtn:hover {
+  color: #000;
+}
+
+.modalHeader {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.modalIcon {
+  width: 64px;
+  height: 64px;
+  background: #5865f2;
+  border: 2px solid #000;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px auto;
+  box-shadow: 2px 2px 0 #000;
+}
+
+.modalTitle {
+  font-family: var(--font-outfit);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 8px 0;
+}
+
+.modalSub {
+  font-family: var(--font-outfit);
+  font-size: 0.95rem;
+  color: #64748b;
+  margin: 0;
+}
+
+.stepList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stepBox {
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.stepNum {
+  background: #000;
+  color: #fff;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  font-size: 0.8rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.stepContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.stepText {
+  font-family: var(--font-outfit);
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #334155;
+  margin: 0;
+}
+
+.copyCommandBtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #fff;
+  border: 2px solid #cbd5e1;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-family: monospace;
+  font-size: 0.9rem;
+  color: #0f172a;
+  cursor: pointer;
+  transition: all 0.2s;
+  width: fit-content;
+}
+.copyCommandBtn:hover {
+  border-color: #000;
+  transform: translateY(-1px);
+}
+
+.modalActionBtn {
+  width: 100%;
+  height: 56px;
+  background: #5865f2;
+  color: #fff;
+  border: 2px solid #000;
+  border-radius: 12px;
+  font-family: var(--font-outfit);
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 4px 4px 0 #000;
+  transition: all 0.1s;
+}
+
+.modalActionBtn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 #000;
+}
+
+.modalSecondaryBtn {
+  width: 100%;
+  padding: 12px;
+  background: transparent;
+  border: none;
+  font-family: var(--font-outfit);
+  font-weight: 600;
+  color: #64748b;
+  cursor: pointer;
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.modalSecondaryBtn:hover {
+  color: #0f172a;
 }

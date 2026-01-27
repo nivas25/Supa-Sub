@@ -41,6 +41,7 @@ export default function IdentityStep({
   const [isCheckingUrl, setIsCheckingUrl] = useState(false);
   const [urlAvailable, setUrlAvailable] = useState<boolean | null>(null);
 
+  // --- 1. READ-ONLY CHECK (Does not write to DB) ---
   const checkUrlAvailability = async (slug: string) => {
     if (slug.length < 3) {
       setUrlAvailable(null);
@@ -48,12 +49,15 @@ export default function IdentityStep({
     }
     setIsCheckingUrl(true);
     try {
+      // "maybeSingle()" is a SELECT query. It purely reads.
       const { data, error } = await supabase
         .from("pages")
         .select("slug")
         .eq("slug", slug)
         .maybeSingle();
+
       if (error) throw error;
+      // If data is null, it means no page exists -> URL is available
       setUrlAvailable(data === null);
     } catch (err) {
       console.error("URL check error:", err);
@@ -70,6 +74,8 @@ export default function IdentityStep({
       ...prev,
       socialLinks: [...prev.socialLinks, { platform, url: "" }],
     }));
+    // Clear error if they add one (we re-validate on submit)
+    if (errors.socialLinks) setErrors({ ...errors, socialLinks: "" });
   };
 
   const removeSocial = (index: number) => {
@@ -94,7 +100,6 @@ export default function IdentityStep({
     }
   };
 
-  // --- CLEANED UP OPTIONS ---
   const socialOptions = [
     { id: "instagram", icon: <RiInstagramLine /> },
     { id: "twitter", icon: <RiTwitterXFill /> },
@@ -106,7 +111,9 @@ export default function IdentityStep({
   return (
     <section
       className={`${styles.identityCard} ${
-        errors.handle || errors.pageTitle ? styles.errorBorder : ""
+        errors.handle || errors.pageTitle || errors.socialLinks
+          ? styles.errorBorder
+          : ""
       }`}
     >
       <div className={styles.cardHeader}>
@@ -133,15 +140,25 @@ export default function IdentityStep({
             <input
               type="text"
               className={styles.transparentInput}
-              placeholder="username"
+              placeholder="my_page"
               value={formData.handle}
               autoComplete="off"
               onChange={(e) => {
-                const val = e.target.value
+                // --- 2. VARIABLE NAMING RULES ---
+                // Allow: a-z, 0-9, underscores (_), hyphens (-)
+                let val = e.target.value
                   .toLowerCase()
-                  .replace(/[^a-z0-9-]/g, "");
+                  .replace(/[^a-z0-9_-]/g, "");
+
+                // Rule: Cannot start with a number or hyphen
+                if (/^[0-9-]/.test(val)) {
+                  val = val.substring(1); // Remove first char if invalid
+                }
+
                 setFormData({ ...formData, handle: val });
                 if (errors.handle) setErrors({ ...errors, handle: "" });
+
+                // Debounce could be added here, but direct call is fine for now
                 checkUrlAvailability(val);
               }}
             />
@@ -161,6 +178,9 @@ export default function IdentityStep({
             <span className={styles.errorText}>
               This handle is already taken.
             </span>
+          )}
+          {errors.handle && (
+            <span className={styles.errorText}>{errors.handle}</span>
           )}
         </div>
 
@@ -229,6 +249,20 @@ export default function IdentityStep({
                 </button>
               ))}
             </div>
+
+            {/* --- 3. SOCIAL ERROR DISPLAY --- */}
+            {errors.socialLinks && (
+              <div
+                className={styles.errorBanner}
+                style={{ marginTop: 8, fontSize: "0.85rem", color: "#ef4444" }}
+              >
+                <RiErrorWarningFill
+                  style={{ marginBottom: -2, marginRight: 4 }}
+                />
+                {errors.socialLinks}
+              </div>
+            )}
+
             <div className={styles.socialActiveList}>
               {formData.socialLinks.length === 0 && (
                 <div className={styles.emptyState}>
@@ -241,13 +275,15 @@ export default function IdentityStep({
                     {getSocialIcon(link.platform)}
                   </div>
                   <input
-                    className={styles.socialUrlField}
+                    className={`${styles.socialUrlField} ${!link.url && errors.socialLinks ? styles.errorInput : ""}`}
                     placeholder={`Paste ${link.platform} URL...`}
                     value={link.url}
                     onChange={(e) => {
                       const newLinks = [...formData.socialLinks];
                       newLinks[idx].url = e.target.value;
                       setFormData({ ...formData, socialLinks: newLinks });
+                      if (e.target.value && errors.socialLinks)
+                        setErrors({ ...errors, socialLinks: "" });
                     }}
                   />
                   <button

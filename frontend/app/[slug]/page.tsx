@@ -13,10 +13,10 @@ export default async function PublicProfilePage({
     data: { user },
   } = await supabase.auth.getUser();
 
-  // 1. Fetch the Page (Product) by Slug
+  // 1. Fetch Page
   const { data: page } = await supabase
     .from("pages")
-    .select("*, owner:profiles(*)") // Fetch owner details if needed
+    .select("*, owner:profiles(*)")
     .eq("slug", slug)
     .eq("status", "active")
     .single();
@@ -31,7 +31,7 @@ export default async function PublicProfilePage({
 
   const prices = priceData || [];
 
-  // 3. Fetch Platform Configs (To see what is enabled)
+  // 3. Fetch Configs
   const { data: telegramConfig } = await supabase
     .from("page_telegram_config")
     .select("*")
@@ -50,19 +50,12 @@ export default async function PublicProfilePage({
     .eq("page_id", page.id)
     .single();
 
-  // 4. Get Real Member Count
-  const { count: realMemberCount } = await supabase
-    .from("memberships")
-    .select("*", { count: "exact", head: true })
-    .eq("page_id", page.id)
-    .eq("status", "active");
-
-  // 5. Check if User is a Member
+  // 4. Check Membership (Fetch Discord/Telegram IDs)
   let existingMembership = null;
   if (user) {
     const { data: members } = await supabase
       .from("memberships")
-      .select("*")
+      .select("*, discord_user_id, telegram_user_id") // Explicitly select these
       .eq("user_id", user.id)
       .eq("page_id", page.id)
       .eq("status", "active")
@@ -70,44 +63,43 @@ export default async function PublicProfilePage({
     if (members && members.length > 0) existingMembership = members[0];
   }
 
-  // 6. Map to UI Props
+  // 5. Map Props
   const platforms = {
     telegram: {
       enabled: !!telegramConfig,
-      link: telegramConfig?.invite_link || "", // Public link if available
-      title: "VIP Channel",
+      title: telegramConfig?.title || "VIP Channel",
     },
     discord: {
       enabled: !!discordConfig,
-      link: discordConfig?.invite_link || "",
-      title: "Community Server",
+      title: discordConfig?.title || "Community Server",
     },
     whatsapp: {
       enabled: !!whatsappConfig,
       link: whatsappConfig?.invite_link || "",
-      title: "Member Group",
+      title: whatsappConfig?.title || "Member Group",
     },
   };
 
   return (
     <main>
       <PublicProfile
-        // Identity
+        pageId={page.id}
         name={page.name}
         bio={page.description}
         handle={page.slug}
         avatarUrl={page.icon_url}
         bannerUrl={page.banner_url}
-        // Data
-        prices={prices}
-        memberCount={realMemberCount || 0}
-        platforms={platforms}
-        existingMembership={existingMembership}
-        groupId={page.id} // We pass page.id as groupId for analytics
-        // Content
         features={page.features || []}
         welcomeMessage={page.welcome_message}
         terms={page.terms}
+        themeColor={page.theme_color}
+        buttonText={page.button_text}
+        buttonStyle={page.button_style}
+        fontStyle={page.font_style}
+        socialLinks={page.social_links || []}
+        prices={prices}
+        platforms={platforms}
+        existingMembership={existingMembership}
       />
     </main>
   );

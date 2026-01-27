@@ -10,11 +10,11 @@ import {
   RiTwitterXFill,
   RiInstagramLine,
   RiYoutubeFill,
-  RiFacebookCircleFill, // Added Facebook Icon
-  RiCheckboxCircleFill,
+  RiFacebookCircleFill,
   RiLock2Fill,
   RiChatQuoteLine,
   RiShieldCheckLine,
+  RiCheckboxCircleFill,
 } from "react-icons/ri";
 import styles from "./LivePreview.module.css";
 
@@ -32,6 +32,7 @@ interface LivePreviewProps {
   themeColor: string;
   buttonTextColor?: string;
   buttonStyle: string;
+  fontStyle: string;
   viewMode?: "mobile" | "desktop";
   welcomeMessage?: string;
   terms?: string;
@@ -51,7 +52,22 @@ interface SocialLink {
   platform: string;
 }
 
-// --- HELPER FUNCTIONS (Outside component) ---
+// --- FONT MAPPING (Must match BrandingStep) ---
+const FONT_MAP: Record<string, string> = {
+  outfit: "'Outfit', sans-serif",
+  space: "'Space Grotesk', sans-serif",
+  syne: "'Syne', sans-serif",
+  epilogue: "'Epilogue', sans-serif",
+  dmserif: "'DM Serif Display', serif",
+  playfair: "'Playfair Display', serif",
+  libre: "'Libre Baskerville', serif",
+  jetbrains: "'JetBrains Mono', monospace",
+  oswald: "'Oswald', sans-serif",
+  caveat: "'Caveat', cursive",
+  inter: "'Inter', sans-serif",
+};
+
+// --- HELPER FUNCTIONS ---
 const formatInterval = (interval: string) => {
   const clean = interval?.toLowerCase() || "";
   switch (clean) {
@@ -74,8 +90,7 @@ const formatPrice = (amount: string | number) => {
 };
 
 const getSocialIcon = (platform: string) => {
-  const clean = platform?.toLowerCase() || "";
-  switch (clean) {
+  switch (platform?.toLowerCase()) {
     case "twitter":
       return <RiTwitterXFill />;
     case "instagram":
@@ -102,7 +117,7 @@ const getPlatformIcon = (key: string) => {
   }
 };
 
-// --- SUB-COMPONENTS (Moved outside) ---
+// --- SUB-COMPONENTS ---
 
 const IdentitySection = ({
   name,
@@ -111,14 +126,7 @@ const IdentitySection = ({
   bannerUrl,
   socialLinks,
   themeColor,
-}: {
-  name: string;
-  bio: string;
-  avatarUrl?: string | null;
-  bannerUrl?: string | null;
-  socialLinks: SocialLink[];
-  themeColor: string;
-}) => (
+}: any) => (
   <div className={styles.identityCard}>
     <div className={styles.bannerFrame}>
       {bannerUrl && (
@@ -126,6 +134,7 @@ const IdentitySection = ({
           src={bannerUrl}
           alt="Banner"
           className={styles.bannerImg}
+          loading="eager" // Force fast load
           onError={(e) => {
             (e.currentTarget as HTMLImageElement).style.display = "none";
           }}
@@ -139,7 +148,8 @@ const IdentitySection = ({
           <img
             src={avatarUrl}
             alt="Avatar"
-            className={styles.bannerImg}
+            className={styles.bannerImg} // Reusing cover style for fill
+            loading="eager" // Force fast load
             onError={(e) => {
               (e.currentTarget as HTMLImageElement).style.display = "none";
             }}
@@ -171,12 +181,13 @@ const IdentitySection = ({
 
       {socialLinks && socialLinks.length > 0 && (
         <div className={styles.socialRow}>
-          {socialLinks.map((s, i) => (
+          {socialLinks.map((s: SocialLink, i: number) => (
             <a
               key={i}
               href={s.url}
               className={styles.socialBtn}
               target="_blank"
+              rel="noopener noreferrer"
             >
               {getSocialIcon(s.platform)}
             </a>
@@ -187,15 +198,7 @@ const IdentitySection = ({
   </div>
 );
 
-const FeaturesList = ({
-  features,
-  viewMode,
-  themeColor,
-}: {
-  features: string[];
-  viewMode: string;
-  themeColor: string;
-}) => {
+const FeaturesList = ({ features, viewMode, themeColor }: any) => {
   if (!features || features.length === 0) return null;
   return (
     <div className={viewMode === "desktop" ? styles.featuresCard : ""}>
@@ -203,7 +206,7 @@ const FeaturesList = ({
         <span className={styles.sectionTitle}>
           <RiShieldCheckLine /> What's Included
         </span>
-        {features.map((feat, i) => (
+        {features.map((feat: string, i: number) => (
           <div key={i} className={styles.featureItem}>
             <RiCheckboxCircleFill
               color={themeColor}
@@ -225,14 +228,7 @@ const CheckoutContent = ({
   terms,
   themeColor,
   onSelectPrice,
-}: {
-  activePlatforms: Array<[string, { enabled: boolean; title?: string }]>;
-  prices: Price[];
-  selectedPriceIdx: number;
-  terms?: string;
-  themeColor: string;
-  onSelectPrice: (idx: number) => void;
-}) => {
+}: any) => {
   return (
     <>
       {activePlatforms.length > 0 && (
@@ -240,7 +236,7 @@ const CheckoutContent = ({
           <span className={styles.sectionTitle}>
             <RiLock2Fill /> Instant Access
           </span>
-          {activePlatforms.map(([key, data]) => (
+          {activePlatforms.map(([key, data]: any) => (
             <div key={key} className={styles.bigAccessCard}>
               <div
                 className={styles.accessIconBox}
@@ -262,7 +258,7 @@ const CheckoutContent = ({
       {prices.length > 0 && (
         <div className={styles.pricingGrid}>
           <span className={styles.sectionTitle}>Choose Plan</span>
-          {prices.map((p, i) => {
+          {prices.map((p: Price, i: number) => {
             const isActive = i === selectedPriceIdx;
             return (
               <div
@@ -286,8 +282,7 @@ const CheckoutContent = ({
         <div className={styles.termsBox}>
           <p className={styles.termsText}>
             By subscribing, you agree to the{" "}
-            <span className={styles.termsLink}>Terms & Conditions</span>.
-            <br />
+            <span className={styles.termsLink}>Terms & Conditions</span>.<br />
             <span style={{ opacity: 0.6, fontSize: "0.7rem" }}>
               {terms.slice(0, 50)}...
             </span>
@@ -304,13 +299,7 @@ const StickyFooter = ({
   buttonTextColor,
   buttonText,
   borderRadius,
-}: {
-  currentPrice: Price;
-  themeColor: string;
-  buttonTextColor: string;
-  buttonText: string;
-  borderRadius: string;
-}) => {
+}: any) => {
   const priceString = formatPrice(currentPrice.amount);
   const priceSizeClass =
     priceString.length > 6
@@ -357,6 +346,7 @@ export default function LivePreview({
   themeColor,
   buttonTextColor = "#ffffff",
   buttonStyle,
+  fontStyle,
   viewMode = "desktop",
   welcomeMessage,
   terms,
@@ -370,30 +360,31 @@ export default function LivePreview({
 
   const activePlatforms = Object.entries(platforms).filter(
     ([, data]) => data.enabled,
-  ) as Array<[string, { enabled: boolean; title?: string }]>;
+  );
 
+  // --- BUTTON SHAPE LOGIC (Matches BrandingStep) ---
   const borderRadius =
     buttonStyle === "pill"
       ? "100px"
       : buttonStyle === "rounded"
-        ? "14px"
+        ? "8px" // Distinct Rounded Rectangle
         : "0px";
+
+  // --- FONT LOGIC ---
+  const fontFamily = FONT_MAP[fontStyle] || "'Outfit', sans-serif";
 
   const customStyle = {
     "--accent": themeColor || "#000000",
-    "--radius": borderRadius,
+    fontFamily: fontFamily, // Applies dynamic font to entire wrapper
   } as React.CSSProperties;
-
-  const priceString = formatPrice(currentPrice.amount);
-  const priceSizeClass =
-    priceString.length > 6
-      ? styles["text-sm"]
-      : priceString.length > 4
-        ? styles["text-md"]
-        : styles["text-lg"];
 
   return (
     <div className={styles.previewWrapper} style={customStyle}>
+      {/* Ensure Fonts Load in Preview */}
+      <style jsx global>{`
+        @import url("https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=DM+Serif+Display&family=Epilogue:wght@500;700&family=JetBrains+Mono:wght@500&family=Libre+Baskerville:wght@400;700&family=Oswald:wght@500&family=Outfit:wght@400;600;800&family=Playfair+Display:wght@600&family=Space+Grotesk:wght@500;700&family=Syne:wght@600;800&display=swap");
+      `}</style>
+
       <div
         className={
           viewMode === "mobile" ? styles.mobileFrame : styles.desktopFrame
