@@ -3,9 +3,5 @@ main = "src/index.js"
 compatibility_date = "2024-01-01"
 
 [vars]
-# You will set the actual secrets in the Cloudflare Dashboard later.
-# DISCORD_PUBLIC_KEY = ""
-# DISCORD_BOT_TOKEN = ""
-# TELEGRAM_BOT_TOKEN = ""
-# SUPABASE_URL = ""
-# SUPABASE_SERVICE_ROLE_KEY = ""
+SUPABASE_URL = "https://zjinaalsyovfwnaxbozy.supabase.co" 
+DISCORD_PUBLIC_KEY = "bb9b59e29a355d2591a734ffb31276f5361b25deb957525571ba7cf081dcbbf8"
